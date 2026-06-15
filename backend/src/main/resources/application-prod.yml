@@ -1,0 +1,25 @@
+# =====================================================
+# PROFIL PRODUKCYJNY
+# =====================================================
+# Wszystkie wartości pochodzą ze zmiennych środowiskowych.
+# W produkcji ustawiane przez docker-compose przez plik .env
+# =====================================================
+
+spring:
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+platform:
+  mqtt:
+    broker-url: ${MQTT_BROKER_URL:tcp://mosquitto:1883}
+  influx:
+    url: ${INFLUX_URL}
+    org: ${INFLUX_ORG}
+    bucket: ${INFLUX_BUCKET}
+    token: ${INFLUX_TOKEN}
