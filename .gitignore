@@ -1,0 +1,70 @@
+# =========================
+# Sekrety i konfiguracja lokalna
+# =========================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+backend/src/main/resources/application-local.yml
+
+# =========================
+# Java / Maven / Spring
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+.mvn/wrapper/maven-wrapper.jar
+backend/.idea/
+backend/*.iml
+backend/.classpath
+backend/.project
+backend/.settings/
+
+# =========================
+# Node / Vite / React
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.env
+frontend/.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# IntelliJ / VS Code
+# =========================
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Docker / runtime
+# =========================
+mosquitto/data/
+mosquitto/log/
+postgres-data/
+influx-data/
+
+# =========================
+# Inne
+# =========================
+*.tmp
+*.bak
+*.swp
