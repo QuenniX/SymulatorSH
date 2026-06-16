@@ -1,0 +1,104 @@
+# =====================================================
+# PRODUKCYJNE ŚRODOWISKO - docker-compose
+# =====================================================
+# Cztery serwisy:
+#   - backend (Spring Boot, port 8080 wewnętrznie)
+#   - frontend (nginx + statyczny build, port 80 wewnętrznie)
+#   - mosquitto (broker MQTT, port 1883)
+#   - caddy (reverse proxy + HTTPS na port 80/443)
+#
+# Uruchom z folderu PRACA_MAGISTERSKA:
+#   docker compose -f infra/docker-compose.yml --env-file infra/.env up -d --build
+#
+# Zatrzymanie:
+#   docker compose -f infra/docker-compose.yml down
+# =====================================================
+
+services:
+  # ===================================================
+  # BACKEND - Spring Boot
+  # ===================================================
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: smart-home-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      POSTGRES_URL: ${POSTGRES_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      INFLUX_URL: ${INFLUX_URL}
+      INFLUX_ORG: ${INFLUX_ORG}
+      INFLUX_BUCKET: ${INFLUX_BUCKET}
+      INFLUX_TOKEN: ${INFLUX_TOKEN}
+      MQTT_BROKER_URL: tcp://mosquitto:1883
+    depends_on:
+      - mosquitto
+    networks:
+      - app
+
+  # ===================================================
+  # FRONTEND - React + nginx
+  # ===================================================
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: smart-home-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - app
+
+  # ===================================================
+  # MOSQUITTO - broker MQTT
+  # ===================================================
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: smart-home-mosquitto
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    ports:
+      - "1883:1883"  # wystawiamy na host (dla zewnętrznych klientów MQTT)
+    networks:
+      - app
+
+  # ===================================================
+  # CADDY - reverse proxy + auto-SSL
+  # ===================================================
+  # Na MVP serwuje frontend i backend pod adresem IP/domeny.
+  # Auto-SSL z Let's Encrypt aktywuje się automatycznie
+  # po wpisaniu prawdziwej domeny do Caddyfile.
+  # ===================================================
+  caddy:
+    image: caddy:2-alpine
+    container_name: smart-home-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
+  caddy-data:
+  caddy-config:

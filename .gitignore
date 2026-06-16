@@ -8,6 +8,7 @@
 *.key
 secrets/
 backend/src/main/resources/application-local.yml
+infra/.env
 
 # =========================
 # Java / Maven / Spring

@@ -1,0 +1,35 @@
+# =====================================================
+# Caddy - reverse proxy + auto-HTTPS
+# =====================================================
+# Konfiguracja na trzy etapy:
+#   1. Bez domeny (na razie) - listen na :80, kieruj do frontendu
+#   2. Po dodaniu domeny - zamień ":80" na "twoja-domena.com"
+#      Caddy automatycznie pobierze certyfikat Let's Encrypt
+#   3. Po dodaniu Cloudflare - można dodać DNS challenge
+# =====================================================
+
+{
+    # Email do Let's Encrypt (powiadomienia o wygasaniu certyfikatów)
+    email igorgula17@gmail.com
+
+    # Wyłącz domyślne przekierowanie HTTP -> HTTPS dopóki nie mamy domeny
+    auto_https off
+}
+
+# =====================================================
+# Konfiguracja bazowa - bez domeny
+# =====================================================
+# Po dodaniu domeny zamień to na: twoja-domena.com { ... }
+# Wtedy Caddy włączy HTTPS automatycznie i przekieruje :80 na :443
+# =====================================================
+:80 {
+    # Wszystkie żądania kieruj do frontendu (nginx)
+    # Frontend ma już wbudowane proxy /api -> backend:8080
+    reverse_proxy frontend:80
+
+    # Logi w stdout (zbierane przez Docker)
+    log {
+        output stdout
+        format console
+    }
+}
