@@ -156,7 +156,6 @@ Test "Lodówka plus oświetlenie kuchni przez jeden dzień":
 | `WASHER` | `power_w: 2000, cycle_minutes: 60` | Po komendzie ON cykl pracy `cycle_minutes` minut |
 | `HEATER` | `power_w: 1500` | jak LIGHT, prosta para ON/OFF (na MVP) |
 
-W kolejnych iteracjach -- `BATTERY` (akumulator z SOC), `SOLAR_PV` (panel słoneczny z modelem pogody), `OVEN`, `DRYER`, `AIR_CONDITIONER`.
 
 ## Walidacja
 
