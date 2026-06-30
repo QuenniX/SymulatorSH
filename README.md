@@ -6,7 +6,7 @@ PRACA_MAGISTERSKA/
 ├── backend/      # Spring Boot 3 (Java 21) - REST API, executor testów, klient MQTT
 ├── frontend/     # React + Vite + TypeScript + Tailwind - UI
 ├── infra/        # docker-compose, Caddyfile, mosquitto.conf
-└── docs/         # architecture.md, json-schema.md, api-spec.md, roadmap.md
+└── docs/         # architecture.md, json-schema.md, api-spec.md
 ```
 
 ## Stack technologiczny
