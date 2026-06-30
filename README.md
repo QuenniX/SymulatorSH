@@ -21,4 +21,4 @@ PRACA_MAGISTERSKA/
 - [Architektura systemu](docs/architecture.md)
 - [Schemat konfiguracji testu (JSON)](docs/json-schema.md)
 - [Specyfikacja REST API](docs/api-spec.md)
-- [Roadmap do września](docs/roadmap.md)
+
