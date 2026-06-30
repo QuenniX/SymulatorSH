@@ -1,7 +1,5 @@
 # Schemat konfiguracji testu (JSON)
 
-Konfiguracja pojedynczego testu jest jednym obiektem JSON wysyłanym jako body żądania `POST /api/v1/tests`. Schemat jest celowo płaski i nieskomplikowany -- nie zakłada modelowania pomieszczeń, stref ani pokojów, bo platforma ma być **narzędziem inżyniera**, a nie produktem dla użytkownika końcowego. Inżynier wybiera dynamicznie urządzenia z palety i konfiguruje ich parametry.
-
 ## Struktura ogólna
 
 ```json

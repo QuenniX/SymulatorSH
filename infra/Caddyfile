@@ -1,12 +1,11 @@
-# =====================================================
+
 # Caddy - reverse proxy + auto-HTTPS
-# =====================================================
 # Konfiguracja na trzy etapy:
 #   1. Bez domeny (na razie) - listen na :80, kieruj do frontendu
 #   2. Po dodaniu domeny - zamień ":80" na "twoja-domena.com"
 #      Caddy automatycznie pobierze certyfikat Let's Encrypt
 #   3. Po dodaniu Cloudflare - można dodać DNS challenge
-# =====================================================
+
 
 {
     # Email do Let's Encrypt (powiadomienia o wygasaniu certyfikatów)

@@ -1,9 +1,8 @@
--- =========================================================
+
 -- V1: Inicjalna struktura bazy danych
--- =========================================================
 -- Tabela tests trzyma metadane wszystkich uruchomionych testów.
 -- Pomiary mocy chwilowej żyją osobno - w InfluxDB Cloud.
--- =========================================================
+
 
 CREATE TABLE tests (
     id              UUID PRIMARY KEY,
