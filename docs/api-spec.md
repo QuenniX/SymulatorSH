@@ -174,19 +174,3 @@ Anuluje aktywny test (jeśli `RUNNING`, ustawia status `CANCELLED`) lub usuwa za
 
 ---
 
-## Planowane endpointy (po MVP)
-
-| Endpoint | Cel |
-|----------|-----|
-| `GET /api/v1/tests/{id}/stream` | Server-Sent Events ze strumieniem statusu i pomiarów na żywo |
-| `POST /api/v1/tests/{id}/devices/{device_id}/cmd` | Tryb interaktywny -- ręczne wysłanie komendy do urządzenia w trakcie testu |
-| `GET /api/v1/tests/{id}/export.csv` | Eksport surowych pomiarów do pliku CSV |
-| `POST /api/v1/auth/login` | Logowanie operatora |
-| `GET /api/v1/users/me` | Dane zalogowanego operatora |
-
-## Konwencje
-
-- **ID** -- wszystkie identyfikatory testów są typu UUID v4 generowane po stronie backendu.
-- **Czasy** -- wszystkie znaczniki czasowe w odpowiedziach API są w UTC w formacie ISO-8601 (`2026-06-15T14:32:10Z`).
-- **Wersjonowanie** -- prefiks `/api/v1/`. Łamanie wstecznej kompatybilności wymaga `/api/v2/`.
-- **Błędy** -- standardowy obiekt `{ error, message, field? }` z odpowiednim kodem HTTP.
