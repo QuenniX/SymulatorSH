@@ -1,9 +1,3 @@
-# =====================================================
-# PROFIL PRODUKCYJNY
-# =====================================================
-# Wszystkie wartości pochodzą ze zmiennych środowiskowych.
-# W produkcji ustawiane przez docker-compose przez plik .env
-# =====================================================
 
 spring:
   datasource:

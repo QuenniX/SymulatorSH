@@ -6,12 +6,7 @@ import pl.smarthome.platform.api.dto.DeviceTypeDto;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Statyczna paleta dostępnych typów urządzeń.
- *
- * W kolejnych iteracjach przeniesiemy ją do bazy lub do pliku konfiguracyjnego,
- * żeby można było dodawać typy bez przebudowy aplikacji.
- */
+/**Statyczna paleta dostępnych typów urządzeń.*/
 @Service
 public class DeviceTypeService {
 

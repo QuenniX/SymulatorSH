@@ -3,10 +3,8 @@ package pl.smarthome.platform.executor.simulator;
 import pl.smarthome.platform.api.dto.DeviceConfig;
 
 /**
- * Symulator grzejnika elektrycznego (MVP).
- *
+ * Symulator grzejnika elektrycznego.
  * Na razie zachowanie identyczne jak LIGHT - prosty schedule ON/OFF
- * bez modelu termicznego. Model termiczny dorobi się w lipcu.
  */
 public class HeaterSimulator extends LightSimulator {
 

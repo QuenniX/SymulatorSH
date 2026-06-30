@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 /**
  * Symulator pojedynczego źródła światła.
- *
  * Przyjmuje listę akcji ON/OFF z konkretnymi godzinami i ustala stan
  * dla każdej minuty doby na podstawie ostatniej wykonanej akcji.
  */

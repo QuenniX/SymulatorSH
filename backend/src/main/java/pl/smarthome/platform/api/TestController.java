@@ -61,7 +61,7 @@ public class TestController {
     }
 
     @GetMapping("/{id}/measurements")
-    @Operation(summary = "Pomiary mocy dla testu (z InfluxDB)")
+    @Operation(summary = "Pomiary mocy dla testuz InfluxDB")
     public MeasurementsResponse getMeasurements(
             @PathVariable("id") UUID id,
             @RequestParam(value = "device_id", required = false) String deviceFilter) {

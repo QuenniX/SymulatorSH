@@ -1,8 +1,3 @@
-# Smart Home Test Platform
-
-Chmurowa platforma testowa do symulacji zużycia energii w gospodarstwie domowym. Inżynier konfiguruje scenariusz testu w formacie JSON (lista urządzeń, ich parametry, harmonogram zachowania, jitter), wysyła go do platformy przez REST API lub przez Web UI, platforma uruchamia symulację na osobnym wątku, a pomiary mocy chwilowej z każdego urządzenia trafiają do bazy time-series. Po zakończeniu testu dostępne są wykresy zużycia energii w czasie oraz agregaty (kWh per urządzenie, kWh całkowite).
-
-Projekt powstaje w ramach pracy magisterskiej na Wydziale Elektrotechniki i Informatyki Politechniki Rzeszowskiej (autor: Igor Guła, EF-169784, promotor: dr inż. Michał Markiewicz).
 
 ## Struktura katalogów
 
@@ -20,24 +15,6 @@ PRACA_MAGISTERSKA/
 - **Frontend:** React 18, Vite, TypeScript, Tailwind CSS, Recharts, Axios
 - **Infrastruktura:** AWS EC2 (Ubuntu), Docker, Docker Compose, Caddy (HTTPS), GitHub Actions
 
-## Szybki start (lokalnie)
-
-```bash
-# 1. Mosquitto + ewentualnie lokalny Postgres
-docker compose -f infra/docker-compose-local.yml up -d
-
-# 2. Backend
-cd backend
-# uzupełnij application-local.yml o Neon connection + InfluxDB credentials
-./mvnw spring-boot:run -Dspring-boot.run.profiles=local
-
-# 3. Frontend
-cd ../frontend
-npm install
-npm run dev
-```
-
-Backend nasłuchuje na `http://localhost:8080`, frontend na `http://localhost:5173`, Swagger UI dostępne pod `http://localhost:8080/swagger-ui.html`.
 
 ## Dokumenty
 
