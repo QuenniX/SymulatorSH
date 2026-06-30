@@ -1,4 +1,4 @@
-// Typy DTO zwracane przez backend - zgodne z docs/api-spec.md
+// Typy DTO zwracane przez backend
 
 export type TestStatus = 'QUEUED' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
 
