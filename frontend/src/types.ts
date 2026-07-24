@@ -40,6 +40,43 @@ export interface DeviceType {
   defaultParams: Record<string, unknown>;
 }
 
+export interface Room {
+  type: string;
+  label: string;
+}
+
+export interface TemplateSummary {
+  templateId: string;
+  name: string;
+  description: string | null;
+  createdAt: string;
+}
+
+export interface TemplateResponse {
+  templateId: string;
+  name: string;
+  description: string | null;
+  config: unknown;
+  createdAt: string;
+}
+
+export interface CreateTemplateResponse {
+  templateId: string;
+  createdAt: string;
+}
+
+/** Urządzenie w state kreatora - przed serializacją do JSON-a testu. */
+export interface DeviceInstance {
+  /** Lokalny id na potrzeby listy React (nie mylić z id urządzenia w JSON). */
+  localKey: string;
+  id: string;
+  type: string;
+  room: string;
+  params: Record<string, unknown>;
+  /** Uproszczony schedule dla MVP: 'always_on' albo pusta tablica. */
+  schedule: 'always_on' | unknown[];
+}
+
 export interface MeasurementPoint {
   timestamp: string;
   deviceId: string;

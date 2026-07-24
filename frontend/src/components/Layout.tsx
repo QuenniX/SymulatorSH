@@ -24,6 +24,16 @@ export default function Layout() {
               Lista testów
             </Link>
             <Link
+              to="/kreator"
+              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+                isActive('/kreator')
+                  ? 'bg-brand-600 text-white'
+                  : 'text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              Kreator
+            </Link>
+            <Link
               to="/new"
               className={`px-3 py-1.5 rounded text-sm font-medium transition ${
                 isActive('/new')
@@ -31,7 +41,7 @@ export default function Layout() {
                   : 'text-slate-300 hover:bg-slate-700'
               }`}
             >
-              Nowy test
+              Nowy test (JSON)
             </Link>
             <a
               href="http://localhost:8080/swagger-ui.html"

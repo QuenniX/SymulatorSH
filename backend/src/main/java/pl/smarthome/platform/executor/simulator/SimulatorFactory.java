@@ -24,6 +24,22 @@ public class SimulatorFactory {
                     globalJitterTimeMinutes, globalJitterPowerPercent);
             case "HEATER" -> new HeaterSimulator(config, randomSeed,
                     globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "TV" -> new TvSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "AC" -> new AcSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "BOILER" -> new BoilerSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "OVEN" -> new OvenSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "DISHWASHER" -> new DishwasherSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "KETTLE" -> new KettleSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "COMPUTER" -> new ComputerSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
+            case "ROUTER" -> new RouterSimulator(config, randomSeed,
+                    globalJitterTimeMinutes, globalJitterPowerPercent);
             default -> throw new IllegalArgumentException("Nieznany typ urządzenia: " + type);
         };
     }

@@ -1,5 +1,6 @@
 package pl.smarthome.platform.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,13 @@ public class DeviceConfig {
     @NotBlank
     private String type;
 
+    /**
+     * Pomieszczenie, w którym stoi urządzenie (np. KITCHEN, LIVING_ROOM).
+     * Opcjonalne - używane przez wizualizację 3D i konfigurator UI.
+     * Lista dostępnych wartości: GET /api/v1/rooms.
+     */
+    private String room;
+
     private Map<String, Object> params;
 
     /** Może być List<Action> albo String ("always_on"/"always_off"). */
@@ -45,10 +53,12 @@ public class DeviceConfig {
     }
 
     /** Helper: czy schedule jest stringiem typu always_on/always_off. */
+    @JsonIgnore
     public boolean isScheduleString() {
         return schedule instanceof String;
     }
 
+    @JsonIgnore
     @SuppressWarnings("unchecked")
     public List<Map<String, Object>> getScheduleList() {
         if (schedule instanceof List<?> list) {
@@ -57,6 +67,7 @@ public class DeviceConfig {
         return List.of();
     }
 
+    @JsonIgnore
     public String getScheduleString() {
         return schedule instanceof String s ? s : null;
     }

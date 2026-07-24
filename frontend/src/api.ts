@@ -1,8 +1,12 @@
 import axios from 'axios';
 import type {
+  CreateTemplateResponse,
   CreateTestResponse,
   DeviceType,
   MeasurementsResponse,
+  Room,
+  TemplateResponse,
+  TemplateSummary,
   TestResponse,
   TestSummary,
 } from './types';
@@ -44,4 +48,36 @@ export async function getMeasurements(
 export async function listDeviceTypes(): Promise<DeviceType[]> {
   const res = await api.get<DeviceType[]>('/device-types');
   return res.data;
+}
+
+export async function listRooms(): Promise<Room[]> {
+  const res = await api.get<Room[]>('/rooms');
+  return res.data;
+}
+
+export async function listTemplates(): Promise<TemplateSummary[]> {
+  const res = await api.get<TemplateSummary[]>('/templates');
+  return res.data;
+}
+
+export async function getTemplate(id: string): Promise<TemplateResponse> {
+  const res = await api.get<TemplateResponse>(`/templates/${id}`);
+  return res.data;
+}
+
+export async function createTemplate(
+  name: string,
+  description: string | null,
+  config: unknown,
+): Promise<CreateTemplateResponse> {
+  const res = await api.post<CreateTemplateResponse>('/templates', {
+    name,
+    description,
+    config,
+  });
+  return res.data;
+}
+
+export async function deleteTemplate(id: string): Promise<void> {
+  await api.delete(`/templates/${id}`);
 }
