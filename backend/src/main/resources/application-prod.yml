@@ -8,6 +8,12 @@ spring:
   jpa:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    # Wylaczamy walidacje sum kontrolnych bo git core.autocrlf zamienia CRLF/LF miedzy
+    # Windows (lokalne dev) i Linux (EC2), co zmienia bajty plikow migracji i checksum.
+    # Nowe migracje sa aplikowane normalnie - tylko sprawdzenie ze stare pliki maja
+    # identyczna zawartosc z tym co bylo aplikowane w bazie jest pominiete.
+    validate-on-migrate: false
 
 platform:
   mqtt:
