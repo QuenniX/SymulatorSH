@@ -43,6 +43,26 @@ export default function Layout() {
             >
               Nowy test (JSON)
             </Link>
+            <Link
+              to="/prices"
+              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+                isActive('/prices')
+                  ? 'bg-brand-600 text-white'
+                  : 'text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              Ceny energii
+            </Link>
+            <Link
+              to="/batch"
+              className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+                isActive('/batch')
+                  ? 'bg-brand-600 text-white'
+                  : 'text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              Batch
+            </Link>
             <a
               href="http://localhost:8080/swagger-ui.html"
               target="_blank"

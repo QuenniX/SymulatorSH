@@ -15,6 +15,7 @@ import { ContactShadows, Environment, OrbitControls, Sky } from '@react-three/dr
 import { deleteTest, getMeasurements, getTest, listRooms } from '../api';
 import type { MeasurementPoint, Room, TestResponse } from '../types';
 import StatusBadge from '../components/StatusBadge';
+import CostSection from '../components/CostSection';
 import Apartment from '../three/Apartment';
 
 // Paleta kolorów dla linii na wykresie (cykliczna)
@@ -141,11 +142,14 @@ export default function TestDetailsPage() {
 
   useEffect(() => {
     refresh();
+    // Polling co 5s (nie 1s) - InfluxDB Cloud free plan ma limit ~300 query/5min.
+    // Przy 1s: 60min × 60s = 3600 queries -> zawsze 429.
+    // Przy 5s: 60min × 12 = 720 queries -> mieści się w limicie.
     const interval = setInterval(() => {
       const s = statusRef.current;
       if (s === 'COMPLETED' || s === 'FAILED' || s === 'CANCELLED') return;
       refresh();
-    }, 1000);
+    }, 5000);
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -380,6 +384,17 @@ export default function TestDetailsPage() {
             testStatus={test.status}
           />
         )}
+      </div>
+
+      {/* Sekcja kosztu - porownanie 3 taryf (G11/G12/RDN).
+          testName - do wykrycia sezonu (Zima/Wiosna/Lato/Jesien) i pokazania sensownych presetow. */}
+      <div className="mb-6">
+        <CostSection
+          testId={test.testId}
+          testName={test.name}
+          durationDays={test.durationDays}
+          reloadKey={1}
+        />
       </div>
 
       <details className="bg-slate-800 border border-slate-700 rounded p-4 mb-6">

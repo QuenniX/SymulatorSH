@@ -1,0 +1,288 @@
+{
+  "durationDays": 30,
+  "speedFactor": 720,
+  "retentionDays": 30,
+  "jitter": {
+    "globalTimeMinutes": 25,
+    "globalPowerPercent": 8
+  },
+  "devices": [
+    {
+      "id": "refrigerator_1",
+      "room": "KITCHEN",
+      "type": "REFRIGERATOR",
+      "params": {
+        "power_w": 130,
+        "duty_cycle": 0.47
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "router_1",
+      "room": "LIVING_ROOM",
+      "type": "ROUTER",
+      "params": {
+        "power_w": 10
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "boiler_1",
+      "room": "BATHROOM",
+      "type": "BOILER",
+      "params": {
+        "power_w": 2000,
+        "duty_cycle": 0.08,
+        "cycle_length_minutes": 60
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "light_kitchen",
+      "room": "KITCHEN",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {
+          "at": "06:30",
+          "action": "ON"
+        },
+        {
+          "at": "10:00",
+          "action": "OFF"
+        },
+        {
+          "at": "11:30",
+          "action": "ON"
+        },
+        {
+          "at": "13:30",
+          "action": "OFF"
+        },
+        {
+          "at": "18:00",
+          "action": "ON"
+        },
+        {
+          "at": "20:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_livingroom",
+      "room": "LIVING_ROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 80
+      },
+      "schedule": [
+        {
+          "at": "07:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bedroom",
+      "room": "BEDROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 40
+      },
+      "schedule": [
+        {
+          "at": "06:30",
+          "action": "ON"
+        },
+        {
+          "at": "07:30",
+          "action": "OFF"
+        },
+        {
+          "at": "23:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:45",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bathroom",
+      "room": "BATHROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {
+          "at": "07:00",
+          "action": "ON"
+        },
+        {
+          "at": "07:30",
+          "action": "OFF"
+        },
+        {
+          "at": "13:00",
+          "action": "ON"
+        },
+        {
+          "at": "13:15",
+          "action": "OFF"
+        },
+        {
+          "at": "21:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "kettle_1",
+      "room": "KITCHEN",
+      "type": "KETTLE",
+      "params": {
+        "power_w": 1800,
+        "cycle_minutes": 3
+      },
+      "schedule": [
+        {
+          "at": "07:00",
+          "action": "ON"
+        },
+        {
+          "at": "10:30",
+          "action": "ON"
+        },
+        {
+          "at": "15:00",
+          "action": "ON"
+        },
+        {
+          "at": "18:00",
+          "action": "ON"
+        },
+        {
+          "at": "20:30",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "oven_1",
+      "room": "KITCHEN",
+      "type": "OVEN",
+      "params": {
+        "power_w": 2500,
+        "cycle_minutes": 40,
+        "heat_on_minutes": 5,
+        "heat_off_minutes": 5
+      },
+      "schedule": [
+        {
+          "at": "12:00",
+          "action": "ON"
+        },
+        {
+          "at": "13:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "tv_1",
+      "room": "LIVING_ROOM",
+      "type": "TV",
+      "params": {
+        "power_w": 130
+      },
+      "schedule": [
+        {
+          "at": "08:00",
+          "action": "ON"
+        },
+        {
+          "at": "13:30",
+          "action": "OFF"
+        },
+        {
+          "at": "15:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "washer_1",
+      "room": "BATHROOM",
+      "type": "WASHER",
+      "params": {
+        "power_w": 1500,
+        "cycle_minutes": 90
+      },
+      "schedule": [
+        {
+          "at": "10:00",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "ac_livingroom",
+      "room": "LIVING_ROOM",
+      "type": "AC",
+      "params": {
+        "power_w": 1200,
+        "duty_cycle": 0.55,
+        "cycle_length_minutes": 30
+      },
+      "schedule": [
+        {
+          "at": "12:00",
+          "action": "ON"
+        },
+        {
+          "at": "23:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "ac_bedroom",
+      "room": "BEDROOM",
+      "type": "AC",
+      "params": {
+        "power_w": 900,
+        "duty_cycle": 0.4,
+        "cycle_length_minutes": 30
+      },
+      "schedule": [
+        {
+          "at": "22:00",
+          "action": "ON"
+        },
+        {
+          "at": "06:00",
+          "action": "OFF"
+        }
+      ]
+    }
+  ],
+  "name": "Archetyp D: Senior samotny - Lato",
+  "description": "[LATO] Osoba 65+ na emeryturze, mieszka sama w kawalerce/M2. W domu caly dzien. TV dlugo (5-8h), czajnik czesto. Ograniczone AGD. ~24% polskich gospodarstw to gospodarstwa senioralne. Duzy udzial staly w godzinach szczytu = ryzyko dla RDN. Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
+}

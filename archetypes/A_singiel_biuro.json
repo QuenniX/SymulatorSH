@@ -1,0 +1,166 @@
+{
+  "name": "Archetyp A: Singiel-biuro (smoke 7d)",
+  "description": "Osoba 28-40 lat, mieszka sama w M2 (35-45 m2), pracuje w biurze 8-17. W domu wieczorami 18-23:30 i weekendy nieregularnie. Reprezentuje ~28% polskich gospodarstw jednoosobowych (GUS).",
+  "durationDays": 7,
+  "speedFactor": 720,
+  "retentionDays": 30,
+  "jitter": {
+    "globalTimeMinutes": 15,
+    "globalPowerPercent": 10
+  },
+  "devices": [
+    {
+      "id": "refrigerator_1",
+      "room": "KITCHEN",
+      "type": "REFRIGERATOR",
+      "params": {
+        "power_w": 150,
+        "duty_cycle": 0.35
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "router_1",
+      "room": "LIVING_ROOM",
+      "type": "ROUTER",
+      "params": {
+        "power_w": 12
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "light_kitchen",
+      "room": "KITCHEN",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 40
+      },
+      "schedule": [
+        {"at": "06:45", "action": "ON"},
+        {"at": "07:45", "action": "OFF"},
+        {"at": "18:30", "action": "ON"},
+        {"at": "20:00", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "kettle_1",
+      "room": "KITCHEN",
+      "type": "KETTLE",
+      "params": {
+        "power_w": 2000,
+        "cycle_minutes": 3
+      },
+      "schedule": [
+        {"at": "07:00", "action": "ON"},
+        {"at": "19:00", "action": "ON"}
+      ]
+    },
+    {
+      "id": "oven_1",
+      "room": "KITCHEN",
+      "type": "OVEN",
+      "params": {
+        "power_w": 2500,
+        "cycle_minutes": 30,
+        "heat_on_minutes": 4,
+        "heat_off_minutes": 4
+      },
+      "schedule": [
+        {"at": "19:15", "action": "ON"},
+        {"at": "19:45", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "light_livingroom",
+      "room": "LIVING_ROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {"at": "18:00", "action": "ON"},
+        {"at": "23:30", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "tv_1",
+      "room": "LIVING_ROOM",
+      "type": "TV",
+      "params": {
+        "power_w": 110
+      },
+      "schedule": [
+        {"at": "19:30", "action": "ON"},
+        {"at": "23:00", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "computer_1",
+      "room": "LIVING_ROOM",
+      "type": "COMPUTER",
+      "params": {
+        "idle_power_w": 80,
+        "burst_power_w": 250,
+        "burst_length_minutes": 8,
+        "burst_interval_minutes": 25
+      },
+      "schedule": [
+        {"at": "20:00", "action": "ON"},
+        {"at": "22:30", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "light_bedroom",
+      "room": "BEDROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 40
+      },
+      "schedule": [
+        {"at": "06:30", "action": "ON"},
+        {"at": "07:30", "action": "OFF"},
+        {"at": "22:30", "action": "ON"},
+        {"at": "23:30", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "light_bathroom",
+      "room": "BATHROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {"at": "06:35", "action": "ON"},
+        {"at": "07:15", "action": "OFF"},
+        {"at": "18:45", "action": "ON"},
+        {"at": "19:15", "action": "OFF"},
+        {"at": "22:30", "action": "ON"},
+        {"at": "23:00", "action": "OFF"}
+      ]
+    },
+    {
+      "id": "boiler_1",
+      "room": "BATHROOM",
+      "type": "BOILER",
+      "params": {
+        "power_w": 2000,
+        "duty_cycle": 0.10,
+        "cycle_length_minutes": 60
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "washer_1",
+      "room": "BATHROOM",
+      "type": "WASHER",
+      "params": {
+        "power_w": 1800,
+        "cycle_minutes": 75
+      },
+      "schedule": [
+        {"at": "19:30", "action": "ON"}
+      ]
+    }
+  ]
+}

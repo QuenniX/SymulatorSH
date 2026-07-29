@@ -17,6 +17,7 @@ import pl.smarthome.platform.repository.TestRepository;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -39,44 +40,101 @@ public class TestRunner {
     private final MqttPublisher mqttPublisher;
     private final ObjectMapper objectMapper;
 
-    @Transactional
+    /**
+     * Uruchamia test. UWAGA: bez @Transactional na calej metodzie!
+     * Dla dlugich testow (>5min) Neon Postgres zabija idle-in-transaction.
+     * Zamiast tego uzywamy krotkich transakcji per zmiana statusu (metody @Transactional
+     * ponizej), a executeSimulation() dziala OUTSIDE transakcji Postgres.
+     */
     public void run(UUID testId) {
-        TestEntity entity = testRepository.findById(testId).orElse(null);
-        if (entity == null) {
+        // Krok 1: pobierz config (krotka transakcja)
+        Optional<TestEntity> initial = testRepository.findById(testId);
+        if (initial.isEmpty()) {
             log.error("TestRunner: brak rekordu dla testu {}", testId);
             return;
         }
+        String configJson = initial.get().getConfigJson();
+
+        // Krok 2: oznacz jako RUNNING (krotka transakcja + retry)
+        markRunningWithRetry(testId);
 
         try {
-            entity.setStatus(TestStatus.RUNNING);
-            entity.setStartedAt(Instant.now());
-            testRepository.save(entity);
-
-            TestConfig config = objectMapper.readValue(entity.getConfigJson(), TestConfig.class);
+            TestConfig config = objectMapper.readValue(configJson, TestConfig.class);
             log.info("Test {} '{}' startuje: {} dni, speed_factor={}, urządzeń={}",
                     testId, config.getName(), config.getDurationDays(),
                     config.getSpeedFactor(), config.getDevices().size());
 
+            // Krok 3: symulacja BEZ transakcji Postgres (moze trwac dziesiatki minut)
             executeSimulation(testId, config);
 
-            entity.setStatus(TestStatus.COMPLETED);
-            entity.setFinishedAt(Instant.now());
-            testRepository.save(entity);
+            // Krok 4: oznacz jako COMPLETED (krotka transakcja + retry)
+            markCompletedWithRetry(testId);
             log.info("Test {} ZAKOŃCZONY pomyślnie", testId);
 
         } catch (Exception e) {
             log.error("Test {} zakończony błędem", testId, e);
-            entity.setStatus(TestStatus.FAILED);
-            entity.setFinishedAt(Instant.now());
-            entity.setErrorMessage(e.getClass().getSimpleName() + ": " + e.getMessage());
-            testRepository.save(entity);
+            markFailedWithRetry(testId, e);
         }
+    }
+
+    /** Retry save 3x z 2s przerwami - Neon Postgres czasem zrywa idle connections. */
+    private void markRunningWithRetry(UUID testId) {
+        retrySave(3, () -> {
+            TestEntity e = testRepository.findById(testId).orElseThrow();
+            e.setStatus(TestStatus.RUNNING);
+            e.setStartedAt(Instant.now());
+            testRepository.save(e);
+        });
+    }
+
+    private void markCompletedWithRetry(UUID testId) {
+        retrySave(5, () -> {   // wazniejszy krok - 5 prob
+            TestEntity e = testRepository.findById(testId).orElseThrow();
+            e.setStatus(TestStatus.COMPLETED);
+            e.setFinishedAt(Instant.now());
+            testRepository.save(e);
+        });
+    }
+
+    private void markFailedWithRetry(UUID testId, Exception cause) {
+        retrySave(3, () -> {
+            TestEntity e = testRepository.findById(testId).orElseThrow();
+            e.setStatus(TestStatus.FAILED);
+            e.setFinishedAt(Instant.now());
+            e.setErrorMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
+            testRepository.save(e);
+        });
+    }
+
+    private void retrySave(int maxAttempts, Runnable action) {
+        RuntimeException last = null;
+        for (int i = 1; i <= maxAttempts; i++) {
+            try {
+                action.run();
+                return;
+            } catch (RuntimeException ex) {
+                last = ex;
+                log.warn("Postgres save attempt {}/{} failed: {}", i, maxAttempts, ex.getMessage());
+                if (i < maxAttempts) {
+                    try { Thread.sleep(2000L); } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+            }
+        }
+        log.error("Postgres save FAILED po {} probach", maxAttempts, last);
     }
 
     private void executeSimulation(UUID testId, TestConfig config) throws InterruptedException {
         int speedFactor = config.getSpeedFactor();
         int durationDays = config.getDurationDays();
         int totalMinutes = durationDays * 1440;
+
+        // Emisja co N minut symulowanych (default 5) - zmniejsza wolumen writes do InfluxDB
+        int emitEveryN = config.getEmitEveryNMinutes() != null
+                ? config.getEmitEveryNMinutes() : 5;
+        if (emitEveryN < 1) emitEveryN = 1;
 
         // Krok rzeczywisty na jedną minutę symulowaną
         long stepMs = Math.max(1, 60_000L / speedFactor);
@@ -93,17 +151,32 @@ public class TestRunner {
                     globalJitterTime, globalJitterPower));
         }
 
+        log.info("Test {}: emisja pomiarow co {} min sym (totalMinutes={}, ~{} emisji)",
+                testId, emitEveryN, totalMinutes, totalMinutes / emitEveryN);
+
+        // Punkt startu w czasie rzeczywistym - wszystkie pomiary maja timestampy
+        // liczone od tego momentu jako "start_ms + minuta_sym * krok". Dzieki temu
+        // wykres z osia symulowana zawsze pokazuje dokladnie durationDays * 1440 minut,
+        // bez rozjazdu przez overhead MQTT/InfluxDB (wczesniej bral System.currentTimeMillis()
+        // co przy speedFactor=720 dawalo np. D32 zamiast D30).
+        final long testStartMs = System.currentTimeMillis();
+
         for (int minute = 0; minute < totalMinutes; minute++) {
             int minuteOfDay = minute % 1440;
 
-            // Znacznik czasu pomiaru = rzeczywisty czas zapisu.
-            // Numer minuty symulowanej zachowujemy w payload-zie - dzięki temu
-            // można odtworzyć timeline w obrębie doby symulowanej z metadanych.
-            long realTimeMs = System.currentTimeMillis();
-
-            for (DeviceSimulator sim : simulators) {
-                double power = sim.updatePower(minuteOfDay);
-                mqttPublisher.publishPower(testId, sim.getDeviceId(), power, realTimeMs);
+            // Emit pomiar tylko co N minut symulowanych (zmniejsza obciazenie InfluxDB)
+            if (minute % emitEveryN == 0) {
+                // Syntetyczny timestamp - idealny wallclock symulowany, bez overheadu petli
+                long realTimeMs = testStartMs + (long) minute * 60_000L / speedFactor;
+                for (DeviceSimulator sim : simulators) {
+                    double power = sim.updatePower(minuteOfDay);
+                    mqttPublisher.publishPower(testId, sim.getDeviceId(), power, realTimeMs);
+                }
+            } else {
+                // W minutach bez emisji nadal aktualizujemy stan symulatorow (zeby liczyly cykle)
+                for (DeviceSimulator sim : simulators) {
+                    sim.updatePower(minuteOfDay);
+                }
             }
 
             Thread.sleep(stepMs);

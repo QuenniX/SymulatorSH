@@ -1,0 +1,368 @@
+{
+  "durationDays": 30,
+  "speedFactor": 720,
+  "retentionDays": 30,
+  "jitter": {
+    "globalTimeMinutes": 20,
+    "globalPowerPercent": 15
+  },
+  "devices": [
+    {
+      "id": "refrigerator_1",
+      "room": "KITCHEN",
+      "type": "REFRIGERATOR",
+      "params": {
+        "power_w": 200,
+        "duty_cycle": 0.6
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "router_1",
+      "room": "LIVING_ROOM",
+      "type": "ROUTER",
+      "params": {
+        "power_w": 18
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "boiler_1",
+      "room": "BATHROOM",
+      "type": "BOILER",
+      "params": {
+        "power_w": 2500,
+        "duty_cycle": 0.25,
+        "cycle_length_minutes": 60
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "light_kitchen",
+      "room": "KITCHEN",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 80
+      },
+      "schedule": [
+        {
+          "at": "06:00",
+          "action": "ON"
+        },
+        {
+          "at": "08:00",
+          "action": "OFF"
+        },
+        {
+          "at": "16:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_livingroom",
+      "room": "LIVING_ROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 120
+      },
+      "schedule": [
+        {
+          "at": "06:30",
+          "action": "ON"
+        },
+        {
+          "at": "07:45",
+          "action": "OFF"
+        },
+        {
+          "at": "16:30",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bedroom",
+      "room": "BEDROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {
+          "at": "06:00",
+          "action": "ON"
+        },
+        {
+          "at": "07:00",
+          "action": "OFF"
+        },
+        {
+          "at": "22:30",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bedroom_kids",
+      "room": "BEDROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 50
+      },
+      "schedule": [
+        {
+          "at": "06:15",
+          "action": "ON"
+        },
+        {
+          "at": "07:15",
+          "action": "OFF"
+        },
+        {
+          "at": "17:00",
+          "action": "ON"
+        },
+        {
+          "at": "21:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bathroom",
+      "room": "BATHROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 80
+      },
+      "schedule": [
+        {
+          "at": "06:10",
+          "action": "ON"
+        },
+        {
+          "at": "07:50",
+          "action": "OFF"
+        },
+        {
+          "at": "19:30",
+          "action": "ON"
+        },
+        {
+          "at": "22:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_hallway",
+      "room": "HALLWAY",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 40
+      },
+      "schedule": [
+        {
+          "at": "06:00",
+          "action": "ON"
+        },
+        {
+          "at": "08:15",
+          "action": "OFF"
+        },
+        {
+          "at": "16:15",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "kettle_1",
+      "room": "KITCHEN",
+      "type": "KETTLE",
+      "params": {
+        "power_w": 2200,
+        "cycle_minutes": 4
+      },
+      "schedule": [
+        {
+          "at": "06:30",
+          "action": "ON"
+        },
+        {
+          "at": "07:30",
+          "action": "ON"
+        },
+        {
+          "at": "16:00",
+          "action": "ON"
+        },
+        {
+          "at": "19:30",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "oven_1",
+      "room": "KITCHEN",
+      "type": "OVEN",
+      "params": {
+        "power_w": 2800,
+        "cycle_minutes": 45,
+        "heat_on_minutes": 6,
+        "heat_off_minutes": 4
+      },
+      "schedule": [
+        {
+          "at": "17:30",
+          "action": "ON"
+        },
+        {
+          "at": "18:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "dishwasher_1",
+      "room": "KITCHEN",
+      "type": "DISHWASHER",
+      "params": {
+        "dry_power_w": 1500,
+        "heat_power_w": 1800,
+        "wash_power_w": 200,
+        "dry_phase_minutes": 25,
+        "heat_phase_minutes": 15,
+        "wash_phase_minutes": 60
+      },
+      "schedule": [
+        {
+          "at": "19:30",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "tv_1",
+      "room": "LIVING_ROOM",
+      "type": "TV",
+      "params": {
+        "power_w": 150
+      },
+      "schedule": [
+        {
+          "at": "07:00",
+          "action": "ON"
+        },
+        {
+          "at": "07:45",
+          "action": "OFF"
+        },
+        {
+          "at": "17:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "computer_1",
+      "room": "LIVING_ROOM",
+      "type": "COMPUTER",
+      "params": {
+        "idle_power_w": 100,
+        "burst_power_w": 300,
+        "burst_length_minutes": 10,
+        "burst_interval_minutes": 20
+      },
+      "schedule": [
+        {
+          "at": "19:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "washer_1",
+      "room": "BATHROOM",
+      "type": "WASHER",
+      "params": {
+        "power_w": 2000,
+        "cycle_minutes": 90
+      },
+      "schedule": [
+        {
+          "at": "18:00",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "ac_livingroom",
+      "room": "LIVING_ROOM",
+      "type": "AC",
+      "params": {
+        "power_w": 1200,
+        "duty_cycle": 0.55,
+        "cycle_length_minutes": 30
+      },
+      "schedule": [
+        {
+          "at": "12:00",
+          "action": "ON"
+        },
+        {
+          "at": "23:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "ac_bedroom",
+      "room": "BEDROOM",
+      "type": "AC",
+      "params": {
+        "power_w": 900,
+        "duty_cycle": 0.4,
+        "cycle_length_minutes": 30
+      },
+      "schedule": [
+        {
+          "at": "22:00",
+          "action": "ON"
+        },
+        {
+          "at": "06:00",
+          "action": "OFF"
+        }
+      ]
+    }
+  ],
+  "name": "Archetyp C: Rodzina 2+2 - Lato",
+  "description": "[LATO] Rodzina 4-osobowa: dwoje rodzicow (35-50 lat) pracujacych, dwoje dzieci szkolnych (7-15 lat). M4/dom (70-120 m2). Dwa piki dziennie: rano i wieczor. ~22% polskich gospodarstw (GUS 2022). Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
+}

@@ -43,6 +43,18 @@ public class TestConfig {
     @Builder.Default
     private Integer retentionDays = 30;
 
+    /**
+     * Co ile minut symulowanych emitowac pomiar do InfluxDB.
+     * Default 5 (zmniejsza wolumen pomiarow 5x wzgl. wczesniejszego "co minute").
+     * Kluczowe dla InfluxDB Cloud free plan - inaczej wybija write rate limit
+     * przy kilku testach naraz.
+     * Wartość 1 = pełna precyzja (dużo pomiarów), 15 = agregacja co kwadrans.
+     */
+    @Builder.Default
+    @Min(1)
+    @Max(60)
+    private Integer emitEveryNMinutes = 5;
+
     private Jitter jitter;
 
     @NotEmpty

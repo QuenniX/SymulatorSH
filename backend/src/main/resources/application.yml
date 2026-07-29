@@ -18,6 +18,15 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+  # Cache dla profili zuzycia z InfluxDB (rate limit free plan!)
+  # Caffeine daje TTL - po 5 min cache expiruje, wiec dla testu RUNNING
+  # zawsze uzyskujemy swieze dane, a dla COMPLETED cache eliminuje 99% zapytań.
+  cache:
+    type: caffeine
+    cache-names: hourlyEnergy
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
+
 server:
   port: 8080
   servlet:
@@ -40,7 +49,9 @@ logging:
 # Konfiguracja platformy
 platform:
   executor:
-    pool-size: 3
+    # 12 watkow rownolegle - symulacje sa I/O bound (MQTT + InfluxDB),
+    # wiec zwiekszenie puli daje realny 4x speedup wzgl. pool-size 3.
+    pool-size: 12
   mqtt:
     broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
     client-id-prefix: smart-home-backend

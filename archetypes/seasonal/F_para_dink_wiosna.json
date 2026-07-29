@@ -1,0 +1,264 @@
+{
+  "durationDays": 30,
+  "speedFactor": 720,
+  "retentionDays": 30,
+  "jitter": {
+    "globalTimeMinutes": 15,
+    "globalPowerPercent": 12
+  },
+  "devices": [
+    {
+      "id": "refrigerator_1",
+      "room": "KITCHEN",
+      "type": "REFRIGERATOR",
+      "params": {
+        "power_w": 170,
+        "duty_cycle": 0.4
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "router_1",
+      "room": "LIVING_ROOM",
+      "type": "ROUTER",
+      "params": {
+        "power_w": 15
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "boiler_1",
+      "room": "BATHROOM",
+      "type": "BOILER",
+      "params": {
+        "power_w": 2500,
+        "duty_cycle": 0.15,
+        "cycle_length_minutes": 60
+      },
+      "schedule": "always_on"
+    },
+    {
+      "id": "light_kitchen",
+      "room": "KITCHEN",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {
+          "at": "06:30",
+          "action": "ON"
+        },
+        {
+          "at": "07:45",
+          "action": "OFF"
+        },
+        {
+          "at": "18:00",
+          "action": "ON"
+        },
+        {
+          "at": "21:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_livingroom",
+      "room": "LIVING_ROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 100
+      },
+      "schedule": [
+        {
+          "at": "18:00",
+          "action": "ON"
+        },
+        {
+          "at": "23:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bedroom",
+      "room": "BEDROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 60
+      },
+      "schedule": [
+        {
+          "at": "06:15",
+          "action": "ON"
+        },
+        {
+          "at": "07:30",
+          "action": "OFF"
+        },
+        {
+          "at": "22:30",
+          "action": "ON"
+        },
+        {
+          "at": "23:15",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "light_bathroom",
+      "room": "BATHROOM",
+      "type": "LIGHT",
+      "params": {
+        "power_w": 80
+      },
+      "schedule": [
+        {
+          "at": "06:20",
+          "action": "ON"
+        },
+        {
+          "at": "07:45",
+          "action": "OFF"
+        },
+        {
+          "at": "18:30",
+          "action": "ON"
+        },
+        {
+          "at": "19:15",
+          "action": "OFF"
+        },
+        {
+          "at": "22:00",
+          "action": "ON"
+        },
+        {
+          "at": "23:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "kettle_1",
+      "room": "KITCHEN",
+      "type": "KETTLE",
+      "params": {
+        "power_w": 2200,
+        "cycle_minutes": 3
+      },
+      "schedule": [
+        {
+          "at": "06:45",
+          "action": "ON"
+        },
+        {
+          "at": "07:15",
+          "action": "ON"
+        },
+        {
+          "at": "19:00",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "oven_1",
+      "room": "KITCHEN",
+      "type": "OVEN",
+      "params": {
+        "power_w": 2800,
+        "cycle_minutes": 40,
+        "heat_on_minutes": 5,
+        "heat_off_minutes": 4
+      },
+      "schedule": [
+        {
+          "at": "19:00",
+          "action": "ON"
+        },
+        {
+          "at": "20:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "dishwasher_1",
+      "room": "KITCHEN",
+      "type": "DISHWASHER",
+      "params": {
+        "dry_power_w": 1500,
+        "heat_power_w": 1800,
+        "wash_power_w": 200,
+        "dry_phase_minutes": 20,
+        "heat_phase_minutes": 15,
+        "wash_phase_minutes": 55
+      },
+      "schedule": [
+        {
+          "at": "20:30",
+          "action": "ON"
+        }
+      ]
+    },
+    {
+      "id": "tv_1",
+      "room": "LIVING_ROOM",
+      "type": "TV",
+      "params": {
+        "power_w": 160
+      },
+      "schedule": [
+        {
+          "at": "19:30",
+          "action": "ON"
+        },
+        {
+          "at": "23:00",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "computer_1",
+      "room": "LIVING_ROOM",
+      "type": "COMPUTER",
+      "params": {
+        "idle_power_w": 90,
+        "burst_power_w": 300,
+        "burst_length_minutes": 10,
+        "burst_interval_minutes": 25
+      },
+      "schedule": [
+        {
+          "at": "20:00",
+          "action": "ON"
+        },
+        {
+          "at": "22:30",
+          "action": "OFF"
+        }
+      ]
+    },
+    {
+      "id": "washer_1",
+      "room": "BATHROOM",
+      "type": "WASHER",
+      "params": {
+        "power_w": 2000,
+        "cycle_minutes": 80
+      },
+      "schedule": [
+        {
+          "at": "20:00",
+          "action": "ON"
+        }
+      ]
+    }
+  ],
+  "name": "Archetyp F: Para pracujaca bez dzieci (DINK) - Wiosna",
+  "description": "[WIOSNA] Para 30-45 lat, oboje pracujacy 8-17, mieszkanie M3 (50-70 m2). 'Double Income, No Kids'. Rano i wieczorem w domu. Piekarnik i zmywarka regularnie, pralka co 3-4 dni, klimatyzacja latem. Segment rosnacy z wyzszymi dochodami. Bez ogrzewania i klimatyzacji - laczne zuzycie referencyjne."
+}

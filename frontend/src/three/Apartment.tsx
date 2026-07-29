@@ -49,11 +49,15 @@ interface DeviceIn3D {
 interface ApartmentProps {
   devices: DeviceIn3D[];
   rooms: Room[];
-  /** Aktywność każdego urządzenia (0-1) - skaluje efekty świetlne i animacje. */
-  activityByDeviceId: Map<string, number>;
+  /**
+   * Aktywność każdego urządzenia (0-1) - skaluje efekty świetlne i animacje.
+   * Opcjonalne - w widoku "podglad mieszkania" bez testu nie ma pomiarow,
+   * wiec wszystkie urzadzenia beda w stanie idle (activity=0).
+   */
+  activityByDeviceId?: Map<string, number>;
 }
 
-export default function Apartment({ devices, activityByDeviceId }: ApartmentProps) {
+export default function Apartment({ devices, activityByDeviceId = new Map() }: ApartmentProps) {
   return (
     <group>
       {/* Trawnik dookoła mieszkania - naturalny teren zamiast pustki */}
