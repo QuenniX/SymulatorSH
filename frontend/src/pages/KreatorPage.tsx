@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  createRoom,
   createTemplate,
   createTest,
+  deleteRoom,
   deleteTemplate,
   getTemplate,
   listDeviceTypes,
@@ -10,15 +12,6 @@ import {
   listTemplates,
 } from '../api';
 import type { DeviceType, Room, TemplateSummary } from '../types';
-
-/** Mapa dopuszczalnych typów urządzeń per pokój (walidacja w UI). */
-const ROOM_DEVICE_MAPPING: Record<string, string[]> = {
-  KITCHEN: ['REFRIGERATOR', 'OVEN', 'DISHWASHER', 'KETTLE', 'LIGHT'],
-  LIVING_ROOM: ['TV', 'AC', 'HEATER', 'ROUTER', 'LIGHT'],
-  BEDROOM: ['COMPUTER', 'LIGHT'],
-  BATHROOM: ['WASHER', 'BOILER', 'LIGHT'],
-  HALLWAY: ['LIGHT'],
-};
 
 /**
  * Archetyp zachowania urządzenia - decyduje jaki edytor harmonogramu pokazać.
@@ -124,10 +117,6 @@ function paramsFor(type: string): ParamField[] {
   return PARAM_SCHEMA[type] ?? [];
 }
 
-function isCombinationAllowed(roomType: string, deviceType: string): boolean {
-  return ROOM_DEVICE_MAPPING[roomType]?.includes(deviceType) ?? false;
-}
-
 function newLocalKey() {
   return Math.random().toString(36).slice(2, 10);
 }
@@ -184,6 +173,9 @@ export default function KreatorPage() {
   const [templates, setTemplates] = useState<TemplateSummary[]>([]);
   const [saveTemplateOpen, setSaveTemplateOpen] = useState(false);
   const [templateError, setTemplateError] = useState<string | null>(null);
+  // Aktualnie wybrany szablon w dropdownie - potrzebne zeby przycisk "Usun"
+  // wiedzial ktory szablon skasowac.
+  const [selectedTemplateId, setSelectedTemplateId] = useState('');
 
   async function refreshTemplates() {
     try {
@@ -444,6 +436,35 @@ export default function KreatorPage() {
     }
   }
 
+  // ---- Wlasne pomieszczenia (dodaje/usuwa uzytkownik przez kreator) ----
+
+  /** Dodaje nowe pomieszczenie do bazy i odswieza liste pokoi. */
+  async function handleAddRoom(label: string): Promise<Room | null> {
+    try {
+      const created = await createRoom(label);
+      const updated = await listRooms();
+      setRooms(updated);
+      return created;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Nie udało się dodać pomieszczenia: ${msg}`);
+      return null;
+    }
+  }
+
+  /** Usuwa wlasne pomieszczenie (systemowych nie da sie usunac - backend blokuje). */
+  async function handleDeleteRoom(type: string) {
+    if (!confirm('Usunąć to pomieszczenie? Urządzenia przypisane do niego zostaną osierocone.')) return;
+    try {
+      await deleteRoom(type);
+      const updated = await listRooms();
+      setRooms(updated);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Nie udało się usunąć pomieszczenia: ${msg}`);
+    }
+  }
+
   function labelForRoom(type: string) {
     return rooms.find((r) => r.type === type)?.label ?? type;
   }
@@ -463,25 +484,54 @@ export default function KreatorPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-100 mb-2">Kreator testu</h1>
-      <p className="text-sm text-slate-400 mb-6">
-        Wygodne dodawanie urządzeń do symulacji bez ręcznego pisania JSON-a.
-      </p>
+    // pb-24 zeby content nie chowal sie pod sticky action bar na dole
+    <div className="pb-24">
+      {/* === Header z przyciskami akcji === */}
+      <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-100 mb-1">Kreator testu</h1>
+          <p className="text-sm text-slate-400">
+            Wygodne dodawanie urządzeń bez ręcznego pisania JSON-a.
+          </p>
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded font-medium transition"
+          >
+            Anuluj
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={submitting || devices.length === 0}
+            className="px-5 py-2 bg-brand-600 hover:bg-brand-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded font-medium transition shadow-lg shadow-brand-900/50"
+          >
+            {submitting ? 'Tworzenie...' : '▶ Utwórz test'}
+          </button>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Sekcja: Szablony */}
-          <div className="bg-slate-800 border border-slate-700 rounded p-4">
+      {/* Kontent - pelna szerokosc (JSON schowany za toggle na dole) */}
+      <div className="space-y-6">
+          {/* === Sekcja: Szablony === */}
+          <div className="bg-slate-800 border-l-4 border-l-blue-500 border-r border-t border-b border-slate-700 rounded p-4">
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-2 flex-1 min-w-[240px]">
-                <label className="text-sm font-medium text-slate-300">Szablon:</label>
+                <label className="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                  <span>📋</span> Szablon:
+                </label>
                 <select
-                  onChange={(e) => handleLoadTemplate(e.target.value)}
-                  defaultValue=""
+                  value={selectedTemplateId}
+                  onChange={(e) => {
+                    const id = e.target.value;
+                    setSelectedTemplateId(id);
+                    if (id) handleLoadTemplate(id);
+                  }}
                   className="flex-1 px-3 py-2 bg-slate-950 border border-slate-700 rounded text-slate-100 text-sm focus:outline-none focus:border-brand-500"
                 >
-                  <option value="" disabled>
+                  <option value="">
                     {templates.length === 0
                       ? 'Brak zapisanych szablonów'
                       : '-- Wczytaj szablon --'}
@@ -494,6 +544,19 @@ export default function KreatorPage() {
                 </select>
               </div>
               <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!selectedTemplateId) return;
+                    await handleDeleteTemplate(selectedTemplateId);
+                    setSelectedTemplateId('');
+                  }}
+                  disabled={!selectedTemplateId}
+                  title="Usuń wybrany szablon z bazy"
+                  className="text-xs px-3 py-1.5 rounded bg-red-900 hover:bg-red-800 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-slate-100 font-medium"
+                >
+                  Usuń wybrany
+                </button>
                 <button
                   type="button"
                   onClick={() => setSaveTemplateOpen(true)}
@@ -509,9 +572,11 @@ export default function KreatorPage() {
             )}
           </div>
 
-          {/* Sekcja: Podstawowe parametry */}
-          <div className="bg-slate-800 border border-slate-700 rounded p-4">
-            <h2 className="text-sm font-medium text-slate-300 mb-3">Podstawowe parametry</h2>
+          {/* === Sekcja: Podstawowe parametry === */}
+          <div className="bg-slate-800 border-l-4 border-l-purple-500 border-r border-t border-b border-slate-700 rounded p-4">
+            <h2 className="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-2">
+              <span>⚙️</span> Podstawowe parametry
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label className="text-xs text-slate-400">
                 Nazwa testu
@@ -578,11 +643,11 @@ export default function KreatorPage() {
             </div>
           </div>
 
-          {/* Sekcja: Urządzenia */}
-          <div className="bg-slate-800 border border-slate-700 rounded p-4">
+          {/* === Sekcja: Urządzenia === */}
+          <div className="bg-slate-800 border-l-4 border-l-emerald-500 border-r border-t border-b border-slate-700 rounded p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-medium text-slate-300">
-                Urządzenia ({devices.length})
+              <h2 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                <span>💡</span> Urządzenia ({devices.length})
               </h2>
               <button
                 type="button"
@@ -625,11 +690,33 @@ export default function KreatorPage() {
             </div>
           )}
 
-          <div className="flex gap-3 justify-end">
+          {/* === Sekcja: Podglad JSON (schowany za toggle) === */}
+          <details className="bg-slate-800 border-l-4 border-l-slate-500 border-r border-t border-b border-slate-700 rounded p-4">
+            <summary className="text-sm font-semibold text-slate-200 cursor-pointer flex items-center gap-2 select-none">
+              <span>💾</span> Podgląd JSON konfiguracji
+              <span className="text-xs text-slate-500 font-normal">(kliknij żeby zobaczyć)</span>
+            </summary>
+            <pre className="mt-3 text-xs text-slate-300 bg-slate-950 p-3 rounded border border-slate-700 overflow-auto max-h-[500px] font-mono">
+              {JSON.stringify(generatedJson, null, 2)}
+            </pre>
+          </details>
+        </div>
+
+      {/* === STICKY ACTION BAR na dole ekranu === */}
+      {/* Fixed position - zawsze widoczny nad zawartoscia strony niezaleznie od scrolla */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-sm border-t border-slate-700 shadow-lg">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
+          <div className="text-xs text-slate-400">
+            {devices.length === 0
+              ? <span className="text-slate-500">Dodaj urządzenia żeby utworzyć test</span>
+              : <><strong className="text-slate-200">{devices.length}</strong> {devices.length === 1 ? 'urządzenie' : 'urządzeń'} · <strong className="text-slate-200">{durationDays}</strong> dni symulacji · <strong className="text-slate-200">×{speedFactor}</strong> przyspieszenie</>
+            }
+          </div>
+          <div className="flex gap-2">
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded font-medium transition"
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded font-medium transition text-sm"
             >
               Anuluj
             </button>
@@ -637,19 +724,10 @@ export default function KreatorPage() {
               type="button"
               onClick={handleSubmit}
               disabled={submitting || devices.length === 0}
-              className="px-6 py-2 bg-brand-600 hover:bg-brand-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded font-medium transition"
+              className="px-6 py-2 bg-brand-600 hover:bg-brand-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded font-semibold transition text-sm shadow-lg shadow-brand-900/50"
             >
-              {submitting ? 'Tworzenie...' : 'Utwórz test'}
+              {submitting ? 'Tworzenie...' : '▶ Utwórz test'}
             </button>
-          </div>
-        </div>
-
-        <div className="lg:col-span-1">
-          <div className="bg-slate-800 border border-slate-700 rounded p-4 sticky top-4">
-            <h2 className="text-sm font-medium text-slate-300 mb-3">Podgląd JSON</h2>
-            <pre className="text-xs text-slate-300 bg-slate-950 p-3 rounded border border-slate-700 overflow-auto max-h-[600px] font-mono">
-              {JSON.stringify(generatedJson, null, 2)}
-            </pre>
           </div>
         </div>
       </div>
@@ -660,6 +738,8 @@ export default function KreatorPage() {
           rooms={rooms}
           onClose={() => setModalOpen(false)}
           onAdd={addDevices}
+          onAddRoom={handleAddRoom}
+          onDeleteRoom={handleDeleteRoom}
         />
       )}
 
@@ -926,11 +1006,28 @@ interface AddDeviceModalProps {
   rooms: Room[];
   onClose: () => void;
   onAdd: (types: DeviceType[], room: Room) => void;
+  /** Dodaje wlasny pokoj przez API, zwraca nowo utworzony pokoj albo null jesli blad. */
+  onAddRoom: (label: string) => Promise<Room | null>;
+  /** Usuwa wlasny pokoj (systemowych nie da sie usunac). */
+  onDeleteRoom: (type: string) => Promise<void>;
 }
 
-function AddDeviceModal({ deviceTypes, rooms, onClose, onAdd }: AddDeviceModalProps) {
+function AddDeviceModal({ deviceTypes, rooms, onClose, onAdd, onAddRoom, onDeleteRoom }: AddDeviceModalProps) {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedTypeKeys, setSelectedTypeKeys] = useState<Set<string>>(new Set());
+  const [addingRoom, setAddingRoom] = useState(false);
+  const [newRoomLabel, setNewRoomLabel] = useState('');
+
+  async function handleAddRoomClick() {
+    const label = newRoomLabel.trim();
+    if (!label) return;
+    const created = await onAddRoom(label);
+    if (created) {
+      setSelectedRoom(created);
+      setNewRoomLabel('');
+      setAddingRoom(false);
+    }
+  }
 
   function toggleType(t: DeviceType) {
     setSelectedTypeKeys((prev) => {
@@ -944,22 +1041,17 @@ function AddDeviceModal({ deviceTypes, rooms, onClose, onAdd }: AddDeviceModalPr
     });
   }
 
-  function isTypeAllowed(t: DeviceType): boolean {
-    if (!selectedRoom) return true;
-    return isCombinationAllowed(selectedRoom.type, t.type);
-  }
-
   function handleAdd() {
     if (!selectedRoom) return;
-    const types = deviceTypes.filter((t) => selectedTypeKeys.has(t.type) && isTypeAllowed(t));
+    const types = deviceTypes.filter((t) => selectedTypeKeys.has(t.type));
     if (types.length === 0) return;
     onAdd(types, selectedRoom);
   }
 
-  // Kiedy zmieniamy pokój, wyczyść wybrane typy (bo mogą być niedozwolone)
+  // Zmiana pokoju - nie czyscimy zaznaczonych typow, bo teraz kazde urzadzenie
+  // moze byc dodane do dowolnego pokoju.
   function handleRoomChange(r: Room) {
     setSelectedRoom(r);
-    setSelectedTypeKeys(new Set());
   }
 
   return (
@@ -991,20 +1083,80 @@ function AddDeviceModal({ deviceTypes, rooms, onClose, onAdd }: AddDeviceModalPr
           <h3 className="text-sm font-medium text-slate-300 mb-2">1. Wybierz pomieszczenie</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {rooms.map((r) => (
-              <button
-                key={r.type}
-                type="button"
-                onClick={() => handleRoomChange(r)}
-                className={`px-3 py-2 rounded text-sm text-left transition border ${
-                  selectedRoom?.type === r.type
-                    ? 'bg-brand-600 border-brand-500 text-white'
-                    : 'bg-slate-950 border-slate-700 text-slate-200 hover:bg-slate-900'
-                }`}
-              >
-                <div className="font-medium">{r.label}</div>
-                <div className="text-xs opacity-70">{r.type}</div>
-              </button>
+              <div key={r.type} className="relative">
+                <button
+                  type="button"
+                  onClick={() => handleRoomChange(r)}
+                  className={`w-full px-3 py-2 rounded text-sm text-left transition border ${
+                    selectedRoom?.type === r.type
+                      ? 'bg-brand-600 border-brand-500 text-white'
+                      : 'bg-slate-950 border-slate-700 text-slate-200 hover:bg-slate-900'
+                  }`}
+                >
+                  <div className="font-medium pr-5">{r.label}</div>
+                  <div className="text-xs opacity-70">{r.type}</div>
+                </button>
+                {/* Przycisk usuwania tylko dla wlasnych pokoi (non-system) */}
+                {!r.system && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteRoom(r.type).then(() => {
+                        if (selectedRoom?.type === r.type) setSelectedRoom(null);
+                      });
+                    }}
+                    title="Usuń to pomieszczenie"
+                    className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center rounded bg-red-900/80 hover:bg-red-700 text-white text-xs leading-none"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
             ))}
+          </div>
+
+          {/* Sekcja dodawania nowego pomieszczenia */}
+          <div className="mt-3">
+            {!addingRoom ? (
+              <button
+                type="button"
+                onClick={() => setAddingRoom(true)}
+                className="text-xs px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-slate-100"
+              >
+                + Dodaj własne pomieszczenie
+              </button>
+            ) : (
+              <div className="flex gap-2 items-center">
+                <input
+                  type="text"
+                  value={newRoomLabel}
+                  onChange={(e) => setNewRoomLabel(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') { e.preventDefault(); handleAddRoomClick(); }
+                    if (e.key === 'Escape') { setAddingRoom(false); setNewRoomLabel(''); }
+                  }}
+                  placeholder="Np. Garaż, Taras, Piwnica..."
+                  autoFocus
+                  className="flex-1 px-3 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-100 text-sm focus:outline-none focus:border-brand-500"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddRoomClick}
+                  disabled={!newRoomLabel.trim()}
+                  className="text-xs px-3 py-1.5 rounded bg-brand-600 hover:bg-brand-700 disabled:bg-slate-800 disabled:text-slate-500 text-white"
+                >
+                  Dodaj
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAddingRoom(false); setNewRoomLabel(''); }}
+                  className="text-xs px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-slate-100"
+                >
+                  Anuluj
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1015,23 +1167,19 @@ function AddDeviceModal({ deviceTypes, rooms, onClose, onAdd }: AddDeviceModalPr
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {deviceTypes.map((t) => {
-              const allowed = isTypeAllowed(t);
               const checked = selectedTypeKeys.has(t.type);
               return (
                 <label
                   key={t.type}
-                  className={`px-3 py-2 rounded text-sm text-left transition border flex items-start gap-2 ${
-                    !allowed
-                      ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed opacity-50'
-                      : checked
-                      ? 'bg-brand-900 border-brand-500 text-white cursor-pointer'
-                      : 'bg-slate-950 border-slate-700 text-slate-200 hover:bg-slate-900 cursor-pointer'
+                  className={`px-3 py-2 rounded text-sm text-left transition border flex items-start gap-2 cursor-pointer ${
+                    checked
+                      ? 'bg-brand-900 border-brand-500 text-white'
+                      : 'bg-slate-950 border-slate-700 text-slate-200 hover:bg-slate-900'
                   }`}
                 >
                   <input
                     type="checkbox"
                     checked={checked}
-                    disabled={!allowed}
                     onChange={() => toggleType(t)}
                     className="mt-0.5 accent-brand-500"
                   />

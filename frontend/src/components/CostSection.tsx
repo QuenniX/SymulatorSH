@@ -570,10 +570,11 @@ function CostResultView({
         <h3 className="text-sm font-medium text-slate-200 mb-2">
           Statystyki dziennego kosztu RDN (analiza ryzyka)
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-xs">
           <StatBox label="Min (najtaniej)"       value={`${cost.rdnDailyMinPln.toFixed(2)} zł`}    color="text-green-400" />
           <StatBox label="Mediana"               value={`${cost.rdnDailyMedianPln.toFixed(2)} zł`} color="text-slate-200" />
-          <StatBox label="VaR 5% (95 percentyl)" value={`${cost.rdnVaR5PercentPln.toFixed(2)} zł`} color="text-orange-400" />
+          <StatBox label="VaR 5% (próg 5% najgorszych)" value={`${cost.rdnVaR5PercentPln.toFixed(2)} zł`} color="text-orange-400" />
+          <StatBox label="CVaR 5% (średnia w ogonie)"   value={`${cost.rdnCVaR5PercentPln.toFixed(2)} zł`} color="text-red-300" />
           <StatBox label="Max (worst case)"      value={`${cost.rdnDailyMaxPln.toFixed(2)} zł`}    color="text-red-400" />
         </div>
       </div>

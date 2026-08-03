@@ -3,6 +3,8 @@ package pl.smarthome.platform.executor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.smarthome.platform.api.dto.DeviceConfig;
@@ -39,6 +41,20 @@ public class TestRunner {
     private final SimulatorFactory simulatorFactory;
     private final MqttPublisher mqttPublisher;
     private final ObjectMapper objectMapper;
+    /**
+     * Cache Caffeine z wartosciami hourlyEnergy - trzeba go czyscic po zakonczeniu
+     * testu zeby CostSection od razu pokazywala swieze dane, a nie 5-minutowy TTL.
+     */
+    private final CacheManager cacheManager;
+
+    /** Usuwa wpis z cache "hourlyEnergy" dla danego testu. Sanity fix po zakonczeniu testu. */
+    private void evictHourlyEnergyCache(UUID testId) {
+        Cache cache = cacheManager.getCache("hourlyEnergy");
+        if (cache != null) {
+            cache.evict(testId);
+            log.debug("Wyewiktowano cache 'hourlyEnergy' dla testu {}", testId);
+        }
+    }
 
     /**
      * Uruchamia test. UWAGA: bez @Transactional na calej metodzie!
@@ -69,11 +85,16 @@ public class TestRunner {
 
             // Krok 4: oznacz jako COMPLETED (krotka transakcja + retry)
             markCompletedWithRetry(testId);
+            // Wyewiktuj cache profilu godzinowego - po zakonczeniu testu chcemy
+            // pokazac aktualne dane, nie 5-minutowy TTL sprzed konca testu.
+            evictHourlyEnergyCache(testId);
             log.info("Test {} ZAKOŃCZONY pomyślnie", testId);
 
         } catch (Exception e) {
             log.error("Test {} zakończony błędem", testId, e);
             markFailedWithRetry(testId, e);
+            // Nawet dla FAILED wyewiktuj cache - moze byc czesciowy profil w bazie
+            evictHourlyEnergyCache(testId);
         }
     }
 

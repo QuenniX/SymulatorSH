@@ -22,6 +22,28 @@ import java.util.Set;
  * <p>Wszystkie ceny G11/G12 podane sa <b>brutto</b> (z VAT 23% i pelna dystrybucja
  * zmienna). Dla RDN podajemy netto skladniki, bo cena hurtowa z PSE dochodzi osobno.</p>
  *
+ * <h3>UWAGA metodologiczna - marza sprzedawcy</h3>
+ *
+ * <p>Marza sprzedawcy energii jest zawarta w KAZDEJ z 3 taryf, ale <b>rozproszona
+ * w rozny sposob</b> w zaleznosci od zrodla danych:</p>
+ *
+ * <ul>
+ *   <li><b>G11 i G12</b> - marza jest WLICZONA w cene brutto (g11PriceBrutto, g12DayPriceBrutto,
+ *       g12NightPriceBrutto). Nie da sie jej wyodrebnic, bo bierzemy gotowa cene
+ *       detaliczna z zatwierdzonej taryfy URE / cennika PGE/Tauron/Energa. Ceny G11/G12
+ *       obejmuja: energie hurtowa, dystrybucje zmienna, akcyze, marze sprzedawcy, VAT 23%.</li>
+ *
+ *   <li><b>RDN</b> - marza jest JAWNA jako pole rdnMarginNet (0,10 zl/kWh netto).
+ *       Ceny RDN skladamy sami z hurtowej ceny z PSE (rce_pln, netto) plus dystrybucja
+ *       plus akcyza plus marza plus VAT 23%. Wartosc 10 gr/kWh netto to szacunek zgodny
+ *       z ofertami polskich sprzedawcow RDN (Enea Innovation, Fortum).</li>
+ * </ul>
+ *
+ * <p>Dla porownania G11 vs G12 vs RDN zakladamy ze marza w G11/G12 jest w podobnym
+ * zakresie (~5-10 gr/kWh) - jest to typowe dla polskiego rynku detalicznego. Bez
+ * tego zalozenia nie mozna by fair porownac 3 taryf. W rozdziale metodologicznym
+ * pracy magisterskiej ta obserwacja powinna byc wyraznie zaznaczona.</p>
+ *
  * <p>Zrodla: URE, PGE Obrot, Tauron Sprzedaz, artykuly branzowe.
  * Zeby zmienic wartosci - edytuj mape {@link #BY_YEAR} ponizej. Wszystko w jednym miejscu.</p>
  */

@@ -49,9 +49,11 @@ logging:
 # Konfiguracja platformy
 platform:
   executor:
-    # 12 watkow rownolegle - symulacje sa I/O bound (MQTT + InfluxDB),
-    # wiec zwiekszenie puli daje realny 4x speedup wzgl. pool-size 3.
-    pool-size: 12
+    # 4 watki rownolegle - free plan InfluxDB Cloud nie wyrabia z 12 rownoleglymi
+    # testami × 15 urzadzen × emisja co 5 min. HTTP write interrupted, dane tracone.
+    # 4 × 15 urz = 60 writes/sec peak, mieści sie w limitach (rate ~200/sec).
+    # Dla baseline 24 testow: 24/4 = 6 fal × ~30 min = 3h realnie zamiast 2h.
+    pool-size: 4
   mqtt:
     broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
     client-id-prefix: smart-home-backend

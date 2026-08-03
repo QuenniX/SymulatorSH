@@ -39,6 +39,8 @@ import java.util.UUID;
  * @param rdnDailyMaxPln       dzien o najwyzszym koszcie RDN (worst case)
  * @param rdnDailyMedianPln    mediana dziennego kosztu RDN
  * @param rdnVaR5PercentPln    Value at Risk 5% - koszt w 95tym percentylu (5% dni gorsze)
+ * @param rdnCVaR5PercentPln   Conditional VaR (Expected Shortfall) - srednia z 5% najgorszych dni.
+ *                             Uzupelnia VaR o odpowiedz "a JAK BARDZO jest zle w tym ogonie". CVaR >= VaR zawsze.
  * @param dailyBreakdown       koszt dzienny w 3 taryfach - do wykresu liniowego
  */
 @Builder
@@ -65,6 +67,7 @@ public record ProjectedCostBreakdown(
         BigDecimal rdnDailyMaxPln,
         BigDecimal rdnDailyMedianPln,
         BigDecimal rdnVaR5PercentPln,
+        BigDecimal rdnCVaR5PercentPln,
 
         List<DailyCostPoint> dailyBreakdown
 ) {

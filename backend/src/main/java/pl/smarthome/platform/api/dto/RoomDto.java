@@ -15,8 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomDto {
-    /** Identyfikator (np. KITCHEN, LIVING_ROOM). */
+    /** Identyfikator (np. KITCHEN, LIVING_ROOM, GARAZ). */
     private String type;
     /** Etykieta wyświetlana w UI (po polsku). */
     private String label;
+    /**
+     * True dla 5 domyslnych pokoi (KITCHEN, LIVING_ROOM, BEDROOM, BATHROOM, HALLWAY).
+     * False dla pokoi dodanych przez uzytkownika przez kreator.
+     * Frontend uzywa tego do pokazania/ukrycia przycisku "Usun".
+     */
+    private boolean system;
 }

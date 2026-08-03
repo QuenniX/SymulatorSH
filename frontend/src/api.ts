@@ -83,6 +83,15 @@ export async function listRooms(): Promise<Room[]> {
   return res.data;
 }
 
+export async function createRoom(label: string): Promise<Room> {
+  const res = await api.post<Room>('/rooms', { label });
+  return res.data;
+}
+
+export async function deleteRoom(type: string): Promise<void> {
+  await api.delete(`/rooms/${type}`);
+}
+
 export async function listTemplates(): Promise<TemplateSummary[]> {
   const res = await api.get<TemplateSummary[]>('/templates');
   return res.data;

@@ -383,21 +383,32 @@ public class CostCalculatorService {
         BigDecimal rdnMax = rdnDaily.isEmpty() ? BigDecimal.ZERO : rdnDaily.get(rdnDaily.size() - 1);
         BigDecimal rdnMedian = rdnDaily.isEmpty() ? BigDecimal.ZERO
                 : rdnDaily.get(rdnDaily.size() / 2);
-        // VaR 5% = 95ty percentyl (5% dni gorzej)
-        BigDecimal rdnVaR = rdnDaily.isEmpty() ? BigDecimal.ZERO
-                : rdnDaily.get(Math.min(rdnDaily.size() - 1, (int) (rdnDaily.size() * 0.95)));
+        // VaR 5% = 95ty percentyl (5% dni gorzej) - prog powyzej ktorego jest 5% najgorszych dni
+        int varIndex = rdnDaily.isEmpty() ? 0 : Math.min(rdnDaily.size() - 1, (int) (rdnDaily.size() * 0.95));
+        BigDecimal rdnVaR = rdnDaily.isEmpty() ? BigDecimal.ZERO : rdnDaily.get(varIndex);
+        // CVaR 5% = srednia z 5% najgorszych dni (Expected Shortfall).
+        // Bierzemy od varIndex do konca sortowanej listy i liczymy srednia.
+        // CVaR uzupelnia VaR o odpowiedz na pytanie "a JAK BARDZO jest zle w tym ogonie".
+        BigDecimal rdnCVaR;
+        if (rdnDaily.isEmpty()) {
+            rdnCVaR = BigDecimal.ZERO;
+        } else {
+            List<BigDecimal> tail = rdnDaily.subList(varIndex, rdnDaily.size());
+            BigDecimal sum = tail.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+            rdnCVaR = sum.divide(BigDecimal.valueOf(tail.size()), 2, RoundingMode.HALF_UP);
+        }
 
         Tariff cheapest = pickCheapest(totalG11, totalG12, totalRdn);
         BigDecimal savings = calculateSavingsPercent(totalG11, totalRdn);
         BigDecimal totalKwh = avgDailyKwh.multiply(BigDecimal.valueOf(daysInPeriod));
 
-        log.info("Projekcja testu {}: okres={}..{} ({} dni), sredni kWh/dzien={}, G11={} zl, G12={} zl, RDN={} zl (median={}, VaR5%={})",
+        log.info("Projekcja testu {}: okres={}..{} ({} dni), sredni kWh/dzien={}, G11={} zl, G12={} zl, RDN={} zl (median={}, VaR5%={}, CVaR5%={})",
                 testId, from, to, daysInPeriod,
                 avgDailyKwh.setScale(2, RoundingMode.HALF_UP),
                 totalG11.setScale(2, RoundingMode.HALF_UP),
                 totalG12.setScale(2, RoundingMode.HALF_UP),
                 totalRdn.setScale(2, RoundingMode.HALF_UP),
-                rdnMedian, rdnVaR);
+                rdnMedian, rdnVaR, rdnCVaR);
 
         return ProjectedCostBreakdown.builder()
                 .testId(testId)
@@ -417,6 +428,7 @@ public class CostCalculatorService {
                 .rdnDailyMaxPln(rdnMax)
                 .rdnDailyMedianPln(rdnMedian)
                 .rdnVaR5PercentPln(rdnVaR)
+                .rdnCVaR5PercentPln(rdnCVaR)
                 .dailyBreakdown(daily)
                 .build();
     }
@@ -465,6 +477,7 @@ public class CostCalculatorService {
                 .rdnVsG11SavingsPercent(BigDecimal.ZERO)
                 .rdnDailyMinPln(BigDecimal.ZERO).rdnDailyMaxPln(BigDecimal.ZERO)
                 .rdnDailyMedianPln(BigDecimal.ZERO).rdnVaR5PercentPln(BigDecimal.ZERO)
+                .rdnCVaR5PercentPln(BigDecimal.ZERO)
                 .dailyBreakdown(List.of())
                 .build();
     }

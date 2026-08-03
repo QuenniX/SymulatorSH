@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   CartesianGrid,
@@ -10,13 +10,10 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Canvas } from '@react-three/fiber';
-import { ContactShadows, Environment, OrbitControls, Sky } from '@react-three/drei';
 import { deleteTest, getMeasurements, getTest, listRooms } from '../api';
 import type { MeasurementPoint, Room, TestResponse } from '../types';
 import StatusBadge from '../components/StatusBadge';
 import CostSection from '../components/CostSection';
-import Apartment from '../three/Apartment';
 
 // Paleta kolorów dla linii na wykresie (cykliczna)
 const COLORS = [
@@ -27,7 +24,7 @@ const COLORS = [
 type TimeMode = 'sim' | 'real';
 type ChartMode = 'combined' | 'separate';
 type ScaleMode = 'linear' | 'log';
-type ViewMode = 'chart' | '3d';
+type ViewMode = 'chart' | 'pattern';
 
 interface ChartRow {
   timeKey: number;
@@ -82,27 +79,6 @@ function formatDateTime(iso: string | null): string {
   return new Date(iso).toLocaleString('pl-PL', { dateStyle: 'short', timeStyle: 'medium' });
 }
 
-/** Nominalna moc urządzenia do skalowania aktywności (0-1). */
-function nominalPowerFor(deviceId: string, config: unknown): number {
-  const cfg = config as { devices?: Array<{ id: string; type: string; params?: Record<string, number> }> } | null;
-  const dev = cfg?.devices?.find((d) => d.id === deviceId);
-  if (!dev) return 100;
-  const params = dev.params ?? {};
-  const p =
-    params.power_w ??
-    params.burst_power_w ??
-    params.heat_power_w ??
-    (params.idle_power_w ? params.idle_power_w * 2 : undefined);
-  if (typeof p === 'number' && p > 0) return p;
-  // Domyślne nominalne moce
-  const defaults: Record<string, number> = {
-    LIGHT: 60, TV: 120, HEATER: 1500, REFRIGERATOR: 150,
-    WASHER: 2000, KETTLE: 2000, OVEN: 2500, DISHWASHER: 1800,
-    AC: 1000, BOILER: 2000, COMPUTER: 200, ROUTER: 15,
-  };
-  return defaults[dev.type] ?? 200;
-}
-
 export default function TestDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const [test, setTest] = useState<TestResponse | null>(null);
@@ -116,11 +92,6 @@ export default function TestDetailsPage() {
   const [timeMode, setTimeMode] = useState<TimeMode>('sim');
   const [chartMode, setChartMode] = useState<ChartMode>('combined');
   const [scaleMode, setScaleMode] = useState<ScaleMode>('linear');
-
-  // Timeline scrubber dla widoku 3D
-  const [scrubberEnabled, setScrubberEnabled] = useState(false);
-  const [scrubberMinute, setScrubberMinute] = useState(0);
-  const [playing, setPlaying] = useState(false);
 
   const statusRef = useRef<string | null>(null);
   useEffect(() => {
@@ -154,7 +125,7 @@ export default function TestDetailsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // Pobierz listę pokoi (potrzebna dla 3D)
+  // Pobierz listę pokoi (labelki dla grupowania wykresow per pokoj)
   useEffect(() => {
     listRooms().then(setRooms).catch(() => setRooms([]));
   }, []);
@@ -182,71 +153,21 @@ export default function TestDetailsPage() {
 
   const totalKwh = points.reduce((s, p) => s + p.powerW, 0) / 60 / 1000;
 
-  // Wyliczenie mapy urządzeń do pokoi (potrzebne w 3D)
-  const devicesFor3D = useMemo(() => {
+  // Lista urzadzen z konfiguracji testu (z polem `room` do grupowania wykresow).
+  const configDevices = useMemo(() => {
     const cfg = test?.config as { devices?: Array<{ id: string; type: string; room?: string }> } | null;
     return cfg?.devices ?? [];
   }, [test?.config]);
 
-  // Maks minuta z pomiarów (dla timeline scrubber)
-  const maxSimMinute = useMemo(() => {
-    if (rows.length === 0 || timeMode !== 'sim') return 0;
-    return rows[rows.length - 1].timeKey;
-  }, [rows, timeMode]);
-
-  // Automatyczny scrubber: gdy playing - przesuwaj
-  useEffect(() => {
-    if (!playing || !scrubberEnabled) return;
-    const interval = setInterval(() => {
-      setScrubberMinute((m) => {
-        if (m >= maxSimMinute) {
-          setPlaying(false);
-          return m;
-        }
-        return m + 5;
-      });
-    }, 50);
-    return () => clearInterval(interval);
-  }, [playing, scrubberEnabled, maxSimMinute]);
-
-  /**
-   * Wyliczenie aktywności każdego urządzenia (0-1) w danej chwili.
-   * Dla trybu live (bez scrubbera) - używa najnowszego pomiaru.
-   * Dla scrubbera - używa mocy w okolicy scrubberMinute.
-   */
-  const activityByDeviceId = useMemo(() => {
-    const map = new Map<string, number>();
-    if (rows.length === 0) return map;
-
-    let referenceRow: ChartRow;
-    if (scrubberEnabled) {
-      // Znajdź row najbliższy scrubberMinute (używamy binary search)
-      let bestIdx = 0;
-      let bestDiff = Infinity;
-      for (let i = 0; i < rows.length; i++) {
-        const diff = Math.abs(rows[i].timeKey - scrubberMinute);
-        if (diff < bestDiff) {
-          bestDiff = diff;
-          bestIdx = i;
-        }
-      }
-      referenceRow = rows[bestIdx];
-    } else {
-      // Live: najnowszy row
-      referenceRow = rows[rows.length - 1];
+  // Mapa deviceId -> roomType. Wykorzystywana w ChartView trybie "Osobno" do
+  // grupowania wykresow per pokoj oraz w widoku "Wzorzec dnia".
+  const deviceRoomMap = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const d of configDevices) {
+      if (d.room) m.set(d.id, d.room);
     }
-
-    for (const dev of devices) {
-      const power = referenceRow[dev];
-      if (typeof power !== 'number' || power <= 0) {
-        map.set(dev, 0);
-        continue;
-      }
-      const nominal = nominalPowerFor(dev, test?.config);
-      map.set(dev, Math.min(1, power / nominal));
-    }
-    return map;
-  }, [rows, devices, scrubberEnabled, scrubberMinute, test?.config]);
+    return m;
+  }, [configDevices]);
 
   if (!test) {
     return (
@@ -338,7 +259,7 @@ export default function TestDetailsPage() {
         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <div className="flex items-center gap-3">
             <h2 className="text-lg font-semibold text-slate-100">
-              {viewMode === 'chart' ? 'Pobór mocy w czasie' : 'Wizualizacja 3D mieszkania'}
+              {viewMode === 'chart' ? 'Pobór mocy w czasie' : 'Wzorzec dnia - kiedy działają urządzenia'}
             </h2>
             <span className="text-xs text-slate-500">({points.length} pomiarów)</span>
           </div>
@@ -349,7 +270,7 @@ export default function TestDetailsPage() {
               value={viewMode}
               options={[
                 { value: 'chart', label: '📊 Wykres' },
-                { value: '3d', label: '🏠 Wizualizacja 3D' },
+                { value: 'pattern', label: '📅 Wzorzec dnia' },
               ]}
               onChange={(v) => setViewMode(v as ViewMode)}
             />
@@ -360,6 +281,8 @@ export default function TestDetailsPage() {
           <ChartView
             rows={rows}
             devices={devices}
+            deviceRoomMap={deviceRoomMap}
+            rooms={rooms}
             chartMode={chartMode}
             scaleMode={scaleMode}
             timeMode={timeMode}
@@ -370,18 +293,13 @@ export default function TestDetailsPage() {
             formatTooltipLabel={formatTooltipLabel}
           />
         ) : (
-          <View3D
-            devices={devicesFor3D}
+          <DailyPatternView
+            points={points}
+            devices={devices}
+            deviceRoomMap={deviceRoomMap}
             rooms={rooms}
-            activityByDeviceId={activityByDeviceId}
-            scrubberEnabled={scrubberEnabled}
-            setScrubberEnabled={setScrubberEnabled}
-            scrubberMinute={scrubberMinute}
-            setScrubberMinute={setScrubberMinute}
-            maxSimMinute={maxSimMinute}
-            playing={playing}
-            setPlaying={setPlaying}
-            testStatus={test.status}
+            startedAt={effectiveStart}
+            speedFactor={test.speedFactor}
           />
         )}
       </div>
@@ -412,6 +330,10 @@ export default function TestDetailsPage() {
 interface ChartViewProps {
   rows: ChartRow[];
   devices: string[];
+  /** Mapa deviceId -> roomType. Uzywane do grupowania wykresow w trybie "Osobno". */
+  deviceRoomMap: Map<string, string>;
+  /** Lista pokoi z labelami (np. KITCHEN -> "Kuchnia") - do wyswietlania nagłowkow sekcji. */
+  rooms: Room[];
   chartMode: ChartMode;
   scaleMode: ScaleMode;
   timeMode: TimeMode;
@@ -423,9 +345,43 @@ interface ChartViewProps {
 }
 
 function ChartView({
-  rows, devices, chartMode, scaleMode, timeMode,
+  rows, devices, deviceRoomMap, rooms, chartMode, scaleMode, timeMode,
   setChartMode, setScaleMode, setTimeMode, formatTick, formatTooltipLabel,
 }: ChartViewProps) {
+  // Grupowanie urzadzen po pokoju dla trybu "Osobno".
+  // Struktura: Map<roomType, deviceIds[]>. Urzadzenia bez przypisanego pokoju
+  // trafiaja do pseudo-grupy "" (wyswietlana jako "Bez pomieszczenia").
+  const devicesByRoom = useMemo(() => {
+    const grouped = new Map<string, string[]>();
+    for (const dev of devices) {
+      const room = deviceRoomMap.get(dev) ?? '';
+      if (!grouped.has(room)) grouped.set(room, []);
+      grouped.get(room)!.push(dev);
+    }
+    return grouped;
+  }, [devices, deviceRoomMap]);
+
+  const roomLabel = (type: string): string => {
+    if (!type) return 'Bez pomieszczenia';
+    return rooms.find((r) => r.type === type)?.label ?? type;
+  };
+
+  // Kolejnosc pokoi: najpierw wg listy `rooms` (systemowe pierwsze),
+  // potem urzadzenia bez pokoju na koncu.
+  const orderedRoomTypes = useMemo(() => {
+    const present = Array.from(devicesByRoom.keys());
+    const ordered: string[] = [];
+    for (const r of rooms) {
+      if (present.includes(r.type)) ordered.push(r.type);
+    }
+    // Dodaj pokoje ktore sa w devicesByRoom ale nie w rooms (edge case)
+    for (const t of present) {
+      if (!ordered.includes(t) && t !== '') ordered.push(t);
+    }
+    // Bez pomieszczenia na koncu
+    if (present.includes('')) ordered.push('');
+    return ordered;
+  }, [devicesByRoom, rooms]);
   return (
     <div>
       <div className="flex gap-2 flex-wrap mb-4">
@@ -473,171 +429,50 @@ function ChartView({
           </LineChart>
         </ResponsiveContainer>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {devices.map((dev, idx) => (
-            <div key={dev} className="bg-slate-950 border border-slate-700 rounded p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                <span className="text-sm text-slate-200">{dev}</span>
-              </div>
-              <ResponsiveContainer width="100%" height={180}>
-                <LineChart data={rows} margin={{ top: 5, right: 15, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                  <XAxis dataKey="timeKey" tickFormatter={formatTick} stroke="#94a3b8" fontSize={10} type="number" domain={['dataMin', 'dataMax']} />
-                  <YAxis stroke="#94a3b8" fontSize={10}
-                    label={{ value: 'W', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 10 }} />
-                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: 4, fontSize: 12 }}
-                    labelFormatter={formatTooltipLabel} formatter={(v: number) => [`${v.toFixed(0)} W`, dev]} />
-                  <Line type="monotone" dataKey={dev} stroke={COLORS[idx % COLORS.length]} strokeWidth={1.5} dot={false} connectNulls />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          ))}
+        // Tryb "Osobno" - wykresy pogrupowane wg pokojow.
+        // Kazdy pokoj = naglowek + grid wykresow urzadzen tego pokoju.
+        <div className="space-y-6">
+          {orderedRoomTypes.map((roomType) => {
+            const devsInRoom = devicesByRoom.get(roomType) ?? [];
+            return (
+              <section key={roomType || '__no_room__'}>
+                <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-2 pb-1 border-b border-slate-700">
+                  <span className="text-slate-100">{roomLabel(roomType)}</span>
+                  <span className="text-xs text-slate-500 font-normal">
+                    ({devsInRoom.length} {devsInRoom.length === 1 ? 'urządzenie' : 'urządzeń'})
+                  </span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {devsInRoom.map((dev) => {
+                    // Globalny indeks urzadzenia w liscie devices - dla spojnosci kolorow
+                    // z trybem "Razem" (to samo urzadzenie ma ten sam kolor w obu trybach).
+                    const globalIdx = devices.indexOf(dev);
+                    return (
+                      <div key={dev} className="bg-slate-950 border border-slate-700 rounded p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[globalIdx % COLORS.length] }} />
+                          <span className="text-sm text-slate-200">{dev}</span>
+                        </div>
+                        <ResponsiveContainer width="100%" height={180}>
+                          <LineChart data={rows} margin={{ top: 5, right: 15, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                            <XAxis dataKey="timeKey" tickFormatter={formatTick} stroke="#94a3b8" fontSize={10} type="number" domain={['dataMin', 'dataMax']} />
+                            <YAxis stroke="#94a3b8" fontSize={10}
+                              label={{ value: 'W', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 10 }} />
+                            <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: 4, fontSize: 12 }}
+                              labelFormatter={formatTooltipLabel} formatter={(v: number) => [`${v.toFixed(0)} W`, dev]} />
+                            <Line type="monotone" dataKey={dev} stroke={COLORS[globalIdx % COLORS.length]} strokeWidth={1.5} dot={false} connectNulls />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
         </div>
       )}
-    </div>
-  );
-}
-
-// ---- Widok 3D z timeline scrubberem ---------------------------------------
-
-interface View3DProps {
-  devices: Array<{ id: string; type: string; room?: string }>;
-  rooms: Room[];
-  activityByDeviceId: Map<string, number>;
-  scrubberEnabled: boolean;
-  setScrubberEnabled: (v: boolean) => void;
-  scrubberMinute: number;
-  setScrubberMinute: (v: number) => void;
-  maxSimMinute: number;
-  playing: boolean;
-  setPlaying: (v: boolean) => void;
-  testStatus: string;
-}
-
-function View3D({
-  devices, rooms, activityByDeviceId,
-  scrubberEnabled, setScrubberEnabled, scrubberMinute, setScrubberMinute,
-  maxSimMinute, playing, setPlaying, testStatus,
-}: View3DProps) {
-  const isComplete = testStatus === 'COMPLETED' || testStatus === 'FAILED' || testStatus === 'CANCELLED';
-  const activeCount = Array.from(activityByDeviceId.values()).filter((v) => v > 0.05).length;
-
-  return (
-    <div>
-      <div className="flex items-center gap-4 mb-3 text-xs text-slate-400 flex-wrap">
-        <span>
-          {devices.length} urządzeń w {new Set(devices.map((d) => d.room).filter(Boolean)).size} pomieszczeniach
-        </span>
-        <span>•</span>
-        <span className="text-yellow-300">{activeCount} aktywnych teraz</span>
-        <span>•</span>
-        <span className="text-slate-500">
-          {scrubberEnabled ? `Przewinięto: ${formatSimTime(scrubberMinute)}` : (testStatus === 'RUNNING' ? '🔴 Live (najnowszy stan)' : 'Stan końcowy')}
-        </span>
-      </div>
-
-      <div className="bg-slate-900 border border-slate-700 rounded overflow-hidden" style={{ height: '55vh', minHeight: 400 }}>
-        <Canvas shadows camera={{ position: [7, 8, 9], fov: 45 }} gl={{ antialias: true, toneMappingExposure: 1.1 }}>
-          <Suspense fallback={null}>
-            {/* Realistyczne niebo - słoneczne popołudnie */}
-            <Sky distance={450000} sunPosition={[10, 6, 5]} inclination={0.48} azimuth={0.25} rayleigh={2} turbidity={8} />
-
-            {/* HDR environment - naturalne odbicia i miękkie oświetlenie */}
-            <Environment preset="apartment" background={false} />
-
-            {/* Ambient + kierunkowe słońce */}
-            <ambientLight intensity={0.4} />
-            <directionalLight
-              position={[10, 15, 8]} intensity={1.5} castShadow
-              shadow-mapSize-width={2048} shadow-mapSize-height={2048}
-              shadow-camera-left={-15} shadow-camera-right={15}
-              shadow-camera-top={15} shadow-camera-bottom={-15}
-              shadow-camera-near={0.1} shadow-camera-far={50}
-              color="#fff5e6"
-            />
-            {/* Fill light z drugiej strony (imituje odbite światło z nieba) */}
-            <directionalLight position={[-5, 8, -6]} intensity={0.35} color="#a3d0ff" />
-
-            <Apartment devices={devices} rooms={rooms} activityByDeviceId={activityByDeviceId} />
-
-            {/* Cień kontaktowy pod mieszkaniem - dodaje głębi */}
-            <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={20} blur={2} far={2} />
-
-            {/* Delikatna mgła w tle chowa krawędzie sceny */}
-            <fog attach="fog" args={['#87ceeb', 25, 55]} />
-
-            {/* Ograniczony zoom - nie widać brzegów sceny */}
-            <OrbitControls
-              enableDamping dampingFactor={0.1}
-              minDistance={4} maxDistance={18}
-              maxPolarAngle={Math.PI / 2 - 0.05}
-              target={[0, 0, 0]}
-            />
-          </Suspense>
-        </Canvas>
-      </div>
-
-      {/* Timeline scrubber - tylko dla ukończonych testów */}
-      {isComplete && maxSimMinute > 0 && (
-        <div className="mt-3 bg-slate-950 border border-slate-700 rounded p-3">
-          <div className="flex items-center gap-3 mb-2">
-            <label className="text-xs text-slate-400 flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={scrubberEnabled}
-                onChange={(e) => setScrubberEnabled(e.target.checked)}
-                className="accent-brand-500"
-              />
-              Odtwarzanie z timeline
-            </label>
-            {scrubberEnabled && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setPlaying(!playing)}
-                  className="text-xs px-3 py-1 rounded bg-brand-600 hover:bg-brand-700 text-white font-medium"
-                >
-                  {playing ? '⏸ Pauza' : '▶ Odtwórz'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setScrubberMinute(0)}
-                  className="text-xs px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200"
-                >
-                  ⏮ Reset
-                </button>
-                <span className="text-xs text-slate-300 ml-auto font-mono">
-                  {formatSimTime(scrubberMinute)} / {formatSimTime(maxSimMinute)}
-                </span>
-              </>
-            )}
-          </div>
-          {scrubberEnabled && (
-            <input
-              type="range"
-              min={0}
-              max={maxSimMinute}
-              step={1}
-              value={scrubberMinute}
-              onChange={(e) => setScrubberMinute(Number(e.target.value))}
-              className="w-full accent-brand-500"
-            />
-          )}
-        </div>
-      )}
-
-      <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-slate-400">
-        <div className="bg-slate-900 border border-slate-700 rounded p-2 text-center">
-          <strong className="text-slate-200">Obracanie</strong>: lewy + drag
-        </div>
-        <div className="bg-slate-900 border border-slate-700 rounded p-2 text-center">
-          <strong className="text-slate-200">Przesuwanie</strong>: prawy + drag
-        </div>
-        <div className="bg-slate-900 border border-slate-700 rounded p-2 text-center">
-          <strong className="text-slate-200">Zoom</strong>: scroll
-        </div>
-      </div>
     </div>
   );
 }
@@ -670,6 +505,199 @@ function ToggleGroup({ label, value, options, onChange, disabled }: ToggleGroupP
             {o.label}
           </button>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================================================
+//  DailyPatternView - wzorzec dnia (Gantt 24h × urządzenia)
+// ==========================================================================
+//
+// Pokazuje "typowy dzień testu" - dla każdego urządzenia i każdej godziny doby
+// (0-23) liczymy średnią moc uśrednioną po wszystkich dniach symulacji.
+// Kolor komórki = intensywność względna (im ciemniejszy tym więcej mocy).
+//
+// Timestamp z InfluxDB to wall clock realny - trzeba go przekonwertować na
+// czas SYMULOWANY (od momentu startu testu × speedFactor) żeby "godzina 18:00"
+// oznaczała 18:00 w symulowanej dobie, nie w realu.
+
+interface DailyPatternViewProps {
+  points: MeasurementPoint[];
+  devices: string[];
+  deviceRoomMap: Map<string, string>;
+  rooms: Room[];
+  startedAt: string | null;
+  speedFactor: number;
+}
+
+function DailyPatternView({
+  points, devices, deviceRoomMap, rooms, startedAt, speedFactor,
+}: DailyPatternViewProps) {
+
+  // Zbudowanie macierzy [deviceId][hour 0-23] = suma mocy + licznik pomiarów
+  // Potem srednia = suma / licznik. Skala kolorów: 0..maxPowerPerDevice.
+  const pattern = useMemo(() => {
+    if (!startedAt || points.length === 0) {
+      return { matrix: new Map<string, number[]>(), maxPerDevice: new Map<string, number>(), counts: new Map<string, number[]>() };
+    }
+    const startMs = new Date(startedAt).getTime();
+    // Dla kazdego urzadzenia: 24 sloty na sumy mocy + 24 sloty na liczniki
+    const sums = new Map<string, number[]>();
+    const counts = new Map<string, number[]>();
+
+    for (const p of points) {
+      const realMs = new Date(p.timestamp).getTime();
+      const elapsedMs = realMs - startMs;
+      if (elapsedMs < 0) continue;
+      const simMinutes = (elapsedMs * speedFactor) / 60000;
+      const simMinuteOfDay = ((simMinutes % 1440) + 1440) % 1440;
+      const simHour = Math.floor(simMinuteOfDay / 60);
+      if (simHour < 0 || simHour > 23) continue;
+
+      if (!sums.has(p.deviceId)) {
+        sums.set(p.deviceId, new Array(24).fill(0));
+        counts.set(p.deviceId, new Array(24).fill(0));
+      }
+      sums.get(p.deviceId)![simHour] += p.powerW;
+      counts.get(p.deviceId)![simHour] += 1;
+    }
+
+    // Srednia moc per godzina + max per urzadzenie (do skali koloru)
+    const matrix = new Map<string, number[]>();
+    const maxPerDevice = new Map<string, number>();
+    for (const [dev, sumArr] of sums.entries()) {
+      const cntArr = counts.get(dev)!;
+      const avg = sumArr.map((s, i) => (cntArr[i] > 0 ? s / cntArr[i] : 0));
+      matrix.set(dev, avg);
+      maxPerDevice.set(dev, Math.max(...avg, 1)); // min 1 zeby uniknac dziel przez 0
+    }
+    return { matrix, maxPerDevice, counts };
+  }, [points, startedAt, speedFactor]);
+
+  // Grupowanie urządzeń po pokoju - dla ładniejszej sekcji per pomieszczenie
+  const devicesByRoom = useMemo(() => {
+    const grouped = new Map<string, string[]>();
+    for (const dev of devices) {
+      const room = deviceRoomMap.get(dev) ?? '';
+      if (!grouped.has(room)) grouped.set(room, []);
+      grouped.get(room)!.push(dev);
+    }
+    return grouped;
+  }, [devices, deviceRoomMap]);
+
+  const roomLabel = (type: string): string => {
+    if (!type) return 'Bez pomieszczenia';
+    return rooms.find((r) => r.type === type)?.label ?? type;
+  };
+
+  const orderedRoomTypes = useMemo(() => {
+    const present = Array.from(devicesByRoom.keys());
+    const ordered: string[] = [];
+    for (const r of rooms) {
+      if (present.includes(r.type)) ordered.push(r.type);
+    }
+    for (const t of present) {
+      if (!ordered.includes(t) && t !== '') ordered.push(t);
+    }
+    if (present.includes('')) ordered.push('');
+    return ordered;
+  }, [devicesByRoom, rooms]);
+
+  if (points.length === 0) {
+    return (
+      <div className="text-center text-slate-400 py-8 text-sm">
+        Brak pomiarów - poczekaj aż test wygeneruje dane.
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <p className="text-xs text-slate-400 mb-3">
+        Uśredniony wzorzec dobowy z całego testu. Intensywność koloru = średnia moc w danej godzinie (jasny = mało / wyłączone, ciemny = pełna moc urządzenia).
+      </p>
+
+      {/* Header z godzinami 0-23 */}
+      <div className="mb-4 overflow-x-auto">
+        <div className="min-w-[900px]">
+          <div className="grid grid-cols-[180px_1fr] gap-2 items-center mb-2 pb-2 border-b border-slate-700">
+            <div className="text-xs text-slate-500 font-semibold">Urządzenie</div>
+            <div className="grid gap-0.5 text-[10px] text-slate-500 text-center font-mono" style={{ gridTemplateColumns: 'repeat(24, minmax(0, 1fr))' }}>
+              {Array.from({ length: 24 }, (_, h) => (
+                <div key={h} className={h % 2 === 0 ? 'text-slate-400' : 'text-slate-600'}>
+                  {h.toString().padStart(2, '0')}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sekcje per pokoj */}
+          {orderedRoomTypes.map((roomType) => {
+            const devsInRoom = devicesByRoom.get(roomType) ?? [];
+            return (
+              <div key={roomType || '__no_room__'} className="mb-4">
+                <h3 className="text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
+                  {roomLabel(roomType)}
+                  <span className="ml-2 text-slate-500 font-normal normal-case">
+                    ({devsInRoom.length} {devsInRoom.length === 1 ? 'urządzenie' : 'urządzeń'})
+                  </span>
+                </h3>
+
+                <div className="space-y-1">
+                  {devsInRoom.map((dev) => {
+                    const globalIdx = devices.indexOf(dev);
+                    const baseColor = COLORS[globalIdx % COLORS.length];
+                    const avg = pattern.matrix.get(dev) ?? new Array(24).fill(0);
+                    const max = pattern.maxPerDevice.get(dev) ?? 1;
+
+                    return (
+                      <div key={dev} className="grid grid-cols-[180px_1fr] gap-2 items-center">
+                        <div className="flex items-center gap-2 text-xs text-slate-200 truncate">
+                          <span className="inline-block w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: baseColor }} />
+                          <span className="truncate" title={dev}>{dev}</span>
+                        </div>
+                        <div className="grid gap-0.5" style={{ gridTemplateColumns: 'repeat(24, minmax(0, 1fr))' }}>
+                          {avg.map((power, h) => {
+                            const intensity = max > 0 ? power / max : 0;
+                            const opacity = Math.max(0.05, Math.min(1, intensity));
+                            const bgColor = intensity < 0.02 ? '#0f172a' : baseColor;
+                            return (
+                              <div
+                                key={h}
+                                className="h-6 rounded-sm relative group cursor-help"
+                                style={{
+                                  backgroundColor: bgColor,
+                                  opacity: intensity < 0.02 ? 1 : opacity,
+                                }}
+                                title={`${dev} · godzina ${h.toString().padStart(2, '0')}:00 · średnio ${power.toFixed(1)} W (${(intensity * 100).toFixed(0)}% pełnej mocy)`}
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Legenda intensywności */}
+      <div className="mt-4 flex items-center gap-3 text-xs text-slate-400 flex-wrap">
+        <span>Intensywność:</span>
+        <div className="flex items-center gap-1">
+          <span>Wył.</span>
+          {[0.05, 0.2, 0.4, 0.6, 0.8, 1].map((op) => (
+            <div key={op} className="w-4 h-4 rounded-sm bg-slate-400" style={{ opacity: op }} />
+          ))}
+          <span>Pełna moc</span>
+        </div>
+        <span className="ml-4 text-slate-500">
+          · Godziny to <strong className="text-slate-300">czas symulowany</strong> doby (0-23), uśredniony po dniach testu
+        </span>
       </div>
     </div>
   );

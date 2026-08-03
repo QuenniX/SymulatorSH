@@ -43,6 +43,12 @@ export interface DeviceType {
 export interface Room {
   type: string;
   label: string;
+  /**
+   * True dla 5 domyslnych pokoi (KITCHEN, LIVING_ROOM, BEDROOM, BATHROOM, HALLWAY).
+   * False dla pokoi dodanych przez uzytkownika przez kreator.
+   * Decyduje czy pokazac przycisk "Usun" obok pokoju.
+   */
+  system?: boolean;
 }
 
 export interface EnergyPrice {
@@ -183,5 +189,7 @@ export interface ProjectedCostBreakdown {
   rdnDailyMaxPln: number;
   rdnDailyMedianPln: number;
   rdnVaR5PercentPln: number;
+  /** Conditional VaR - srednia z 5% najgorszych dni. CVaR >= VaR zawsze. */
+  rdnCVaR5PercentPln: number;
   dailyBreakdown: DailyCostPoint[];
 }

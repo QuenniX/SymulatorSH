@@ -61,7 +61,7 @@ export default function Layout() {
                   : 'text-slate-300 hover:bg-slate-700'
               }`}
             >
-              Batch
+              Partia testów
             </Link>
             <a
               href="http://localhost:8080/swagger-ui.html"
