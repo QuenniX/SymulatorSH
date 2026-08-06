@@ -195,6 +195,18 @@ public class TestRunner {
         // co przy speedFactor=720 dawalo np. D32 zamiast D30).
         final long testStartMs = System.currentTimeMillis();
 
+        // KLUCZOWA POPRAWKA METODOLOGICZNA (bug znaleziony przy analiza_wyniki.py):
+        // Timestampy pomiarow musza byc rozciagniete na CALE 30 dni symulowanych,
+        // nie skupione w 1h real time. Przesuwamy okres 30 dni WSTECZ od startu testu,
+        // zeby CostCalculator znalazl ceny RDN historyczne (a nie przyszle ktorych PSE nie ma).
+        //
+        // Przyklad: test startuje 2026-08-06 21:00, symuluje 30 dni.
+        //   - PRZED FIX: wszystkie pomiary maja timestamp 21:00-22:00 tego samego dnia (1h real)
+        //     -> agregacja hourly zwracala 1-2 punkty zamiast 720 -> analiza kosztow ZUPELNIE bledna
+        //   - PO FIX: pomiary rozciagniete 2026-07-07 21:00 -> 2026-08-06 21:00 (30 dni sim)
+        //     -> agregacja hourly zwraca 720 unikatowych godzin -> pelny profil dobowy
+        final long simTimeStart = testStartMs - (long) totalMinutes * 60_000L;
+
         // SSE: postep wysylamy co 25% ukonczenia zeby nie zalac klienta setkami eventow.
         // progressCheckpoints = [totalMinutes*0.25, 0.50, 0.75, 1.0]
         int nextProgressCheckpoint = 0;
@@ -211,11 +223,13 @@ public class TestRunner {
 
             // Emit pomiar tylko co N minut symulowanych (zmniejsza obciazenie InfluxDB)
             if (minute % emitEveryN == 0) {
-                // Syntetyczny timestamp - idealny wallclock symulowany, bez overheadu petli
-                long realTimeMs = testStartMs + (long) minute * 60_000L / speedFactor;
+                // Timestamp SYMULOWANY (nie real time) - rozciagniety na 30 dni wstecz od startu.
+                // Kazda symulowana minuta = jedna prawdziwa minuta w timestampie InfluxDB,
+                // dzieki czemu agregacja hourly zwraca pelny profil dobowy 720 punktow (30d x 24h).
+                long simTimeMs = simTimeStart + (long) minute * 60_000L;
                 for (DeviceSimulator sim : simulators) {
                     double power = sim.updatePower(minuteOfDay);
-                    mqttPublisher.publishPower(testId, sim.getDeviceId(), power, realTimeMs);
+                    mqttPublisher.publishPower(testId, sim.getDeviceId(), power, simTimeMs);
                 }
             } else {
                 // W minutach bez emisji nadal aktualizujemy stan symulatorow (zeby liczyly cykle)
