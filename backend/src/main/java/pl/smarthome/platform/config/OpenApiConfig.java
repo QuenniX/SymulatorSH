@@ -1,9 +1,7 @@
 package pl.smarthome.platform.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,20 +59,7 @@ public class OpenApiConfig {
                                 - Reset o północy UTC
                                 - Nagłówki `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
                                   w każdej odpowiedzi
-
-                                ## Kontekst pracy magisterskiej
-
-                                Ten interfejs powstał jako część pracy magisterskiej badającej opłacalność
-                                dynamicznych taryf energii dla polskich gospodarstw domowych. Autor:
-                                Igor Guła, WEiI Politechnika Rzeszowska, 2026.
-                                """)
-                        .contact(new Contact()
-                                .name("Igor Guła")
-                                .email("igorgula17@gmail.com")
-                                .url("https://github.com/QuenniX/SymulatorSH"))
-                        .license(new License()
-                                .name("Praca dyplomowa")
-                                .url("https://prz.edu.pl/")))
+                                """))
                 .servers(List.of(
                         new Server().url("/").description("Bieżący serwer (relatywnie do adresu przeglądarki)"),
                         new Server().url("http://localhost:8080").description("Środowisko lokalne (dev)"),
