@@ -15,6 +15,7 @@ import pl.smarthome.platform.executor.simulator.DeviceSimulator;
 import pl.smarthome.platform.executor.simulator.SimulatorFactory;
 import pl.smarthome.platform.mqtt.MqttPublisher;
 import pl.smarthome.platform.repository.TestRepository;
+import pl.smarthome.platform.service.StreamEventPublisher;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -46,6 +47,11 @@ public class TestRunner {
      * testu zeby CostSection od razu pokazywala swieze dane, a nie 5-minutowy TTL.
      */
     private final CacheManager cacheManager;
+    /**
+     * Publikuje eventy SSE do klientow subskrybujacych stream tego testu.
+     * Wywolywane przy zmianie statusu (QUEUED->RUNNING->COMPLETED) i co 25% postepu.
+     */
+    private final StreamEventPublisher streamEventPublisher;
 
     /** Usuwa wpis z cache "hourlyEnergy" dla danego testu. Sanity fix po zakonczeniu testu. */
     private void evictHourlyEnergyCache(UUID testId) {
@@ -106,6 +112,8 @@ public class TestRunner {
             e.setStartedAt(Instant.now());
             testRepository.save(e);
         });
+        // SSE: powiadom subskrybentow ze test startuje
+        streamEventPublisher.publishStatusChange(testId, TestStatus.RUNNING, "Test startuje");
     }
 
     private void markCompletedWithRetry(UUID testId) {
@@ -115,6 +123,8 @@ public class TestRunner {
             e.setFinishedAt(Instant.now());
             testRepository.save(e);
         });
+        // SSE: powiadom ze test skonczyl sie sukcesem
+        streamEventPublisher.publishStatusChange(testId, TestStatus.COMPLETED, "Test ukonczony pomyslnie");
     }
 
     private void markFailedWithRetry(UUID testId, Exception cause) {
@@ -125,6 +135,9 @@ public class TestRunner {
             e.setErrorMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
             testRepository.save(e);
         });
+        // SSE: powiadom ze test padl
+        streamEventPublisher.publishStatusChange(testId, TestStatus.FAILED,
+                "Blad: " + cause.getClass().getSimpleName() + ": " + cause.getMessage());
     }
 
     private void retrySave(int maxAttempts, Runnable action) {
@@ -182,6 +195,17 @@ public class TestRunner {
         // co przy speedFactor=720 dawalo np. D32 zamiast D30).
         final long testStartMs = System.currentTimeMillis();
 
+        // SSE: postep wysylamy co 25% ukonczenia zeby nie zalac klienta setkami eventow.
+        // progressCheckpoints = [totalMinutes*0.25, 0.50, 0.75, 1.0]
+        int nextProgressCheckpoint = 0;
+        final int[] progressPercents = {25, 50, 75, 100};
+        final int[] progressMinuteThresholds = new int[]{
+                (int) (totalMinutes * 0.25),
+                (int) (totalMinutes * 0.50),
+                (int) (totalMinutes * 0.75),
+                totalMinutes - 1
+        };
+
         for (int minute = 0; minute < totalMinutes; minute++) {
             int minuteOfDay = minute % 1440;
 
@@ -198,6 +222,17 @@ public class TestRunner {
                 for (DeviceSimulator sim : simulators) {
                     sim.updatePower(minuteOfDay);
                 }
+            }
+
+            // SSE progress event - wysylamy raz na 25% postepu (25/50/75/100)
+            if (nextProgressCheckpoint < progressPercents.length
+                    && minute >= progressMinuteThresholds[nextProgressCheckpoint]) {
+                int pct = progressPercents[nextProgressCheckpoint];
+                int simDay = (minute / 1440) + 1;
+                int simHour = (minute % 1440) / 60;
+                streamEventPublisher.publishProgress(testId, pct,
+                        String.format("Dzien %d/%d, godz %02d:00", simDay, durationDays, simHour));
+                nextProgressCheckpoint++;
             }
 
             Thread.sleep(stepMs);

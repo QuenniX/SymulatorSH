@@ -14,13 +14,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/device-types")
 @RequiredArgsConstructor
-@Tag(name = "Device Types", description = "Paleta dostępnych typów urządzeń")
+@Tag(name = "Typy urządzeń", description = "Paleta dostępnych typów urządzeń AGD/RTV z domyślnymi parametrami (12 typów: LIGHT, TV, HEATER, AC, BOILER, OVEN, DISHWASHER, KETTLE, COMPUTER, ROUTER, WASHER, REFRIGERATOR).")
 public class DeviceTypeController {
 
     private final DeviceTypeService deviceTypeService;
 
     @GetMapping
-    @Operation(summary = "Lista typów urządzeń z domyślnymi parametrami")
+    @Operation(
+            summary = "Lista dostępnych typów urządzeń AGD/RTV z domyślnymi parametrami",
+            description = "Zwraca 12 typów urządzeń: LIGHT, TV, HEATER, AC, BOILER, OVEN, DISHWASHER, "
+                    + "KETTLE, COMPUTER, ROUTER, WASHER, REFRIGERATOR. Każdy ma domyślną moc i parametry cyklu pracy. "
+                    + "Używane w kreatorze jako paleta wyboru."
+    )
     public List<DeviceTypeDto> listDeviceTypes() {
         return deviceTypeService.listDeviceTypes();
     }

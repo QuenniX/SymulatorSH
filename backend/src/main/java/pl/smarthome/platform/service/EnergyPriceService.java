@@ -66,6 +66,18 @@ public class EnergyPriceService {
                 .toList();
     }
 
+    /**
+     * Cena dla konkretnej godziny (0-23) danej doby. Uzywane przez eksport CSV/XLSX
+     * i cost calculator do liczenia kosztu per godzina.
+     *
+     * @return cena w zl/MWh albo Optional.empty() jesli brak w bazie
+     */
+    @Transactional(readOnly = true)
+    public java.util.Optional<java.math.BigDecimal> getPriceForHour(String market, LocalDate deliveryDate, int hour) {
+        return repo.findByMarketAndDeliveryDateAndHour(market, deliveryDate, hour)
+                .map(pl.smarthome.platform.domain.EnergyPriceEntity::getPricePlnMwh);
+    }
+
     /** Zakres dni - do analiz historycznych i porownan miesiac-do-miesiaca. */
     @Transactional(readOnly = true)
     public List<EnergyPriceDto> listByRange(LocalDate from, LocalDate to) {

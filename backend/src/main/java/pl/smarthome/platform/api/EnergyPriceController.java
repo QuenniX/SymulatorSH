@@ -19,13 +19,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/prices")
 @RequiredArgsConstructor
-@Tag(name = "Energy Prices", description = "Godzinowe ceny energii z RDN (Rynek Dnia Nastepnego)")
+@Tag(name = "Ceny energii", description = "Godzinowe ceny energii z RDN (Rynek Dnia Następnego). Pobierane automatycznie z API PSE codziennie o 14:00.")
 public class EnergyPriceController {
 
     private final EnergyPriceService priceService;
 
     @GetMapping
-    @Operation(summary = "24 ceny godzinowe dla wybranej doby")
+    @Operation(
+            summary = "24 ceny godzinowe RDN dla wybranej doby",
+            description = "Zwraca listę 24 rekordów `{hour, pricePlnMwh}` dla podanej daty. "
+                    + "Ceny w zł/MWh brutto z Rynku Dnia Następnego (PSE). "
+                    + "Jeśli data jeszcze niepobrana - użyj POST `/prices/fetch?date=xxx`."
+    )
     public List<EnergyPriceDto> getByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return priceService.listByDate(date);

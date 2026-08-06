@@ -42,7 +42,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/tests")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Tests", description = "Zarządzanie testami symulacyjnymi")
+@Tag(name = "Testy", description = "Tworzenie i zarządzanie pojedynczymi testami oraz partiami. Pobieranie pomiarów i wyliczonych kosztów.")
 public class TestController {
 
     private final TestService testService;
@@ -52,7 +52,16 @@ public class TestController {
     private final ObjectMapper objectMapper;
 
     @PostMapping
-    @Operation(summary = "Utwórz i zleć nowy test")
+    @Operation(
+            summary = "Utwórz i zleć nowy pojedynczy test",
+            description = """
+                Tworzy nowy test symulacyjny z podanej konfiguracji i wrzuca go do kolejki wykonania.
+                Zwraca `testId` i status `QUEUED`. Backend wykona test w tle - stan można śledzić przez
+                `GET /tests/{id}` albo real-time przez `GET /tests/{id}/stream` (SSE).
+
+                Dla wielu testów naraz użyj `POST /tests/batch` - jedna partia z wspólnym batchId.
+                """
+    )
     public ResponseEntity<CreateTestResponse> createTest(@Valid @RequestBody TestConfig config) {
         CreateTestResponse response = testService.createTest(config);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -71,6 +80,10 @@ public class TestController {
                 request.getDurationDays(),
                 request.getSpeedFactor(),
                 request.getEmitEveryNMinutes());
+
+        // Wygenerowany batchId - wszystkie testy z tego wywolania dostaja to samo.
+        // Klient moze potem uzyc GET /api/v1/batches/{batchId} zeby sledzic stan grupy.
+        UUID batchId = UUID.randomUUID();
 
         List<UUID> created = new ArrayList<>();
         List<BatchCreateResponse.BatchFailure> failures = new ArrayList<>();
@@ -96,14 +109,15 @@ public class TestController {
                     config.setName(request.getNamePrefix() + " " + config.getName());
                 }
 
-                CreateTestResponse resp = testService.createTest(config);
+                // Tworzymy z batchId - test jest oznaczony jako czesc partii
+                CreateTestResponse resp = testService.createTest(config, batchId);
                 created.add(resp.getTestId());
-                log.info("Batch: utworzono test {} z szablonu {} ('{}')",
-                        resp.getTestId(), templateId, templateName);
+                log.info("Batch {}: utworzono test {} z szablonu {} ('{}')",
+                        batchId, resp.getTestId(), templateId, templateName);
 
             } catch (Exception e) {
-                log.error("Batch: blad dla szablonu {} ('{}'): {}",
-                        templateId, templateName, e.getMessage());
+                log.error("Batch {}: blad dla szablonu {} ('{}'): {}",
+                        batchId, templateId, templateName, e.getMessage());
                 failures.add(BatchCreateResponse.BatchFailure.builder()
                         .templateId(templateId)
                         .templateName(templateName)
@@ -113,37 +127,63 @@ public class TestController {
         }
 
         BatchCreateResponse response = BatchCreateResponse.builder()
+                .batchId(batchId)
                 .requestedCount(request.getTemplateIds().size())
                 .createdCount(created.size())
                 .failedCount(failures.size())
                 .createdTestIds(created)
                 .failures(failures)
+                .streamUrl("/api/v1/batches/" + batchId + "/stream")  // dla przyszlej Fazy 5 SSE
                 .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    @Operation(summary = "Lista wszystkich testów")
-    public List<TestSummary> listTests() {
+    @Operation(
+            summary = "Lista testów (opcjonalny filtr po batchId)",
+            description = """
+                Zwraca liste testow posortowana od najnowszego.
+                Opcjonalny query param ?batchId=xxx filtruje tylko testy z konkretnej partii.
+                """
+    )
+    public List<TestSummary> listTests(
+            @RequestParam(value = "batchId", required = false) UUID batchId
+    ) {
+        if (batchId != null) {
+            return testService.listTestsByBatch(batchId);
+        }
         return testService.listTests();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Szczegóły konkretnego testu")
+    @Operation(
+            summary = "Szczegóły konkretnego testu",
+            description = "Zwraca pełny obiekt testu: metadane (nazwa, status, timestamps), konfigurację JSON, "
+                    + "błąd (jeśli FAILED). Dla pomiarów użyj `/measurements`, dla kosztów `/costs`."
+    )
     public TestResponse getTest(@PathVariable("id") UUID id) {
         return testService.getTest(id);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Anuluj aktywny test lub usuń zakończony")
+    @Operation(
+            summary = "Anuluj aktywny test lub usuń zakończony",
+            description = "Dla testu RUNNING/QUEUED - przerywa wykonanie (status CANCELLED). "
+                    + "Dla COMPLETED/FAILED - usuwa rekord z bazy. Pomiary w InfluxDB zostają (retention 30d)."
+    )
     public ResponseEntity<Void> deleteTest(@PathVariable("id") UUID id) {
         testService.deleteTest(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/measurements")
-    @Operation(summary = "Pomiary mocy dla testuz InfluxDB")
+    @Operation(
+            summary = "Surowe pomiary mocy dla testu (z InfluxDB)",
+            description = "Zwraca wszystkie punkty pomiarowe: `{timestamp, deviceId, powerW}`. "
+                    + "Dla testu 30-dniowego to ~130 tys. punktów - warto filtrować przez `?deviceId=xxx`. "
+                    + "Dla zagregowanych kosztów użyj `/costs`."
+    )
     public MeasurementsResponse getMeasurements(
             @PathVariable("id") UUID id,
             @RequestParam(value = "device_id", required = false) String deviceFilter) {

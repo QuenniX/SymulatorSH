@@ -17,13 +17,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/rooms")
 @RequiredArgsConstructor
-@Tag(name = "Rooms", description = "Paleta pomieszczen mieszkania - 5 systemowych + wlasne uzytkownika")
+@Tag(name = "Pomieszczenia", description = "Paleta pomieszczeń mieszkania - 5 systemowych (Kuchnia, Salon, Sypialnia, Łazienka, Przedpokój) + własne dodane przez użytkownika (np. Garaż, Taras).")
 public class RoomController {
 
     private final RoomService roomService;
 
     @GetMapping
-    @Operation(summary = "Lista wszystkich pomieszczen (systemowe + wlasne)")
+    @Operation(
+            summary = "Lista wszystkich pomieszczeń (systemowe + własne)",
+            description = "Zwraca 5 pomieszczeń systemowych (KITCHEN, LIVING_ROOM, BEDROOM, BATHROOM, HALLWAY) "
+                    + "plus wszystkie własne dodane przez użytkowników. Pole `system: true` oznacza że pomieszczenia "
+                    + "nie da się usunąć (systemowe są fundamentem)."
+    )
     public List<RoomDto> listRooms() {
         return roomService.listRooms();
     }

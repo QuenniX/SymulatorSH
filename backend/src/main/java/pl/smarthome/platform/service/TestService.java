@@ -35,6 +35,16 @@ public class TestService {
 
     @Transactional
     public CreateTestResponse createTest(@Valid TestConfig config) {
+        return createTest(config, null);
+    }
+
+    /**
+     * Tworzy test opcjonalnie przypisany do partii (batchId).
+     * Jesli batchId != null, test dostaje przypisanie do grupy - mozna wtedy
+     * zapytać o stan calej partii przez GET /api/v1/batches/{batchId}.
+     */
+    @Transactional
+    public CreateTestResponse createTest(@Valid TestConfig config, UUID batchId) {
         try {
             UUID id = UUID.randomUUID();
             String json = objectMapper.writeValueAsString(config);
@@ -49,6 +59,7 @@ public class TestService {
             entity.setSpeedFactor(config.getSpeedFactor());
             entity.setOwnerId("default");
             entity.setCreatedAt(Instant.now());
+            entity.setBatchId(batchId);  // null dla pojedynczych, UUID dla testow w partii
 
             testRepository.save(entity);
             log.info("Utworzono test {} - '{}' ({} dni, x{})",
@@ -76,6 +87,13 @@ public class TestService {
 
     public List<TestSummary> listTests() {
         return testRepository.findAllByOrderByCreatedAtDesc().stream()
+                .map(this::toSummary)
+                .toList();
+    }
+
+    /** Lista testow nalezacych do konkretnej partii (filtr batchId). */
+    public List<TestSummary> listTestsByBatch(UUID batchId) {
+        return testRepository.findByBatchIdOrderByCreatedAtAsc(batchId).stream()
                 .map(this::toSummary)
                 .toList();
     }

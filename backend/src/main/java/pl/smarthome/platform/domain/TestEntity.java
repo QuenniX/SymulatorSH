@@ -60,4 +60,12 @@ public class TestEntity {
 
     @Column(name = "error_message")
     private String errorMessage;
+
+    /**
+     * UUID partii testow uruchomionych razem przez POST /api/v1/tests/batch.
+     * NULL dla pojedynczych testow utworzonych przez POST /api/v1/tests.
+     * Sluzy do grupowego sledzenia stanu (GET /batches/{id}) i anulowania (DELETE /batches/{id}).
+     */
+    @Column(name = "batch_id")
+    private UUID batchId;
 }

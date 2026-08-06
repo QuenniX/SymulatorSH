@@ -14,4 +14,7 @@ public interface TestRepository extends JpaRepository<TestEntity, UUID> {
     List<TestEntity> findAllByOrderByCreatedAtDesc();
 
     List<TestEntity> findByStatusOrderByCreatedAtDesc(TestStatus status);
+
+    /** Wszystkie testy nalezace do jednej partii (uruchomionej przez POST /tests/batch). */
+    List<TestEntity> findByBatchIdOrderByCreatedAtAsc(UUID batchId);
 }
