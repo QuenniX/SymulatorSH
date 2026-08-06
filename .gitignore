@@ -69,3 +69,15 @@ influx-data/
 *.tmp
 *.bak
 *.swp
+
+# =========================
+# API keys wygenerowane przez example.py (nigdy nie commitowac)
+# =========================
+examples/api_key.txt
+api_key.txt
+
+# =========================
+# Pliki testowe eksportu (smieci z rozwoju)
+# =========================
+test.csv
+test.xlsx
