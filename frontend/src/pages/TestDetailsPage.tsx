@@ -532,27 +532,27 @@ interface DailyPatternViewProps {
 }
 
 function DailyPatternView({
-  points, devices, deviceRoomMap, rooms, startedAt, speedFactor,
+  points, devices, deviceRoomMap, rooms,
 }: DailyPatternViewProps) {
 
   // Zbudowanie macierzy [deviceId][hour 0-23] = suma mocy + licznik pomiarów
   // Potem srednia = suma / licznik. Skala kolorów: 0..maxPowerPerDevice.
+  //
+  // Po fixie TestRunner (bug timestampow) pomiary w Influx maja timestampy juz
+  // rozciagniete na cale 30 dni symulacji (nie real time zbite w 1h). Dzieki
+  // temu wystarczy wyciagnac godzine doby bezposrednio z timestampa - bez
+  // konwersji przez elapsed*speedFactor. Uzycie startedAt i speedFactor
+  // usuniete, bo wszystko juz jest w czasie symulowanym.
   const pattern = useMemo(() => {
-    if (!startedAt || points.length === 0) {
+    if (points.length === 0) {
       return { matrix: new Map<string, number[]>(), maxPerDevice: new Map<string, number>(), counts: new Map<string, number[]>() };
     }
-    const startMs = new Date(startedAt).getTime();
-    // Dla kazdego urzadzenia: 24 sloty na sumy mocy + 24 sloty na liczniki
     const sums = new Map<string, number[]>();
     const counts = new Map<string, number[]>();
 
     for (const p of points) {
-      const realMs = new Date(p.timestamp).getTime();
-      const elapsedMs = realMs - startMs;
-      if (elapsedMs < 0) continue;
-      const simMinutes = (elapsedMs * speedFactor) / 60000;
-      const simMinuteOfDay = ((simMinutes % 1440) + 1440) % 1440;
-      const simHour = Math.floor(simMinuteOfDay / 60);
+      const ts = new Date(p.timestamp);
+      const simHour = ts.getHours();
       if (simHour < 0 || simHour > 23) continue;
 
       if (!sums.has(p.deviceId)) {
@@ -573,7 +573,7 @@ function DailyPatternView({
       maxPerDevice.set(dev, Math.max(...avg, 1)); // min 1 zeby uniknac dziel przez 0
     }
     return { matrix, maxPerDevice, counts };
-  }, [points, startedAt, speedFactor]);
+  }, [points]);
 
   // Grupowanie urządzeń po pokoju - dla ładniejszej sekcji per pomieszczenie
   const devicesByRoom = useMemo(() => {
