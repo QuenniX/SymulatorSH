@@ -240,12 +240,42 @@ public class TestRunner {
         // zamiast z wieczornego szczytu. Przy roznych momentach uruchomienia partii
         // KAZDY test dostawal inne, losowe przesuniecie.
         // Fix: uciac (testStartMs - 30d) do polnocy w Europe/Warsaw.
+        //
+        // POPRAWKA #3 (retencja InfluxDB): ucinanie do polnocy przesuwa poczatek okna
+        // WSTECZ o maksymalnie 24 h. Przy 30 dniach symulacji i 30-dniowej retencji
+        // bucketu (plan darmowy InfluxDB Cloud) najstarsze punkty ladowaly wtedy PRZED
+        // granica retencji i byly odrzucane przez serwer:
+        //   HTTP 400: "observed timestamp ... is outside of the retention period,
+        //              minimum acceptable timestamp is ..."
+        // Objaw: przez pierwsze ~1 min czasu rzeczywistego test pokazywal 0 pomiarow
+        // i 0,00 kWh, a nastepnie "nagle ruszal" - bo zegar symulowany przekraczal
+        // granice retencji. Trwale gubilo to ~11 h pierwszej doby (ok. 1,5% danych).
+        //
+        // Rozwiazanie: zaokraglamy w GORE (polnoc + 1 doba) zamiast w dol. Okno symulacji
+        // to wtedy [testStart - 30d + margines, testStart + margines], gdzie
+        // margines = 24 h - pora dnia startu testu, czyli zawsze > 0. Koniec okna wypada
+        // do 24 h w przyszlosci - to jest bezpieczne, bo zapytania Flux maja stop: 365d,
+        // a ceny RDN do rozdzialu wynikow i tak pochodza z osobnych okien historycznych.
         final long simTimeStartRaw = testStartMs - (long) totalMinutes * 60_000L;
         final long simTimeStart = Instant.ofEpochMilli(simTimeStartRaw)
                 .atZone(ZoneId.of("Europe/Warsaw"))
                 .truncatedTo(ChronoUnit.DAYS)
+                .plusDays(1)
                 .toInstant()
                 .toEpochMilli();
+
+        long marginMinutes = (simTimeStart - simTimeStartRaw) / 60_000L;
+        log.info("Test {}: okno symulowane {} -> {} (margines nad granica retencji: {} h {} min)",
+                testId,
+                Instant.ofEpochMilli(simTimeStart).atZone(ZoneId.of("Europe/Warsaw")),
+                Instant.ofEpochMilli(simTimeStart + (long) totalMinutes * 60_000L)
+                        .atZone(ZoneId.of("Europe/Warsaw")),
+                marginMinutes / 60, marginMinutes % 60);
+        if (marginMinutes < 60) {
+            log.warn("Test {}: margines nad granica retencji InfluxDB to tylko {} min. "
+                    + "Przy 30-dniowej retencji czesc pomiarow pierwszej doby moze zostac "
+                    + "odrzucona (HTTP 400 'outside of the retention period').", testId, marginMinutes);
+        }
 
         // SSE: postep wysylamy co 25% ukonczenia zeby nie zalac klienta setkami eventow.
         // progressCheckpoints = [totalMinutes*0.25, 0.50, 0.75, 1.0]

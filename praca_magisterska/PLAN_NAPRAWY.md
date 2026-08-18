@@ -58,6 +58,7 @@ Wszystko poniżej jest w working tree, niezacommitowane.
 | B6 | Dwie ciche ścieżki utraty pomiarów bez licznika (MQTT `return` przy rozłączeniu, async WriteApi bez listenera) | `MqttPublisher`, `InfluxWriter`, `TestRunner`, `analiza_wyniki.py` | `[x]` |
 | B7 | Cap jesienny obniżał bojler profilu C poniżej wartości bazowej (0,25 → 0,22) | `generate_seasonal:144` | `[x]` |
 | B8 | Komputer profilu E: burst 25 min ≥ odstęp 15 min → 78 % duty, ~377 W zamiast ~150 W | `base/E_studenci.json` | `[x]` |
+| B5b | **Retencja InfluxDB**: ucinanie `simTimeStart` do północy cofało okno o ≤24 h, więc przy 30 dniach symulacji i 30-dniowej retencji bucketu najstarsze punkty były odrzucane (HTTP 400 „outside of the retention period"). Potwierdzone w logach 18.08: odrzucone 10 h 55 min pierwszej doby (~1,5 % danych), test przez ~55 s realnych pokazywał 0 kWh | `TestRunner:257-278` | `[x]` zaokrąglanie w GÓRĘ (`plusDays(1)`) + log okna i marginesu |
 | A.3a | Faza cyklu z `minuteOfDay %` resetowała się o północy → zamrożone tętnienie godzinowe ±35 %, nieusuwalne przez uśrednianie po 30 dobach | `BaseSimulator.nextCycleTick()` + 3 symulatory | `[x]` |
 | A.3b | Przy cyklu 37 duty 0,10 i 0,12 dawały to samo `4/37` — profile A i B/E miały identyczny bojler | cykl 37 → **43** | `[x]` |
 | — | Angielskie nazwy profili w wyjściach: „Remote worker", „Para DINK", „Double Income, No Kids" | `base/B`, `base/F`, `analiza_wyniki.py` | `[x]` → „Pracownik zdalny", „Para bez dzieci" |
@@ -82,6 +83,8 @@ Wszystko poniżej jest w working tree, niezacommitowane.
 - [ ] **Zmienić `BATCH_NAME_PREFIX` w `analiza_wyniki.py:67`** na prefiks nowej partii.
       Obecnie `[Partia 2026-08-06T18:57]` — bez zmiany skrypt znajdzie 0 testów.
 - [ ] Partia 24 testów z UI (30 dni, ×720, emit=5), ~5–6 h maszynowe
+- [ ] **Kontrola na starcie każdego testu:** w logu ma być linia
+      `okno symulowane ... (margines nad granica retencji: X h Y min)`. Margines < 1 h → WARN.
 - [ ] **Kontrola po partii:** w logach backendu mają być dwie linie na test —
       `„potok pomiarowy czysty"` oraz `„zagregowano 720 godzin"`. Cokolwiek innego = rerun.
 - [ ] `python archetypes/oczekiwane_kwh.py` → porównać z `K_G11 / 33` z nowej tabeli.
