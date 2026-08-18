@@ -83,3 +83,9 @@ examples/eksport_*.xlsx
 # =========================
 test.csv
 test.xlsx
+
+# =========================
+# Python (skrypty analizy i generator profili)
+# =========================
+__pycache__/
+*.pyc

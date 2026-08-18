@@ -23,7 +23,7 @@ public class RefrigeratorSimulator extends BaseSimulator {
         super(config, randomSeed, globalJitterTimeMinutes, globalJitterPowerPercent);
         this.powerW = getDoubleParam("power_w", 150);
         this.dutyCycle = Math.max(0.05, Math.min(0.95, getDoubleParam("duty_cycle", 0.4)));
-        this.cycleLengthMinutes = getIntParam("cycle_length_minutes", 37);
+        this.cycleLengthMinutes = getIntParam("cycle_length_minutes", 43);
         this.onPortionMinutes = (int) Math.round(cycleLengthMinutes * dutyCycle);
     }
 
@@ -34,10 +34,11 @@ public class RefrigeratorSimulator extends BaseSimulator {
 
     @Override
     public double updatePower(int simulatedMinuteOfDay) {
+        long tick = nextCycleTick();
         if (isAlwaysOff()) {
             return 0;
         }
-        int positionInCycle = simulatedMinuteOfDay % cycleLengthMinutes;
+        int positionInCycle = (int) (tick % cycleLengthMinutes);
         if (positionInCycle < onPortionMinutes) {
             return applyPowerJitter(powerW);
         }

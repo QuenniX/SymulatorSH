@@ -32,8 +32,8 @@
       "type": "BOILER",
       "params": {
         "power_w": 2000,
-        "duty_cycle": 0.16999999999999998,
-        "cycle_length_minutes": 37
+        "duty_cycle": 0.17,
+        "cycle_length_minutes": 43
       },
       "schedule": "always_on"
     },
@@ -313,6 +313,6 @@
       ]
     }
   ],
-  "name": "Profil B: Remote worker - Jesien",
+  "name": "Profil B: Pracownik zdalny - Jesien",
   "description": "[JESIEN] Osoba 30-45 lat, pracuje z domu 8-17. Cały dzień w mieszkaniu M2/M3 (45-60 m2). Komputer, ekspres do kawy, więcej gotowania w ciągu dnia. Szybko rosnąca grupa po 2020. Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 }

@@ -13,6 +13,7 @@ import pl.smarthome.platform.domain.TestEntity;
 import pl.smarthome.platform.domain.TestStatus;
 import pl.smarthome.platform.executor.simulator.DeviceSimulator;
 import pl.smarthome.platform.executor.simulator.SimulatorFactory;
+import pl.smarthome.platform.influx.InfluxWriter;
 import pl.smarthome.platform.mqtt.MqttPublisher;
 import pl.smarthome.platform.repository.TestRepository;
 import pl.smarthome.platform.service.StreamEventPublisher;
@@ -43,6 +44,8 @@ public class TestRunner {
     private final TestRepository testRepository;
     private final SimulatorFactory simulatorFactory;
     private final MqttPublisher mqttPublisher;
+    /** Potrzebny zeby wymusic flush bufora zapisu po zakonczeniu symulacji. */
+    private final InfluxWriter influxWriter;
     private final ObjectMapper objectMapper;
     /**
      * Cache Caffeine z wartosciami hourlyEnergy - trzeba go czyscic po zakonczeniu
@@ -89,7 +92,26 @@ public class TestRunner {
                     config.getSpeedFactor(), config.getDevices().size());
 
             // Krok 3: symulacja BEZ transakcji Postgres (moze trwac dziesiatki minut)
+            long droppedBefore = mqttPublisher.getDroppedPublishes();
+            long errorsBefore = influxWriter.getWriteErrors();
             executeSimulation(testId, config);
+
+            // Krok 3.5: domkniecie potoku pomiarowego.
+            // MQTT->InfluxWriter jest asynchroniczne i batchowane, wiec bez odczekania
+            // i flushu ostatnie kilkaset punktow moze jeszcze siedziec w buforze, gdy
+            // klient odpyta /costs. Raportujemy tez straty - inaczej niekompletny test
+            // wyglada dokladnie tak samo jak kompletny.
+            Thread.sleep(2000L);
+            influxWriter.flush();
+            long dropped = mqttPublisher.getDroppedPublishes() - droppedBefore;
+            long writeErrors = influxWriter.getWriteErrors() - errorsBefore;
+            if (dropped > 0 || writeErrors > 0) {
+                log.error("Test {}: POTOK POMIAROWY NIEKOMPLETNY - porzucone publikacje MQTT: {}, "
+                        + "bledy zapisu InfluxDB: {}. Wynik tego testu jest niewiarygodny.",
+                        testId, dropped, writeErrors);
+            } else {
+                log.info("Test {}: potok pomiarowy czysty (0 porzuconych publikacji, 0 bledow zapisu)", testId);
+            }
 
             // Krok 4: oznacz jako COMPLETED (krotka transakcja + retry)
             markCompletedWithRetry(testId);

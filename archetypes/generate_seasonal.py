@@ -23,6 +23,127 @@ SCRIPT_DIR = Path(__file__).parent
 BASE_DIR = SCRIPT_DIR / "base"
 OUT_DIR = SCRIPT_DIR / "seasonal"
 
+# ---- Helpery czasowe ----
+
+# Urzadzenia STANOWE: schedule buduje TreeMap stan-w-czasie (ON trwa az do OFF).
+# Tylko one wymagaja naprzemiennosci ON/OFF i tylko u nich para przechodzaca
+# przez polnoc jest gubiona przez `stateTimeline.put(0, false)`.
+STATE_DEVICES = {"LIGHT", "TV", "HEATER", "ROUTER", "AC", "COMPUTER"}
+
+# Urzadzenia ZDARZENIOWE: ON startuje cykl o stalej dlugosci, ktory konczy sie sam.
+# Dwa ON pod rzad (np. czajnik 07:00 i 19:00) sa tu poprawne.
+EVENT_DEVICES = {"KETTLE", "WASHER", "DISHWASHER", "OVEN"}
+
+
+def _to_min(t: str) -> int:
+    h, m = map(int, t.split(":"))
+    return h * 60 + m
+
+
+def _to_str(m: int) -> str:
+    return f"{m // 60:02d}:{m % 60:02d}"
+
+
+def shift_evening_on(config: dict, delta_min: int, min_gap: int = 15) -> None:
+    """
+    Przesuwa wieczorne zdarzenia ON swiatel o delta_min, NIE przekraczajac sparowanego OFF.
+
+    BUG, ktory to naprawia: poprzednia wersja przesuwala wylacznie zdarzenia ON i nie
+    patrzyla na OFF. Para (ON 18:45 / OFF 19:15) po przesunieciu o +1h stawala sie
+    (ON 19:45 / OFF 19:15) - OFF PRZED ON. LightSimulator buduje TreeMap po minucie,
+    wiec swiatlo zapalalo sie o 19:45 i nie gaslo do polnocy (3h15 zamiast 30 min),
+    czyli dokladnie w wieczornym szczycie cen RDN. Para (ON 22:30 / OFF 23:30) dawala
+    (ON 23:30 / OFF 23:30) - ta sama minuta, `put` nadpisywal ON przez OFF i wieczorne
+    swiatlo nie zapalalo sie w ogole.
+    """
+    for d in config["devices"]:
+        if d.get("type") != "LIGHT" or not isinstance(d.get("schedule"), list):
+            continue
+        sched = d["schedule"]
+        for i, ev in enumerate(sched):
+            if ev.get("action") != "ON":
+                continue
+            cur = _to_min(ev["at"])
+            if cur < 14 * 60:          # tylko wieczorne
+                continue
+            new = max(0, min(23 * 60 + 59, cur + delta_min))
+
+            if delta_min > 0:
+                # nie wolno wejsc na (ani za) najblizszy pozniejszy OFF tej samej doby
+                nxt = next((_to_min(e["at"]) for e in sched[i + 1:]
+                            if e.get("action") == "OFF" and _to_min(e["at"]) > cur), None)
+                if nxt is not None:
+                    new = min(new, nxt - min_gap)
+                new = max(new, cur)     # clamp nie moze cofnac przesuniecia w tyl
+            else:
+                # nie wolno cofnac sie przed najblizszy wczesniejszy OFF
+                prv = max((_to_min(e["at"]) for e in sched[:i]
+                           if e.get("action") == "OFF" and _to_min(e["at"]) < cur), default=None)
+                if prv is not None:
+                    new = max(new, prv + min_gap)
+                new = min(new, cur)
+            ev["at"] = _to_str(new)
+
+
+def split_overnight(config: dict) -> None:
+    """
+    Rozbija pary ON->OFF przechodzace przez polnoc na dwa odcinki tej samej doby.
+
+    BUG, ktory to naprawia: LightSimulator/AcSimulator/ComputerSimulator buduja
+    `stateTimeline` na JEDNA dobe i zaczynaja od `put(0, false)`. Para
+    (ON 22:00 -> OFF 06:00) dawala mape {0:false, 360:false, 1320:true}, czyli
+    urzadzenie dzialalo 2h z 8h - odcinek 00:00-06:00 przepadal. Dotyczylo to
+    nocnej klimatyzacji we WSZYSTKICH profilach letnich oraz calego profilu E
+    (studenci: computer 20->02, tv 19->02, salon 17->02, sypialnia 23->02:30),
+    czyli ~1,7 kWh/dobe znikajace w calosci ze strefy nocnej G12.
+
+    Pliki w base/ zapisuja INTENCJE w naturalnej notacji (22:00 -> 06:00);
+    ta funkcja tlumaczy ja na postac wykonywalna przez symulator:
+    [00:00 ON, 06:00 OFF, 22:00 ON]. Jitter na zdarzeniu o 00:00 jest zerowany,
+    zeby nie przesunelo sie w glab doby.
+    """
+    for d in config["devices"]:
+        sched = d.get("schedule")
+        if not isinstance(sched, list) or not sched:
+            continue
+        if d.get("type") not in STATE_DEVICES:
+            # Zdarzeniowe: kolejnosc w liscie nie ma znaczenia (userActions to TreeMap
+            # po minucie), ale porzadkujemy dla czytelnosci plikow i walidacji.
+            d["schedule"] = sorted(sched, key=lambda e: _to_min(e["at"]))
+            continue
+        crosses = False
+        last_on = None
+        for ev in sched:
+            act = ev.get("action", "ON").upper()
+            t = _to_min(ev["at"])
+            if act == "ON":
+                last_on = t
+            elif act == "OFF" and last_on is not None and t < last_on:
+                crosses = True
+        if crosses and not any(_to_min(e["at"]) == 0 for e in sched):
+            sched.insert(0, {"at": "00:00", "action": "ON", "jitter_time_minutes": 0})
+        d["schedule"] = sorted(sched, key=lambda e: _to_min(e["at"]))
+
+
+def validate_schedules(config: dict, label: str) -> None:
+    """Twarda walidacja: rosnace czasy, brak duplikatow minut, naprzemienne ON/OFF."""
+    for d in config["devices"]:
+        sched = d.get("schedule")
+        if not isinstance(sched, list) or not sched:
+            continue
+        times = [_to_min(e["at"]) for e in sched]
+        if d.get("type") in STATE_DEVICES and times != sorted(times):
+            raise AssertionError(f"{label}/{d['id']}: zdarzenia nieposortowane: {sched}")
+        if len(set(times)) != len(times):
+            raise AssertionError(f"{label}/{d['id']}: dwa zdarzenia w tej samej minucie: {sched}")
+        # Naprzemiennosc ON/OFF ma sens tylko dla urzadzen stanowych.
+        if d.get("type") in STATE_DEVICES:
+            acts = [e.get("action", "ON").upper() for e in sched]
+            for a, b in zip(acts, acts[1:]):
+                if a == b:
+                    raise AssertionError(f"{label}/{d['id']}: dwa {a} pod rzad: {sched}")
+
+
 # ---- Definicja modyfikatorow sezonowych ----
 
 def apply_winter(config: dict) -> dict:
@@ -32,10 +153,11 @@ def apply_winter(config: dict) -> dict:
     config["profile_description"] = "[ZIMA] " + config["profile_description"] + \
         " Dodano: grzejnik elektryczny 2000W rano (6-8) i wieczorem (17-23), zwiekszony bojler, dluzsze oswietlenie o zmierzchu."
 
-    # Zwieksz bojler duty (zimna woda)
+    # Zwieksz bojler duty (zimniejsza woda wodociagowa)
     for d in config["devices"]:
         if d["type"] == "BOILER":
-            d["params"]["duty_cycle"] = min(0.35, d["params"].get("duty_cycle", 0.10) + 0.15)
+            base = d["params"].get("duty_cycle", 0.10)
+            d["params"]["duty_cycle"] = round(max(base, min(0.35, base + 0.15)), 4)
 
     # Dodaj HEATER w salonie (wieczorami) i sypialni (rano+wieczor)
     config["devices"].append({
@@ -61,16 +183,9 @@ def apply_winter(config: dict) -> dict:
         ]
     })
 
-    # Przesun swiatla o 30 min wczesniej (ciemniej)
-    for d in config["devices"]:
-        if d["type"] == "LIGHT" and isinstance(d.get("schedule"), list):
-            for event in d["schedule"]:
-                if event["action"] == "ON":
-                    hh, mm = map(int, event["at"].split(":"))
-                    # rano wlacz 30 min wczesniej, wieczorem 30 min wczesniej
-                    if hh >= 14:  # wieczorne
-                        hh = max(0, hh - 1)
-                        event["at"] = f"{hh:02d}:{mm:02d}"
+    # Wieczorne swiatlo zapala sie godzine wczesniej (wczesniejszy zmierzch).
+    # Clamp pilnuje, zeby ON nie cofnal sie przed poprzedzajacy OFF.
+    shift_evening_on(config, delta_min=-60)
 
     return config
 
@@ -94,14 +209,15 @@ def apply_summer(config: dict) -> dict:
     # Zwieksz duty lodowki (upal - czesciej wlacza sie kompresor)
     for d in config["devices"]:
         if d["type"] == "REFRIGERATOR":
-            d["params"]["duty_cycle"] = min(0.60, d["params"].get("duty_cycle", 0.35) + 0.15)
+            base = d["params"].get("duty_cycle", 0.35)
+            d["params"]["duty_cycle"] = round(max(base, min(0.60, base + 0.15)), 4)
 
     # Dodaj AC w salonie i sypialni
     config["devices"].append({
         "id": "ac_livingroom",
         "room": "LIVING_ROOM",
         "type": "AC",
-        "params": {"power_w": 1200, "duty_cycle": 0.55, "cycle_length_minutes": 30},
+        "params": {"power_w": 1200, "duty_cycle": 0.55, "cycle_length_minutes": 43},
         "schedule": [
             {"at": "12:00", "action": "ON"},
             {"at": "23:00", "action": "OFF"}
@@ -111,22 +227,17 @@ def apply_summer(config: dict) -> dict:
         "id": "ac_bedroom",
         "room": "BEDROOM",
         "type": "AC",
-        "params": {"power_w": 900, "duty_cycle": 0.40, "cycle_length_minutes": 30},
+        "params": {"power_w": 900, "duty_cycle": 0.40, "cycle_length_minutes": 43},
         "schedule": [
             {"at": "22:00", "action": "ON"},
             {"at": "06:00", "action": "OFF"}
         ]
     })
 
-    # Skroc swiatla o 30 min (jasno dluzej)
-    for d in config["devices"]:
-        if d["type"] == "LIGHT" and isinstance(d.get("schedule"), list):
-            for event in d["schedule"]:
-                if event["action"] == "ON":
-                    hh, mm = map(int, event["at"].split(":"))
-                    if hh >= 14:  # wieczorne wlacz 30 min pozniej
-                        hh = min(23, hh + 1)
-                        event["at"] = f"{hh:02d}:{mm:02d}"
+    # Wieczorne swiatlo zapala sie godzine pozniej (pozniejszy zmierzch).
+    # Clamp pilnuje, zeby ON nie przeskoczyl sparowanego OFF - to byl bug, przez
+    # ktory swiatlo w lazience palilo sie 19:45-23:00 zamiast 30 minut.
+    shift_evening_on(config, delta_min=+60)
 
     return config
 
@@ -138,10 +249,13 @@ def apply_autumn(config: dict) -> dict:
     config["profile_description"] = "[JESIEN] " + config["profile_description"] + \
         " Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 
-    # Lekko wiekszy bojler
+    # Lekko wiekszy bojler. UWAGA: cap ma ograniczac WZROST, nie obnizac wartosc
+    # bazowa - poprzednia wersja (`min(0.22, base+0.05)`) dawala dla profilu C
+    # (base 0.25) wynik 0.22, czyli rodzina zuzywala jesienia MNIEJ CWU niz wiosna.
     for d in config["devices"]:
         if d["type"] == "BOILER":
-            d["params"]["duty_cycle"] = min(0.22, d["params"].get("duty_cycle", 0.10) + 0.05)
+            base = d["params"].get("duty_cycle", 0.10)
+            d["params"]["duty_cycle"] = round(max(base, min(0.22, base + 0.05)), 4)
 
     # Dodaj lekki HEATER w salonie
     config["devices"].append({
@@ -188,6 +302,12 @@ def main():
 
         for season, modifier in SEASON_MODIFIERS.items():
             seasonal_config = modifier(base_config)
+
+            # Normalizacja do postaci wykonywalnej przez symulator + twarda walidacja.
+            # Kolejnosc ma znaczenie: najpierw przesuniecia sezonowe, potem rozbicie
+            # polnocy, na koncu walidacja calosci.
+            split_overnight(seasonal_config)
+            validate_schedules(seasonal_config, f"{code}-{season}")
 
             # name pola TestConfig (backend wymaga)
             seasonal_config["name"] = f"Profil {code}: {name} - {season.capitalize()}"

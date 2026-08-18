@@ -1,10 +1,18 @@
 # Skrypt do wsadowego uploadu profilow jako szablonow do backendu.
 # Uruchom w PowerShell z folderu archetypes/:
-#     .\upload_templates.ps1
-#
-# Wymaga: dzialajacego backendu na http://localhost:8080
+#     .\upload_templates.ps1                                         # domyslnie localhost:8080
+#     .\upload_templates.ps1 -Url "https://api.symulatorsh.pl"       # produkcja EC2
+#     .\upload_templates.ps1 -Url "http://3.77.28.199:8080"          # bezposrednio po IP
 
-$backendUrl = "http://localhost:8080/api/v1/templates"
+param(
+    [string]$Url = "http://localhost:8080"
+)
+$BackendHost = $Url
+
+# Usun trailing slash jesli jest
+$BackendHost = $BackendHost.TrimEnd('/')
+
+$backendUrl = "$BackendHost/api/v1/templates"
 # Bierzemy z folderu seasonal/ (24 wygenerowane warianty), nie z glowego folderu.
 $profilesDir = Join-Path $PSScriptRoot "seasonal"
 
@@ -12,15 +20,17 @@ Write-Host ""
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host " Upload profilow do bazy szablonow" -ForegroundColor Cyan
 Write-Host "==================================================" -ForegroundColor Cyan
+Write-Host " Backend: $BackendHost" -ForegroundColor Cyan
 Write-Host ""
 
 # Sprawdz czy backend zyje
 try {
-    $health = Invoke-WebRequest -Uri "http://localhost:8080/api/v1/tests" -Method GET -TimeoutSec 3 -ErrorAction Stop
+    $health = Invoke-WebRequest -Uri "$BackendHost/api/v1/tests" -Method GET -TimeoutSec 10 -UseBasicParsing -ErrorAction Stop
     Write-Host "[OK] Backend odpowiada (HTTP $($health.StatusCode))" -ForegroundColor Green
 } catch {
-    Write-Host "[BLAD] Backend nie odpowiada na http://localhost:8080" -ForegroundColor Red
-    Write-Host "        Uruchom backend w IntelliJ i sprobuj ponownie." -ForegroundColor Yellow
+    Write-Host "[BLAD] Backend nie odpowiada na $BackendHost" -ForegroundColor Red
+    Write-Host "        Sprawdz czy backend dziala i podaj poprawny URL:" -ForegroundColor Yellow
+    Write-Host "        .\upload_templates.ps1 -Host `"https://twoja-domena`"" -ForegroundColor Yellow
     exit 1
 }
 
@@ -91,5 +101,5 @@ Write-Host " Uploadowano:  $uploaded" -ForegroundColor Green
 Write-Host " Pominieto:    $skipped" -ForegroundColor Yellow
 Write-Host " Bledy:        $failed" -ForegroundColor $(if ($failed -gt 0) { "Red" } else { "Gray" })
 Write-Host ""
-Write-Host "Otworz http://localhost:5173/kreator zeby zobaczyc szablony." -ForegroundColor Cyan
+Write-Host "Otworz aplikacje w przegladarce (Kreator) zeby zobaczyc szablony." -ForegroundColor Cyan
 Write-Host ""

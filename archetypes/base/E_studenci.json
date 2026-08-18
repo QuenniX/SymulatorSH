@@ -17,7 +17,7 @@
      "params": {"power_w": 20}, "schedule": "always_on"},
 
     {"id": "boiler_1", "room": "BATHROOM", "type": "BOILER",
-     "params": {"power_w": 2000, "duty_cycle": 0.12, "cycle_length_minutes": 37},
+     "params": {"power_w": 2000, "duty_cycle": 0.12, "cycle_length_minutes": 43},
      "schedule": "always_on"},
 
     {"id": "light_kitchen", "room": "KITCHEN", "type": "LIGHT",
@@ -65,14 +65,14 @@
      ]},
 
     {"id": "computer_1", "room": "BEDROOM", "type": "COMPUTER",
-     "params": {"idle_power_w": 120, "burst_power_w": 450, "burst_length_minutes": 25, "burst_interval_minutes": 15},
+     "params": {"idle_power_w": 120, "burst_power_w": 450, "burst_length_minutes": 25, "burst_interval_minutes": 45},
      "schedule": [
        {"at": "12:00", "action": "ON"}, {"at": "17:00", "action": "OFF"},
        {"at": "20:00", "action": "ON"}, {"at": "02:00", "action": "OFF"}
      ]},
 
     {"id": "computer_2", "room": "LIVING_ROOM", "type": "COMPUTER",
-     "params": {"idle_power_w": 100, "burst_power_w": 380, "burst_length_minutes": 20, "burst_interval_minutes": 20},
+     "params": {"idle_power_w": 100, "burst_power_w": 380, "burst_length_minutes": 20, "burst_interval_minutes": 40},
      "schedule": [
        {"at": "18:00", "action": "ON"}, {"at": "01:30", "action": "OFF"}
      ]},

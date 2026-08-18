@@ -17,7 +17,7 @@
      "params": {"power_w": 10}, "schedule": "always_on"},
 
     {"id": "boiler_1", "room": "BATHROOM", "type": "BOILER",
-     "params": {"power_w": 2000, "duty_cycle": 0.08, "cycle_length_minutes": 37},
+     "params": {"power_w": 2000, "duty_cycle": 0.08, "cycle_length_minutes": 43},
      "schedule": "always_on"},
 
     {"id": "light_kitchen", "room": "KITCHEN", "type": "LIGHT",

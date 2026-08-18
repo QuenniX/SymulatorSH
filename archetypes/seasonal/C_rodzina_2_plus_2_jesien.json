@@ -32,8 +32,8 @@
       "type": "BOILER",
       "params": {
         "power_w": 2500,
-        "duty_cycle": 0.22,
-        "cycle_length_minutes": 37
+        "duty_cycle": 0.25,
+        "cycle_length_minutes": 43
       },
       "schedule": "always_on"
     },

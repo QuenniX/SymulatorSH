@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2500,
         "duty_cycle": 0.15,
-        "cycle_length_minutes": 37
+        "cycle_length_minutes": 43
       },
       "schedule": "always_on"
     },
@@ -98,7 +98,7 @@
           "action": "OFF"
         },
         {
-          "at": "23:30",
+          "at": "23:00",
           "action": "ON"
         },
         {
@@ -124,7 +124,7 @@
           "action": "OFF"
         },
         {
-          "at": "19:30",
+          "at": "19:00",
           "action": "ON"
         },
         {
@@ -132,7 +132,7 @@
           "action": "OFF"
         },
         {
-          "at": "23:00",
+          "at": "22:45",
           "action": "ON"
         },
         {
@@ -265,7 +265,7 @@
       "params": {
         "power_w": 1200,
         "duty_cycle": 0.55,
-        "cycle_length_minutes": 30
+        "cycle_length_minutes": 43
       },
       "schedule": [
         {
@@ -285,20 +285,25 @@
       "params": {
         "power_w": 900,
         "duty_cycle": 0.4,
-        "cycle_length_minutes": 30
+        "cycle_length_minutes": 43
       },
       "schedule": [
         {
-          "at": "22:00",
-          "action": "ON"
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
         },
         {
           "at": "06:00",
           "action": "OFF"
+        },
+        {
+          "at": "22:00",
+          "action": "ON"
         }
       ]
     }
   ],
-  "name": "Profil F: Para pracujaca bez dzieci (DINK) - Lato",
+  "name": "Profil F: Para bez dzieci - Lato",
   "description": "[LATO] Para 30-45 lat, oboje pracujacy 8-17, mieszkanie M3 (50-70 m2). 'Double Income, No Kids'. Rano i wieczorem w domu. Piekarnik i zmywarka regularnie, pralka co 3-4 dni, klimatyzacja latem. Segment rosnacy z wyzszymi dochodami. Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
 }

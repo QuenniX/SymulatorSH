@@ -50,6 +50,31 @@ public abstract class BaseSimulator implements DeviceSimulator {
         return (int) getDoubleParam(key, defaultValue);
     }
 
+    /**
+     * Licznik minut symulowanych od poczatku testu (nie od poczatku doby).
+     *
+     * <p><b>Po co:</b> urzadzenia cykliczne (BOILER/AC/REFRIGERATOR) liczyly faze jako
+     * {@code simulatedMinuteOfDay % cycleLength}, co resetowalo ja o polnocy. Efekt:
+     * kazda z 30 dob miala IDENTYCZNY wzorzec fazowy wzgledem 5-minutowej siatki
+     * probkowania, wiec tetnienie godzinowe (do +/-35% dla malych duty) nie usredialo
+     * sie przy liczeniu profilu dobowego E_h, tylko sie w nim utrwalalo.</p>
+     *
+     * <p>Licznik absolutny sprawia, ze faza dryfuje z doby na dobe
+     * ({@code 1440 mod 43 = 20}), wiec po 30 dobach kazda godzina doby widzi wiele
+     * roznych faz i blad usrednia sie do ~0.</p>
+     *
+     * <p><b>Kontrakt:</b> {@code updatePower} jest wolane dokladnie raz na minute
+     * symulowana dla kazdego urzadzenia (TestRunner - obie galezie petli, emisyjna
+     * i nieemisyjna). Metoda musi byc wolana bezwarunkowo, PRZED jakimkolwiek
+     * wczesnym returnem, inaczej licznik rozjedzie sie z czasem symulowanym.</p>
+     */
+    private long cycleTick = 0;
+
+    /** Zwraca biezacy tick i inkrementuje licznik. Wolac raz na wywolanie updatePower. */
+    protected long nextCycleTick() {
+        return cycleTick++;
+    }
+
     protected double applyPowerJitter(double power) {
         if (globalJitterPowerPercent <= 0 || power <= 0) {
             return power;

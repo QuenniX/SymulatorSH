@@ -38,7 +38,7 @@ public class InfluxQueryService {
         // znacznikami (starsze dane sprzed zmiany w TestRunner).
         String flux = String.format("""
                 from(bucket: "%s")
-                  |> range(start: -30d, stop: 365d)
+                  |> range(start: -400d, stop: 365d)
                   |> filter(fn: (r) => r._measurement == "power")
                   |> filter(fn: (r) => r.test_id == "%s")
                 %s  |> filter(fn: (r) => r._field == "power_w")
@@ -78,10 +78,12 @@ public class InfluxQueryService {
      *
      * <p>Klucz mapy: godzina lokalna (Polska), np. 2024-03-15T14:00. Wartosc: kWh.</p>
      *
-     * <p><b>Waga zalozenia:</b> mean(power_w) * 1h daje energie tylko gdy dane sa gestre
-     * (np. co sekunde). Dla naszego symulatora ktory emituje pomiary co ~1s to jest OK.
-     * Blad rzedu 1-2% w krancowych godzinach testu (start/koniec ktore nie pokrywaja
-     * pelnej godziny).</p>
+     * <p><b>Waga zalozenia:</b> mean(power_w) * 1h daje energie dokladnie tylko wtedy,
+     * gdy probki sa geste wzgledem cyklu urzadzenia. Symulator emituje pomiar co
+     * <b>5 minut symulowanych</b> (TestRunner.emitEveryN), wiec urzadzenia o cyklu
+     * bedacym wielokrotnoscia 5 min (albo krotszym niz 5 min) sa obarczone aliasingiem.
+     * Dlatego BOILER/AC/REFRIGERATOR maja dlugosc cyklu wzglednie pierwsza z 5 i licza
+     * faze z licznika absolutnego (patrz BaseSimulator.nextCycleTick).</p>
      *
      * <p><b>KRYTYCZNE - timeSrc="_start"</b>: bez tego Flux etykietuje kazde okno prawym
      * konsem (_stop) -> energia z [20:00, 21:00) trafia do godziny 21:00 po truncated
@@ -96,7 +98,7 @@ public class InfluxQueryService {
     public Map<LocalDateTime, BigDecimal> getHourlyEnergyKwh(UUID testId) {
         String flux = String.format("""
                 from(bucket: "%s")
-                  |> range(start: -30d, stop: 365d)
+                  |> range(start: -400d, stop: 365d)
                   |> filter(fn: (r) => r._measurement == "power")
                   |> filter(fn: (r) => r.test_id == "%s")
                   |> filter(fn: (r) => r._field == "power_w")

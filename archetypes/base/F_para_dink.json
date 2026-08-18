@@ -1,6 +1,6 @@
 {
   "profile_code": "F",
-  "profile_name": "Para pracujaca bez dzieci (DINK)",
+  "profile_name": "Para bez dzieci",
   "profile_description": "Para 30-45 lat, oboje pracujacy 8-17, mieszkanie M3 (50-70 m2). 'Double Income, No Kids'. Rano i wieczorem w domu. Piekarnik i zmywarka regularnie, pralka co 3-4 dni, klimatyzacja latem. Segment rosnacy z wyzszymi dochodami.",
   "durationDays": 30,
   "speedFactor": 720,
@@ -17,7 +17,7 @@
      "params": {"power_w": 15}, "schedule": "always_on"},
 
     {"id": "boiler_1", "room": "BATHROOM", "type": "BOILER",
-     "params": {"power_w": 2500, "duty_cycle": 0.15, "cycle_length_minutes": 37},
+     "params": {"power_w": 2500, "duty_cycle": 0.15, "cycle_length_minutes": 43},
      "schedule": "always_on"},
 
     {"id": "light_kitchen", "room": "KITCHEN", "type": "LIGHT",

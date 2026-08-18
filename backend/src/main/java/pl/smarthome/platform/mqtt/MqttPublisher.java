@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Klient MQTT do publikowania pomiarów.
@@ -32,6 +33,19 @@ public class MqttPublisher {
     private final ObjectMapper objectMapper;
 
     private MqttClient client;
+
+    /**
+     * Licznik pomiarow porzuconych, bo broker byl rozlaczony albo publish rzucil.
+     * Bez tego utrata danych jest calkowicie cicha (log.debug) - a przy speedFactor=720
+     * i puli 4 watkow okno rekonekcji potrafi zjesc setki pomiarow, co objawia sie
+     * dopiero jako "zagregowano 693 godzin zamiast 720" na koncu analizy.
+     */
+    private final AtomicLong droppedPublishes = new AtomicLong();
+
+    /** Liczba pomiarow porzuconych od startu aplikacji. Do walidacji przebiegu partii. */
+    public long getDroppedPublishes() {
+        return droppedPublishes.get();
+    }
 
     @PostConstruct
     public void connect() {
@@ -55,7 +69,11 @@ public class MqttPublisher {
 
     public void publishPower(UUID testId, String deviceId, double powerW, long timestampMs) {
         if (client == null || !client.isConnected()) {
-            log.debug("MqttPublisher nieaktywny - skip publish");
+            long n = droppedPublishes.incrementAndGet();
+            if (n == 1 || n % 1000 == 0) {
+                log.warn("MqttPublisher rozlaczony - POMIAR UTRACONY (lacznie {} od startu). "
+                        + "Wynik testu bedzie niekompletny.", n);
+            }
             return;
         }
         String topic = String.format("tests/%s/devices/%s/energy", testId, deviceId);
@@ -69,7 +87,8 @@ public class MqttPublisher {
             message.setQos(config.getQos());
             client.publish(topic, message);
         } catch (Exception e) {
-            log.warn("Błąd publikacji MQTT na {}: {}", topic, e.getMessage());
+            long n = droppedPublishes.incrementAndGet();
+            log.warn("Blad publikacji MQTT na {} (utracono lacznie {}): {}", topic, n, e.getMessage());
         }
     }
 

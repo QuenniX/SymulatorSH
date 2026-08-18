@@ -1,291 +1,260 @@
-# PLAN NAPRAWY PRACY MAGISTERSKIEJ (v2)
+# PLAN NAPRAWY PRACY MAGISTERSKIEJ (v3)
 
-Bazuje na:
-- recenzja_magisterka_igor.md (Opus 5, pierwsza recenzja)
-- weryfikacja_kodu_uzupelnienie.md (Opus 5, po analizie kodu)
+**Deadline APD: 11 września 2026.** Stan na 18 sierpnia — zostały ~3,5 tygodnia.
 
-**KLUCZOWY WNIOSEK OPUSA 5:** Wszystkie znalezione obciążenia (aliasing bojlera, uśrednianie E_h, uśrednianie procentów) **działają w tę samą stronę: zawyżają atrakcyjność RDN i G12**. Kierunek pracy jest odporny na te błędy — po korekcie wniosek "RDN się nie opłaca" staje się MOCNIEJSZY. Ale trzeba to opisać zanim recenzent sam znajdzie.
+Bazuje na: `recenzja_magisterka_igor.md`, `weryfikacja_kodu_uzupelnienie.md`, `audyt_backend_v3.md`.
 
-Legenda:
-- [ ] TODO / [~] W TRAKCIE / [x] ZROBIONE
+Legenda: `[ ]` TODO · `[~]` w trakcie · `[x]` zrobione · `[-]` świadomie odpuszczone
 
 ---
 
-## FAZA 0: MUST-VERIFY (30 minut, tak/nie)
+## STAN NA TERAZ
 
-**Trzy pytania które trzeba rozstrzygnąć NAJPIERW.** Jeśli któreś wypadnie źle — poprawka jednolinijkowa, ale rerun partii (6h maszynowych).
+**Kod: naprawiony, czeka na build i rerun.** Wszystkie zmiany są w working tree na
+`feature/rdn-taryfy`, **niezacommitowane**. Kompilacja nie była testowana (brak Mavena
+w środowisku, w którym powstały poprawki) — najbardziej ryzykowny fragment to listener `WriteErrorEvent` w `InfluxWriter`.
+W repo nie ma wrappera Mavena, a build i tak idzie w Dockerze na EC2 (`backend/Dockerfile`,
+stage `maven:3.9-eclipse-temurin-21`) — kompilacja weryfikuje sie przy `docker compose up --build`.
 
-### 0.1. Czy `simTimeStart` jest ucięty do północy? [KRYTYCZNE]
-**Ryzyko:** Jeśli NIE — cały rozdział 7 nieważny. Urządzenie skonfigurowane na 19:00 trafiłoby np. na 15:57 (wg momentu utworzenia testu) — zamiast wieczornego szczytu cen w dołek fotowoltaiczny.
+**Tekst pracy: nietknięty.** Żadna zmiana nie weszła jeszcze do `praca.tex`.
 
-**Test (2 min):** Otwórz rys. 5.7 (Wzorzec dnia) i sprawdź czy `light_kitchen` świeci w godzinach z konfiguracji (6-7, 17-20). Dodatkowo sprawdź jeden rekord w InfluxDB — znajdź próbkę o mocy ~2000W dla `kettle_1` i zobacz jaka godzina w `_time`.
-
-**Do zrobienia:**
-- [ ] Sprawdzić `TestRunner.java` — jak liczony jest `simTimeStart`
-- [ ] Zweryfikować w InfluxDB czy timestampy w prawych godzinach
-- [ ] Jeśli źle: fix (jedna linia) + rerun partii 24 testów
-
----
-
-### 0.2. Czy `aggregateWindow` przesuwa profil o +1h? [KRYTYCZNE]
-**Ryzyko:** `aggregateWindow(every: 1h, fn: mean)` w Fluxie domyślnie ustawia `_time = _stop` (koniec okna). Energia z okna [20:00, 21:00) dostaje `_time = 21:00` → po `truncatedTo(HOURS)` trafia do godziny 21. **Cały profil dobowy przesunięty o +1h względem cen.**
-
-**Test (5 min):** Dodać do zapytania Flux `timeSrc: "_start"` i porównać sumę kosztu RDN dla jednego testu przed/po. Różnica >1% = przesunięcie realne.
-
-**Do zrobienia:**
-- [ ] Sprawdzić `InfluxQueryService.java:98` — czy jest `timeSrc: "_start"`
-- [ ] Jeśli brak: fix + rerun
+**Blokada:** cała FAZA 1–3 czeka na nową tabelę 7.1 z rerunu partii, z wyjątkiem
+punktów 1.2 i 3.3, które można pisać równolegle.
 
 ---
 
-### 0.3. Czy październik 2025 (jesień) ma pełne 30×24 ceny bez braków? [WAŻNE]
-**Ryzyko:** 26.10.2025 zmiana czasu z letniego na zimowy → doba 25h → PSE zwraca 100 kwadransów. Kod używa `merge` po `atZone(Europe/Warsaw)` → **godzina 02:00 duplikuje się i sumuje energię dwóch godzin w jedną**. Jesień to sezon gdzie RDN wypada najgorzej (−2,50%) — anomalia może być stąd.
+## FAZA 0 — MUST-VERIFY · ZAMKNIĘTA
 
-Dodatkowo Python przy brakującej godzinie robi `hour_prices.get(h, 0.0)` → **cena 0 zł = energia za darmo** (zaniża RDN).
-
-**Test (5 min):** Wypisać `len(prices_by_day)` i `len(hour_prices)` dla każdego dnia każdego sezonu. Asercja: 30 × 24, zero braków.
-
-**Do zrobienia:**
-- [ ] Skrypt Python weryfikujący kompletność cen
-- [ ] Jeśli braki: fix + rerun (przynajmniej jesień)
-
----
-
-### 0.4. Czy `rdnDaily` jest sortowane przed liczeniem VaR w backendzie? [ŚREDNIE]
-**Ryzyko:** W cytowanym fragmencie kodu brak sortowania. Jeśli lista jest chronologiczna, `get(28)` zwraca koszt 29. dnia, nie 29. co do wielkości. Rys. 5.9 w pracy pokazuje panele VaR/CVaR z backendu — jeśli źle, na zrzucie są przypadkowe liczby.
-
-**Test:** Zajrzeć w `CostCalculatorService.java` sekcja VaR/CVaR.
-
-**Do zrobienia:**
-- [ ] Sprawdzić czy `rdnDaily.sort()` przed `get(varIndex)`
-- [ ] Fix jeśli brak
-
----
-
-## FAZA 1: BOJLER + KRYTYCZNE Z RECENZJI
-
-### 1.0. Aliasing bojlera [NAJPOWAŻNIEJSZE Z NOWO ZNALEZIONYCH]
-**Problem:** Bojler jest ON przez pierwsze N minut każdej godziny (od minuty 0). Próbki co 5 min (też od minuty 0). Faza STAŁA I DETERMINISTYCZNA — brak jittera który by to uśrednił.
-
-**Skala błędu** (dla realnych duty cycle):
-| Profil | Wiosna/Lato | Zima | Jesień |
+| # | Pytanie | Odpowiedź | Status |
 |---|---|---|---|
-| A Singiel | duty 0.10 → **+67%** | 0.25 → 0% | 0.15 → +11% |
-| B Remote | 0.12 → **+43%** | 0.27 → +25% | 0.17 → 0% |
-| C Rodzina | 0.25 → 0% | 0.35 → +19% | 0.22 → +15% |
-| D Senior | 0.08 → 0% | 0.23 → +7% | 0.13 → +25% |
-| E Studenci | 0.12 → **+43%** | 0.27 → +25% | 0.17 → 0% |
-| F Para | 0.15 → +11% | 0.30 → +11% | 0.20 → +25% |
+| 0.1 | Czy `simTimeStart` ucięty do północy? | TAK, `TestRunner:221-226`, poprawnie (`ZonedDateTime.truncatedTo(DAYS)` w Europe/Warsaw) | `[x]` |
+| 0.2 | Czy `aggregateWindow` przesuwa profil o +1 h? | NIE, `timeSrc: "_start"` obecny, `InfluxQueryService:103` | `[x]` |
+| 0.3 | Czy październik ma pełne 30×24 ceny? | NIEZWERYFIKOWANE empirycznie — dodana twarda asercja w `analiza_wyniki.py`, wykryje przy najbliższym uruchomieniu | `[~]` |
+| 0.4 | Czy `rdnDaily` sortowane przed VaR? | TAK, `CostCalculatorService:380` `Collections.sort()`. Było OK od początku | `[x]` |
 
-**Sanity check na Twoich danych:** A-Wiosna zużycie 14 kWh/dobę, bojler zmierzony 8 kWh (57%!). Prawda: 4,8 kWh. Realne ΣE ≈ 10,8 kWh → **zużycie A-Wiosna zawyżone o ~30%**.
-
-**Kierunek błędu:** Zawyża płaską składową → podnosi udział nocny (bojler wnosi 41,7%) → **zawyża przewagę G12** i **spłaszcza profil → zawyża atrakcyjność RDN**.
-
-**Do zrobienia:**
-- [ ] **Test rozstrzygający (15 min):** Dla każdego z 24 przypadków policz analitycznie ΣE z konfiguracji JSON, porównaj z K_G11/33 z tabeli 7.1
-- [ ] **NAPRAWA - opcja A (najtańsza, JEDNA LICZBA):** Zmienić `cycle_length_minutes` bojlera z **60 na 37** (względnie pierwsze z 5 i 60) w JSON-ach profili. Lodówka ma 37 i nie ma tego problemu → sprawdzone empirycznie
-- [ ] **NAPRAWA - opcja B (porządna):** `integral(unit: 1h)` zamiast `mean` we Fluxie
-- [ ] Jeśli fix → rerun partii 24 testów (6h)
+- [ ] **0.3 — SQL do odpalenia na Neonie przed rerunem** (30 s):
+```sql
+SELECT delivery_date, COUNT(*) FROM energy_prices
+WHERE market='RDN' AND delivery_date BETWEEN '2025-01-01' AND '2025-10-30'
+GROUP BY delivery_date HAVING COUNT(*) <> 24 ORDER BY delivery_date;
+```
+Ma zwrócić **zero wierszy**. Uwaga: 26.10.2025 to zmiana czasu — PSE zwraca 100 kwadransów,
+`PseApiClient.extractHour` mapuje oba bloki 02:00 na godzinę 2 i uśrednia 8 kwadransów.
+Wynikiem są nadal 24 godziny, więc braku być nie powinno.
 
 ---
 
-### 1.1. Efekt Simpsona w H1 [KRYTYCZNE, z pierwszej recenzji]
-**Problem:** +0,97% to średnia procentów. Ze średnich kwot wychodzi **−0,46%** (RDN droższy). Kod: `analiza_wyniki.py:627` — `.mean()` na kolumnie procent.
+## FAZA 0.5 — AUDYT KODU v3 · WPROWADZONE
 
-**Do zrobienia:**
-- [ ] W §7.1 dodać obie miary jawnie:
-  - "średnia nieważona oszczędności procentowych": +0,97%
-  - "oszczędność na koszcie zagregowanym": −0,46%
-- [ ] Dodać wyjaśnienie efektu Simpsona
-- [ ] W §7.7 tabela hipotez: H1 → "Odrzucona (w ujęciu kwotowym)"
-- [ ] W §8 dodać "w ujęciu kwotowym RDN o 0,46% droższy od G11, wzmacnia wniosek o braku opłacalności"
-- [ ] To samo dla G12: −8,11% (proc.) vs −9,21% (kwoty)
+Wszystko poniżej jest w working tree, niezacommitowane.
 
-**Pliki:** praca.tex + skrypt Python
+| # | Problem | Plik | Status |
+|---|---|---|---|
+| B1 | Aliasing klimatyzacji (cykl 30 = wielokrotność 5): duty 0,40 → +25 %, 0,55 → +17,6 % | `AcSimulator`, generator | `[x]` cykl → 43 |
+| B2 | Harmonogramy przez północ ucinane (`put(0,false)`): nocne AC 2 h z 8 h, cały profil E gasł o północy (~1,7 kWh/dobę ze strefy nocnej) | `generate_seasonal.split_overnight()` | `[x]` |
+| B3 | Odwrócone pary ON/OFF w profilach letnich (ON 19:45 / OFF 19:15 → światło do 23:00) + duplikat minuty (ON i OFF o 23:30 → nigdy nie zapala) | `generate_seasonal.shift_evening_on()` + walidator | `[x]` |
+| B4 | `/costs/projected` liczy na stawkach roku **okresu cenowego** (2025, G11 = 0,75), a rozdz. 7 na 2026 (1,10). Rys. 5.9: 634,29/(30×28,19) = 0,750 — potwierdzone | `CostCalculatorService:314` | `[ ]` **decyzja Igora** |
+| B5 | `range(start: -30d)` liczony od czasu zapytania — obcinał 1–8 dób z każdego testu, rosło z opóźnieniem analizy | `InfluxQueryService:41,99` | `[x]` → `-400d` |
+| B6 | Dwie ciche ścieżki utraty pomiarów bez licznika (MQTT `return` przy rozłączeniu, async WriteApi bez listenera) | `MqttPublisher`, `InfluxWriter`, `TestRunner`, `analiza_wyniki.py` | `[x]` |
+| B7 | Cap jesienny obniżał bojler profilu C poniżej wartości bazowej (0,25 → 0,22) | `generate_seasonal:144` | `[x]` |
+| B8 | Komputer profilu E: burst 25 min ≥ odstęp 15 min → 78 % duty, ~377 W zamiast ~150 W | `base/E_studenci.json` | `[x]` |
+| A.3a | Faza cyklu z `minuteOfDay %` resetowała się o północy → zamrożone tętnienie godzinowe ±35 %, nieusuwalne przez uśrednianie po 30 dobach | `BaseSimulator.nextCycleTick()` + 3 symulatory | `[x]` |
+| A.3b | Przy cyklu 37 duty 0,10 i 0,12 dawały to samo `4/37` — profile A i B/E miały identyczny bojler | cykl 37 → **43** | `[x]` |
+| — | Angielskie nazwy profili w wyjściach: „Remote worker", „Para DINK", „Double Income, No Kids" | `base/B`, `base/F`, `analiza_wyniki.py` | `[x]` → „Pracownik zdalny", „Para bez dzieci" |
 
----
+**Nienaprawione świadomie (nieaktywne przy obecnej konfiguracji):**
 
-### 1.2. CVaR — REDEFINICJA jako "średnia z 2 najgorszych z 30" [KRYTYCZNE, uściślone]
-**Problem 1:** §3.5 mówi że CVaR mierzy "zbieg wysokiego zużycia i wysokich cen" — ale E_h uśrednione po 30 dobach → zużycie deterministyczne.
-
-**Problem 2 (NOWE):** Dla n=30 i `np.percentile(x, 95)` (linear): indeks = 0,95·29 = 27,55 → VaR między 28. a 29. wartością posortowaną. Zbiór {c ≥ VaR} = **zawsze dokładnie 2 elementy**. Czyli:
-> CVaR₀,₉₅ w tej pracy = **średnia arytmetyczna kosztu 2 najdroższych dób z 30**
-> Odpowiada ogonowi 2/30 = **6,7% a nie 5%**
-
-**Do zrobienia:**
-- [ ] Usunąć z §3.5 zdanie o "zbiegu wysokiego zużycia i wysokich cen"
-- [ ] Przeformułować: "CVaR kwantyfikuje ekspozycję na zmienność cen hurtowych przy ustalonym profilu zużycia"
-- [ ] Dodać zdanie: "Uzyskane wartości CVaR stanowią dolne oszacowanie ryzyka rzeczywistego"
-- [ ] **Nowe zdanie:** "W praktycznej implementacji dla n=30 i estymatora liniowego kwantyla, zbiór {c ≥ VaR₀,₉₅} zawiera dokładnie 2 obserwacje. W konsekwencji CVaR₀,₉₅ oznacza średnią z kosztu 2 najdroższych dób miesiąca, co odpowiada ogonowi rozkładu 2/30 ≈ 6,7%. Estymator ma dużą wariancję próbkową i służy do porównań względnych, nie jako bezwzględna miara ryzyka."
-- [ ] Dodać uwagę matematyczną: K_RDN = 30·Σ_h E_h·c̄_h → koszt zależy tylko od średniego kształtu dobowego cen
-- [ ] Uzupełnić metodę estymacji kwantyla (linear interpolation)
-- [ ] Rozstrzygnąć rozjazd backend (nearest-rank) vs Python (linear) — napisać że rozdz. 7 pochodzi ze ścieżki Pythona
+- `[-]` **B9** — cykl pralki/zmywarki/piekarnika nie przeżywa północy (`elapsed < 0`). Żadne urządzenie nie startuje po 22:45, ale jitter ±20 min może to wywołać przy startach ok. 22:50.
+- `[-]` **B10** — `HeaterSimulator`/`TvSimulator` gubią pozostałe `params`, gdy brak `power_w`.
+- `[-]` **B11** — `@Cacheable` + `range` względny; znika po B5.
+- `[-]` **B14** — `year` z pierwszej godziny testu; partia przez sylwestra wzięłaby stawki poprzedniego roku.
+- `[~]` **B12** — brak walidacji liczby rekordów w `PseApiClient`. Zabezpieczone od strony Pythona (twardy błąd zamiast ceny 0 zł), backend bez zmian.
 
 ---
 
-### 1.3. G12 wygrywa arytmetycznie [KRYTYCZNE, z pierwszej recenzji]
-**Problem:** Próg opłacalności G12: x = (1,25−1,10)/(1,25−0,62) = **23,8%**. Płaski profil = 41,7%. G12 wygrywa dla wszystkich.
+## FAZA 0.9 — BUILD, DEPLOY, RERUN  ← **JESTEŚMY TUTAJ**
 
-**Do zrobienia:**
-- [ ] W §7.2 wyprowadzić wzór progu 23,8%
-- [ ] Tabela: udział strefy nocnej dla 6 profili (Zima)
-- [ ] Zweryfikować profil F-Zima (~58% nocne wg recenzji) — czy błąd harmonogramu
-- [ ] Usunąć zdanie "co potwierdza hipotezę..." (nie było takiej w H1-H5)
-- [ ] Przeformułować: "matematyczna konsekwencja stawek — próg 23,8% jest znacznie poniżej obserwowanego"
-- [ ] Cytat rzeczywistej taryfy PGE 2026 → weryfikacja stawek 0,62/1,25/1,10
+- [ ] `mvn -q compile` lokalnie. Jeśli błąd — prawie na pewno listenery w `InfluxWriter`;
+      usunąć oba `listenEvents` i `flush()`, reszta zmian jest od nich niezależna.
+- [ ] Commit + push (`feature/rdn-taryfy`)
+- [ ] Deploy na EC2
+- [ ] `upload_templates.ps1 -Url "http://3.77.28.199"` — JSON-y się zmieniły, upload konieczny
+- [ ] **Zmienić `BATCH_NAME_PREFIX` w `analiza_wyniki.py:67`** na prefiks nowej partii.
+      Obecnie `[Partia 2026-08-06T18:57]` — bez zmiany skrypt znajdzie 0 testów.
+- [ ] Partia 24 testów z UI (30 dni, ×720, emit=5), ~5–6 h maszynowe
+- [ ] **Kontrola po partii:** w logach backendu mają być dwie linie na test —
+      `„potok pomiarowy czysty"` oraz `„zagregowano 720 godzin"`. Cokolwiek innego = rerun.
+- [ ] `python archetypes/oczekiwane_kwh.py` → porównać z `K_G11 / 33` z nowej tabeli.
+      Rozbieżność > 3 % oznacza błąd w potoku, nie w konfiguracji.
 
----
+### Referencja analityczna (oczekiwane kWh/dobę, `oczekiwane_kwh.py`)
 
-## FAZA 2: SPRZECZNOŚCI I BRAKUJĄCE ELEMENTY
+| Profil | Zima | Wiosna | Lato | Jesień | udział nocny G12 (Z/W/L/J) |
+|---|---|---|---|---|---|
+| A Singiel-biuro | 37,3 | 10,4 | 21,1 | 16,7 | 27,9 % · 27,3 % · 37,5 % · **22,6 %** |
+| B Pracownik zdalny | 43,5 | 16,7 | 27,3 | 22,9 | 31,4 % · 36,7 % · 40,9 % · 30,8 % |
+| C Rodzina 2+2 | 53,3 | 28,5 | 39,1 | 32,5 | 27,0 % · 26,8 % · 32,8 % · 23,5 % |
+| D Senior samotny | 38,5 | 11,8 | 22,3 | 19,2 | 25,5 % · **19,7 %** · 32,9 % · **19,4 %** |
+| E Studenci | 43,8 | 16,9 | 27,4 | 23,2 | 37,7 % · 52,4 % · 50,5 % · 42,3 % |
+| F Para bez dzieci | 46,6 | 17,7 | 28,3 | 25,9 | 28,3 % · 27,3 % · 34,9 % · 25,4 % |
 
-### 2.1. Sprzeczność "8-10 kWh/dobę latem" vs tabela 7.1 [NOWE, KRYTYCZNE]
-**Problem:** §6.1 pisze "w wariancie letnim zapotrzebowanie spada do 8-10 kWh/dobę". Z tabeli 7.1: A-Lato → K_G11 = 781,92 → ΣE = **23,7 kWh/dobę**. **Sprzeczność 2,5-krotna**, do sprawdzenia kalkulatorem w 10s.
+Trzy wnioski jeszcze przed rerunem:
 
-**Rozpiska ΣE dla wszystkich przypadków** (z tabeli 7.1):
-| Profil | Zima | Wiosna | Lato | Jesień |
-|---|---|---|---|---|
-| A Singiel | 37,2 | 14,0 | 23,7 | 17,4 |
-| B Remote | 45,6 | 19,0 | 29,3 | 22,8 |
-| C Rodzina | 59,3 | 28,4 | 38,5 | 31,3 |
-| D Senior | 39,1 | 13,0 | 22,8 | 19,3 |
-| E Studenci | 48,6 | 18,9 | 29,6 | 20,5 |
-| F Para | 46,9 | 19,4 | 29,4 | 27,3 |
-
-**Do wyjaśnienia:**
-- Lato > Wiosna o 60-75% — to klimatyzacja. Ale duty 0,5 przez 20h/dobę dla singla poza domem 8-17 nierealne. **Sprawdzić harmonogram AC**
-- D Senior (39,1 kWh zimą) > A Singiel (37,2) — możliwe (senior cały dzień w domu), ale wymaga komentarza
-
-**Do zrobienia:**
-- [ ] Poprawić zdanie w §6.1 (8-10 → realistyczne)
-- [ ] Dodać tabelę ΣE per przypadek do rozdz. 6 lub 7 (i tak potrzebna wg recenzji 4.3)
-- [ ] Sprawdzić duty cycle AC w JSONach + harmonogram
-
----
-
-### 2.2. Sekcja "Ograniczenia numeryczne modelu pomiarowego" [NOWE, WAŻNE]
-**Problem:** Aliasing bojlera trzeba opisać samodzielnie zanim recenzent go znajdzie.
-
-**Do zrobienia:**
-- [ ] Nowa podsekcja w rozdz. 6 albo 8: "Ograniczenia numeryczne"
-- [ ] Opisać aliasing bojlera z tabelą z pkt 1.0
-- [ ] **Kluczowe:** dodać zdanie o KIERUNKU obciążenia: "zawyżenie płaskiej składowej działa na korzyść G12 i RDN, więc korekta wzmocniłaby wniosek o nieopłacalności RDN oraz nieznacznie zmniejszyła przewagę G12"
+1. **A-Wiosna 10,4 kWh analitycznie vs 14,0 ze starej tabeli 7.1** (−26 %) — niezależne
+   potwierdzenie skali aliasingu bojlera. Gotowy materiał do punktu 2.2.
+2. **Zdanie „8–10 kWh na dobę" z §6.1 pasuje do wiosny (10,4), nie do lata (21,1)** —
+   prawdopodobnie pomylony sezon w tekście, nie zła liczba.
+3. **G12 przestaje wygrywać automatycznie.** D-wiosna 19,7 %, D-jesień 19,4 %,
+   A-jesień 22,6 % są **poniżej progu 23,8 %** — tam G11 powinna wyjść taniej niż G12.
+   To jakościowa zmiana względem starych wyników (G12 wygrywała 24/24) i zmienia
+   treść punktu 1.3.
 
 ---
 
-## FAZA 3: WAŻNE Z PIERWSZEJ RECENZJI
+## FAZA 1 — KRYTYCZNE POPRAWKI TEKSTU
 
-### 3.1. Scenariusz demand response [NAJWIĘKSZA MERYTORYCZNA SZANSA]
-- [ ] Skrypt Python: przesunąć pralkę/zmywarkę/bojler do 3 najtańszych godzin
-- [ ] Nowa sekcja §7.7 "Scenariusz z aktywnym sterowaniem"
-- [ ] Wiersz w tabeli 7.1: "RDN + proste przesunięcie"
-- [ ] W §8 przeformułować: "RDN nie opłaca się biernie, opłaca się przy sterowaniu — i o X%"
+### 1.1. Efekt Simpsona w H1 · `[ ]` — czeka na nową tabelę
+Średnia procentów: +0,97 %. Ze średnich kwot: **−0,46 %** (RDN droższy). To samo dla
+G12: −8,11 % (proc.) vs −9,21 % (kwoty). Kod: `analiza_wyniki.py:627`.
+- [ ] §7.1: podać obie miary jawnie i je nazwać
+- [ ] §7.1: wyjaśnić mechanizm (RDN wygrywa procentowo tam, gdzie kwoty małe — wiosna 350–590 zł; przegrywa tam, gdzie duże — zima 1300–2060 zł)
+- [ ] §7.7 tabela hipotez: H1 → „Odrzucona w ujęciu kwotowym"
+- [ ] §8: zdanie o wzmocnieniu wniosku
+- [ ] `analiza_wyniki.py`: dodać wiersz z agregatem kwotowym obok średniej procentów
 
-### 3.2. Statystyki opisowe cen RDN
-- [ ] Tabela: sezon × (średnia, mediana, SD, min, max, godziny <0, godziny >500)
-- [ ] Wykres: 4 krzywe dobowe c̄_h nakładające się
-- [ ] Nowa sekcja w §2.3 albo §6.4
-- [ ] Poprawić "ceny ujemne" w §7.3 — po narzucie 0,435 cena detaliczna spada do 0,45-0,55 zł/kWh, NIE do zera
+### 1.2. CVaR — redefinicja · `[ ]` **można pisać teraz, nie czeka na rerun**
+- [ ] §3.5: usunąć zdanie o „zbiegu wysokiego zużycia i wysokich cen" — przy uśrednionym E_h zużycie jest deterministyczne
+- [ ] §3.5: „CVaR kwantyfikuje ekspozycję na zmienność cen hurtowych przy ustalonym profilu zużycia"
+- [ ] §3.5: „Uzyskane wartości stanowią dolne oszacowanie ryzyka rzeczywistego"
+- [ ] §3.5: dla n = 30 i estymatora liniowego zbiór `{c ≥ VaR}` ma **dokładnie 2 elementy** → CVaR to średnia z 2 najdroższych dób, ogon 2/30 ≈ **6,7 %, nie 5 %**
+- [ ] §3.5: uwaga matematyczna `K_RDN = 30·Σ_h E_h·c̄_h` — koszt zależy wyłącznie od średniego kształtu dobowego cen
+- [ ] §3.5: rozjazd backend (nearest-rank) vs Python (interpolacja liniowa) — zaznaczyć, że rozdz. 7 pochodzi ze ścieżki Pythona
 
-### 3.3. Próg 459 zł/MWh + analiza wrażliwości parametrów
-- [ ] Wyprowadzić c_hurt,BEP = 1,10/1,23 − 0,435 = 0,459 zł/kWh = 459 zł/MWh
-- [ ] Wykres tornado: c_G11 ∈ [1,00; 1,20], s_marża ∈ [0,05; 0,15], s_dyst ±20%
-- [ ] Nowa sekcja "Analiza wrażliwości na parametry cenowe"
-- [ ] Przemianować §7.5 → "Walidacja krzyżowa profil × sezon"
-
-### 3.4. Znormalizowany CVaR
-- [ ] Kolumna CVaR/średni koszt dobowy w tabeli 7.1
-- [ ] LUB CVaR różnicy C_d^RDN − C_d^G12 (ciekawiej)
-- [ ] Regenerować rys. 7.6 z znormalizowaną osią X
-
----
-
-## FAZA 4: OPCJONALNE (jeśli czas)
-
-### 4.1. Zawężenie wniosków w rozdz. 8
-- [ ] "typowe polskie gospodarstwo" → "gospodarstwa z ogrzewaniem elektrycznym"
-- [ ] Zaznaczyć że 24 przypadki = plan eksperymentu 6×4, nie próba losowa
-
-### 4.2. Model dnia tygodnia
-- [ ] MIN: dodać w rozdz. 8 jako "obciążenie w znanym kierunku, na niekorzyść RDN"
-
-### 4.3. Opłaty stałe
-- [ ] W rozdz. 8: "pominięte składniki stałe są rzędu X zł/mies., co przekracza zmierzoną różnicę... wniosek o BRAKU opłacalności RDN odporny, wniosek o marginalnej opłacalności nie byłby"
-
-### 4.4. Literatura bottom-up
-- [ ] 3-5 pozycji: Richardson, Thomson & Infield (CREST), Widén & Wäckelgård, Pflugradt
-- [ ] Pół strony w rozdz. 2
-
-### 4.5. Wielokrotne ziarna
-- [ ] MIN: usunąć "istotnie" z H3, nazwać próg arbitralnym
-- [ ] MAX: 5-10 przebiegów per konfiguracja
-
-### 4.6. Naprawa CVaR na surowym e(d,h) [DUŻA WARTOŚĆ, MAŁY KOSZT]
-Backend już ma tę ścieżkę w `calculateForTest`. Wystarczy żeby skrypt analizy brał `hourlyBreakdown` bez `build_daily_profile`. Zmiana ~10 linii Pythona → **przywraca sens CVaR i jitterowi**.
-- [ ] Modyfikacja `analiza_wyniki.py`
-- [ ] Rerun analizy (nie trzeba nowych testów)
-
-### 4.7. Cap jesienny bojlera
-- [ ] Sprawdzić `generate_seasonal.py` linie 141-144 — czy C-Jesień (cap 0,22 przy bazowym 0,25) MNIEJ niż wiosną (0,25) to błąd logiki
+### 1.3. Próg opłacalności G12 · `[ ]` — treść zmieniona przez nowe dane
+`x = (1,25 − 1,10)/(1,25 − 0,62) = 23,8 %`. Profil płaski daje 41,7 %.
+**Nowość:** po naprawach D-wiosna/D-jesień/A-jesień spadają poniżej progu, więc teza
+„G12 wygrywa zawsze" już nie obowiązuje — teraz to „G12 wygrywa wszędzie tam, gdzie
+udział nocny przekracza 23,8 %, a nie przekracza go tylko profil D poza sezonem grzewczym".
+- [ ] §7.2: wyprowadzić próg
+- [ ] §7.2: wstawić tabelę udziału nocnego (jest wyżej, z `oczekiwane_kwh.py`)
+- [ ] §7.2: usunąć „co potwierdza hipotezę…" — takiej hipotezy nie ma w H1–H5
+- [ ] Zweryfikować stawki 0,62 / 1,25 / 1,10 wobec rzeczywistej taryfy PGE/Energa 2026 i zacytować
 
 ---
 
-## FAZA 5: KOSMETYKA
+## FAZA 2 — SPRZECZNOŚCI
 
-- [ ] §4.1: "około 4000 pomiarów" → poprawić (77 989 na rys. 5.5)
-- [ ] §3.2, §3.4: odwołania do wzoru (6.1) przed jego pojawieniem — przenieść
-- [ ] (3.11)-(3.13) vs (6.1) — usunąć redundancję
-- [ ] Ujednolicić jitter: tekst 15/10 vs screen 20/12 vs JSON 10/5 → jeden zestaw
-- [ ] Tab. 4.1: dodać Recharts
-- [ ] §7.7 vs §6.4: treść H4 rozjazd — ujednolicić
-- [ ] Literówka "aggregatorzy" → "agregatorzy"
-- [ ] Wstęp: mocniejsze wiązanie tytuł↔treść
+### 2.1. Tabela ΣE + zdanie o zużyciu letnim · `[ ]`
+- [ ] §6.1: poprawić „8–10 kWh na dobę" (dotyczy wiosny, nie lata)
+- [ ] §6 lub §7: wstawić tabelę ΣE per przypadek (potrzebna też do interpretacji CVaR)
+- [ ] Skomentować, dlaczego D-Senior zimą (38,5) ≈ A-Singiel (37,3) — senior cały dzień w domu
+
+### 2.2. Sekcja „Ograniczenia numeryczne modelu pomiarowego" · `[ ]`
+- [ ] Nowa podsekcja w rozdz. 6 albo 8
+- [ ] Opisać aliasing przy próbkowaniu 5-minutowym: mechanizm `ceil(onPortion/5)`, dotknięte urządzenia (bojler, klimatyzacja), skala do +67 %
+- [ ] Opisać naprawę: długość cyklu względnie pierwsza z 5 i 60 (43 min) + faza z licznika absolutnego
+- [ ] Podać porównanie A-Wiosna 14,0 → 10,4 kWh jako weryfikację empiryczną
+- [ ] **Kierunek obciążenia napisać dopiero po zobaczeniu nowych liczb** — patrz ostrzeżenie niżej
 
 ---
 
-## PRIORYTET WYKONANIA v2
+## FAZA 3 — WARTOŚĆ MERYTORYCZNA
 
-**KROK 0 (najpierw!) — MUST-VERIFY, 30 min:**
-1. Sprawdzić `simTimeStart` (0.1)
-2. Sprawdzić `aggregateWindow timeSrc` (0.2)
-3. Sprawdzić kompletność cen październik (0.3)
-4. Sprawdzić sortowanie `rdnDaily` w backendzie (0.4)
+### 3.1. Scenariusz demand response · `[ ]` — największa szansa
+Praca nazywa się „Model systemu Smart Home", §2.5 jest o demand response, a badanie
+symuluje wyłącznie biernego odbiorcę. To pierwsze pytanie, jakie padnie na obronie.
+- [ ] Skrypt: przesunięcie pralki/zmywarki/bojlera do 3 najtańszych godzin doby (liczone na wyeksportowanym profilu, bez zmian w symulatorze)
+- [ ] Nowa sekcja §7.7 „Scenariusz z aktywnym sterowaniem"
+- [ ] Wiersz w tabeli 7.1: „RDN + proste przesunięcie"
+- [ ] §8: „RDN nie opłaca się biernie, opłaca się przy sterowaniu — i o X %"
 
-**Jeśli 0.1-0.3 wypadną źle → fix + rerun 6h partii.**
+### 3.2. Statystyki opisowe cen RDN · `[ ]`
+Ceny RDN to najważniejsza dana wejściowa i nie ma dla nich w pracy żadnej statystyki.
+- [ ] Tabela: sezon × (średnia, mediana, SD, min, max, liczba godzin < 0)
+- [ ] Wykres: 4 nałożone krzywe dobowe `c̄_h` — to jest dokładnie to, co determinuje wynik RDN
+- [ ] §7.3: doprecyzować „ceny ujemne" — po narzucie 0,435 zł/kWh netto cena detaliczna spada do ~0,45–0,55 zł/kWh, nie do zera
 
-**KROK 1 (najbardziej wpływowe, 1-2h):**
-5. Test analityczny ΣE vs K_G11/33 — potwierdzić aliasing bojlera (1.0)
-6. Fix bojlera: `cycle_length_minutes` 60 → 37 w JSON-ach (1.0)
-7. Rerun partii 24 testów jeśli fix zastosowany (6h maszynowe)
+### 3.3. Próg 459 zł/MWh + analiza wrażliwości · `[ ]` **można pisać teraz**
+`c_hurt,BEP = 1,10/1,23 − 0,435 = 0,459 zł/kWh = 459 zł/MWh`
+- [ ] Wyprowadzić w §7 — elegancko rozdziela efekt poziomu cen od efektu kształtu
+- [ ] Tornado: `c_G11 ∈ [1,00; 1,20]`, `s_marża ∈ [0,05; 0,15]`, `s_dyst ± 20 %`
+- [ ] Przemianować §7.5 na „Walidacja krzyżowa profil × sezon" — obecna nazwa „analiza wrażliwości" jest nadużyciem
 
-**KROK 2 (tekst pracy, po rerun, ~3h):**
-8. Efekt Simpsona (1.1)
-9. CVaR redefinicja (1.2)
-10. Próg G12 23,8% + tabela udziału nocnego (1.3)
-11. Sprzeczność 8-10 kWh + tabela ΣE (2.1)
-12. Sekcja "Ograniczenia numeryczne" z aliasingiem bojlera (2.2)
+### 3.4. Znormalizowany CVaR · `[ ]`
+Rys. 7.6 miesza ryzyko ze skalą zużycia (profil C ma najwyższy CVaR, bo zużywa najwięcej).
+- [ ] Kolumna `CVaR / średni koszt dobowy` w tabeli 7.1, albo CVaR różnicy `C_d^RDN − C_d^G12`
+- [ ] Regenerować rys. 7.6 ze znormalizowaną osią X
 
-**KROK 3 (dodatkowa wartość, 4-6h):**
-13. Statystyki cen RDN (3.2)
-14. Próg 459 zł/MWh + tornado (3.3)
-15. Znormalizowany CVaR (3.4)
-16. **Naprawa CVaR na e(d,h)** (4.6) — 10 linii Pythona, przywraca sens
+---
 
-**KROK 4 (game-changer, 4h):**
-17. Demand response scenariusz (3.1) — jedna sekcja, zmienia wymowę pracy
+## FAZA 4 — JEŚLI STARCZY CZASU
 
-**KROK 5 (kosmetyka, 1h):**
-18. Wszystko z FAZY 5
+- [ ] **4.1** §8: „typowe polskie gospodarstwo" → „gospodarstwa z ogrzewaniem elektrycznym"; zaznaczyć, że 24 przypadki to plan 6×4, nie próba losowa
+- [ ] **4.2** §8: model dnia tygodnia jako pominięcie o znanym kierunku (ceny RDN niższe w weekendy, zużycie wyższe w dzień → zerowana kowariancja działa na niekorzyść RDN)
+- [ ] **4.3** §8: opłaty stałe rzędu X zł/mies. przekraczają zmierzoną różnicę RDN–G11 (4,40 zł/mies.)
+- [ ] **4.4** Literatura bottom-up: Richardson, Thomson & Infield (CREST), Widén & Wäckelgård, Pflugradt — pół strony w rozdz. 2
+- [ ] **4.5** H3: usunąć słowo „istotnie" albo nazwać próg 2 p.p. arbitralnym przyjętym a priori
+- [ ] **4.6** CVaR na surowym `e(d,h)` zamiast na `E_h` — backend ma tę ścieżkę w `calculateForTest`, wystarczy pominąć `build_daily_profile`. ~10 linii, przywraca sens jitterowi
+- [ ] **4.7** B4: decyzja — parametr `tariffYear` w backendzie albo regeneracja rys. 5.9 z opisem w podpisie
+
+---
+
+## FAZA 5 — KOSMETYKA
+
+- [ ] §4.1: „około 4000 pomiarów" → poprawić (rys. 5.5 pokazuje 77 989)
+- [ ] §3.2, §3.4: odwołania do wzoru (6.1) przed jego pojawieniem — przenieść wzór do rozdz. 3
+- [ ] (3.11)–(3.13) vs (6.1): usunąć redundancję
+- [ ] Ujednolicić jitter: tekst 15/10 vs zrzut 20/12 vs JSON 10/5
+- [ ] Tab. 4.1: dopisać Recharts
+- [ ] §7.7 vs §6.4: rozjazd w treści H4
+- [ ] Literówka „aggregatorzy" → „agregatorzy"
+- [ ] Wstęp: mocniejsze wiązanie tytułu z treścią
+
+---
+
+## KALENDARZ DO 11 WRZEŚNIA
+
+| Termin | Zakres |
+|---|---|
+| 18–19 VIII | Build, deploy, upload, partia 24 testów. Równolegle: 1.2 i 3.3 (nie zależą od nowych liczb) |
+| 20–22 VIII | Nowa tabela 7.1. FAZA 1 w całości (1.1, 1.3) + 2.1, 2.2 |
+| 23–27 VIII | FAZA 3: demand response (3.1), statystyki cen (3.2), znormalizowany CVaR (3.4) |
+| 28–31 VIII | FAZA 4 wg pozostałego czasu; decyzja o B4 |
+| 1–5 IX | FAZA 5, przegląd całości, spójność tabel i rysunków |
+| 6–9 IX | Bufor: promotor, korekta, wydruk |
+| 11 IX | APD |
+
+---
+
+## OSTRZEŻENIE — ZMIANA WZGLĘDEM POPRZEDNIEJ TEZY
+
+Do audytu v3 obowiązywało: „wszystkie znalezione błędy zawyżają atrakcyjność RDN i G12,
+więc korekta wzmocni wniosek o nieopłacalności RDN". **To już nie jest prawdą.**
+
+| błąd | kierunek |
+|---|---|
+| aliasing bojlera i klimatyzacji | ↑ płaska składowa zużycia → **na korzyść RDN i G12** |
+| ucięte harmonogramy przez północ (B2) | ↓ zużycie nocne → **przeciw G12 i RDN** |
+| światło palące się do 23:00 (B3) | ↑ zużycie w szczycie wieczornym → **przeciw RDN** |
+| tętnienie bojlera (A.3a) | losowe, wartość oczekiwana ≈ 0 |
+
+B2 i B3 działają przeciwnie do B1. **Kierunku zmiany wyniku nie da się przewidzieć
+przed rerunem** — zdania do punktu 2.2 nie wolno przepisać z planu, trzeba je napisać
+po porównaniu nowej tabeli 7.1 ze starą.
+
+Co się nie zmienia: praca uczciwie raportuje wynik negatywny i konfrontuje go
+z literaturą (§7.6). Ta narracja zostaje niezależnie od tego, w którą stronę pojadą liczby.
 
 ---
 
 ## PYTANIA NA OBRONĘ
 
-1. "Uśrednił Pan zużycie po 30 dobach. Co mierzy Pana CVaR?" → §3.5 zaktualizowane (1.2)
-2. "Skąd 1,10 zł/kWh dla G11 i dlaczego porównywalne z RDN oddolnie?" → potrzebna dekompozycja G11
-3. "Praca nazywa się Smart Home. Gdzie sterowanie?" → §7.7 nowy demand response (3.1)
-4. "Dlaczego uśrednia Pan procenty a nie kwoty?" → §7.1 obie miary (1.1)
-5. "Czy przy innej relacji stawek G12 wnioski by się utrzymały?" → tornado (3.3)
-6. "Czy sześć profili reprezentuje polskie gospodarstwa?" → zawężenie (4.1) + walidacja
-7. "Jaka jest niepewność +0,97%?" → wielokrotne ziarna (4.5) lub przyznać brak
-8. **NOWE:** "Czy bojler w Pana modelu nie ma problemu aliasingu przy próbkowaniu 5-min?" → sekcja Ograniczenia (2.2)
-9. **NOWE:** "CVaR liczony na 2 najgorszych dobach z 30 — czy to nie za mała próba?" → §3.5 wprost (1.2)
+1. „Uśrednił Pan zużycie po 30 dobach — co w takim razie mierzy CVaR?" → §3.5 po 1.2
+2. „Skąd 1,10 zł/kWh dla G11 i dlaczego to porównywalne z RDN składanym oddolnie?" → potrzebna dekompozycja G11 na te same składniki
+3. „Praca nazywa się Smart Home — gdzie sterowanie?" → §7.7 po 3.1
+4. „Dlaczego uśrednia Pan procenty, a nie kwoty?" → §7.1 po 1.1
+5. „Czy przy innej relacji stawek G12 wnioski by się utrzymały?" → tornado, 3.3
+6. „Czy sześć profili reprezentuje polskie gospodarstwa?" → zawężenie 4.1
+7. „Jaka jest niepewność +0,97 %?" → 4.5 albo przyznać brak
+8. „Czy nie ma aliasingu przy próbkowaniu 5-minutowym?" → sekcja z 2.2
+9. „CVaR na 2 najgorszych dobach z 30 — czy to nie za mała próba?" → §3.5 po 1.2

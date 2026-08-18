@@ -94,11 +94,11 @@ VAT_MULTIPLIER = 1.23
 # --- Profile i sezony harmonogramowe (z partii user'a) ---
 PROFILES = {
     "A": "Singiel-biuro",
-    "B": "Remote worker",
+    "B": "Pracownik zdalny",
     "C": "Rodzina 2+2",
     "D": "Senior samotny",
     "E": "Studenci",
-    "F": "Para DINK",
+    "F": "Para bez dzieci",
 }
 SCHEDULE_SEASONS = ["Zima", "Wiosna", "Lato", "Jesien"]
 
@@ -264,7 +264,15 @@ def recalculate_costs(
         day_g12 = 0.0
         for h in range(24):
             kwh = float(daily_profile_kwh[h])
-            price_rdn = hour_prices.get(h, 0.0)
+            # NIE uzywac .get(h, 0.0): brakujaca cena dawala 0 zl/kWh, czyli DARMOWA
+            # energie w tej godzinie, co po cichu zanizalo koszt RDN. Lepiej wywalic sie
+            # glosno niz oddac wynik, ktory wyglada poprawnie.
+            if h not in hour_prices:
+                raise ValueError(
+                    f"Brak ceny RDN dla {day} godz. {h:02d}. Uzupelnij backfill PSE "
+                    f"(POST /prices/backfill) albo zawez okno sezonu."
+                )
+            price_rdn = hour_prices[h]
             day_rdn += kwh * price_rdn
             day_g11 += kwh * G11_PLN_KWH
             day_g12 += kwh * g12_price_for_hour(h)
@@ -326,6 +334,13 @@ def gather_all_data(api_key: str) -> Tuple[pd.DataFrame, Dict[str, np.ndarray]]:
         if not hourly:
             print(f"      [WARN] Brak hourlyBreakdown dla testu {t['testId']}")
             continue
+        # 30 dob x 24 godziny = 720. Mniej oznacza, ze czesc pomiarow nie dojechala
+        # do InfluxDB (rozlaczenie MQTT / rate limit / retencja) albo wypadla poza
+        # okno `range` w zapytaniu Flux. Profil dobowy da sie z tego policzyc, ale
+        # totalKwh i liczba pomiarow w pracy beda zanizone - lepiej wiedziec od razu.
+        if len(hourly) != 720:
+            print(f"      [!!] {code}_{sezon}: {len(hourly)} godzin zamiast 720 "
+                  f"({len(hourly) / 720:.1%} pokrycia) - sprawdz logi backendu")
         profile = build_daily_profile(hourly)
         key = f"{code}_{sezon}"
         profiles[key] = profile
@@ -341,6 +356,19 @@ def gather_all_data(api_key: str) -> Tuple[pd.DataFrame, Dict[str, np.ndarray]]:
         by_day = group_prices_by_day(prices)
         seasonal_prices[season_name] = by_day
         print(f"      Pobrano {len(prices)} rekordow ({len(by_day)} dni)")
+
+        # Kompletnosc: oczekujemy 30 dob x 24 godziny. Dziury byly dotad niewidoczne,
+        # bo brakujaca godzina schodzila do ceny 0 zl. Zmiana czasu 26.10.2025 wypada
+        # w oknie sezonu Jesien - PSE zwraca wtedy 100 kwadransow, a PseApiClient
+        # mapuje oba bloki 02:00 na godzine 2 (usrednia 8 kwadransow w jedna cene).
+        expected_days = (to_d - from_d).days + 1
+        if len(by_day) != expected_days:
+            raise ValueError(f"{season_name}: {len(by_day)} dni zamiast {expected_days}")
+        niepelne = {d: sorted(set(range(24)) - set(hp)) for d, hp in by_day.items()
+                    if len(hp) != 24}
+        if niepelne:
+            raise ValueError(f"{season_name}: doby z brakujacymi godzinami -> {niepelne}")
+        print(f"      [OK] kompletnosc {expected_days} dni x 24 godziny")
 
     print("\n[4/4] Re-kalkulacja: 24 testy x 4 sezony cenowe = 96 wynikow...")
     rows = []

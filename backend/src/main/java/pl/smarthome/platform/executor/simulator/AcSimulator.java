@@ -10,7 +10,8 @@ import java.util.TreeMap;
  *
  * Sterowana harmonogramem (ON/OFF wg schedule). W trakcie stanu ON
  * pracuje cyklicznie (kompresor), utrzymując zadaną temperaturę.
- * Domyślnie: 15 min ON / 15 min OFF (duty_cycle 0.5, cycle 30 min).
+ * Domyślnie: duty_cycle 0.5, cycle 43 min (43 jest wzglednie pierwsza z 5 i z 60,
+ * co eliminuje aliasing z 5-minutowym probkowaniem - patrz javadoc BoilerSimulator).
  *
  * Poza godzinami ON wg harmonogramu - wyłączona (0 W).
  */
@@ -30,7 +31,7 @@ public class AcSimulator extends BaseSimulator {
         super(config, randomSeed, globalJitterTimeMinutes, globalJitterPowerPercent);
         this.powerW = getDoubleParam("power_w", 1000);
         this.dutyCycle = Math.max(0.05, Math.min(0.95, getDoubleParam("duty_cycle", 0.5)));
-        this.cycleLengthMinutes = getIntParam("cycle_length_minutes", 30);
+        this.cycleLengthMinutes = getIntParam("cycle_length_minutes", 43);
         this.onPortionMinutes = (int) Math.round(cycleLengthMinutes * dutyCycle);
         buildTimeline();
     }
@@ -80,12 +81,13 @@ public class AcSimulator extends BaseSimulator {
 
     @Override
     public double updatePower(int simulatedMinuteOfDay) {
+        long tick = nextCycleTick();
         Boolean userWantsOn = stateTimeline.floorEntry(simulatedMinuteOfDay).getValue();
         if (userWantsOn == null || !userWantsOn) {
             return 0;
         }
-        // Duty cycle wewnątrz stanu ON
-        int positionInCycle = simulatedMinuteOfDay % cycleLengthMinutes;
+        // Duty cycle wewnątrz stanu ON - faza z licznika absolutnego, nie z minuty doby
+        int positionInCycle = (int) (tick % cycleLengthMinutes);
         if (positionInCycle < onPortionMinutes) {
             return applyPowerJitter(powerW);
         }

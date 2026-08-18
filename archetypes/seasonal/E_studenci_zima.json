@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.27,
-        "cycle_length_minutes": 37
+        "cycle_length_minutes": 43
       },
       "schedule": "always_on"
     },
@@ -45,6 +45,15 @@
         "power_w": 50
       },
       "schedule": [
+        {
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
+        },
+        {
+          "at": "01:00",
+          "action": "OFF"
+        },
         {
           "at": "10:00",
           "action": "ON"
@@ -64,10 +73,6 @@
         {
           "at": "18:00",
           "action": "ON"
-        },
-        {
-          "at": "01:00",
-          "action": "OFF"
         }
       ]
     },
@@ -80,6 +85,15 @@
       },
       "schedule": [
         {
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
+        },
+        {
+          "at": "02:00",
+          "action": "OFF"
+        },
+        {
           "at": "10:00",
           "action": "ON"
         },
@@ -90,10 +104,6 @@
         {
           "at": "16:00",
           "action": "ON"
-        },
-        {
-          "at": "02:00",
-          "action": "OFF"
         }
       ]
     },
@@ -106,6 +116,15 @@
       },
       "schedule": [
         {
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
+        },
+        {
+          "at": "02:30",
+          "action": "OFF"
+        },
+        {
           "at": "10:00",
           "action": "ON"
         },
@@ -116,10 +135,6 @@
         {
           "at": "22:00",
           "action": "ON"
-        },
-        {
-          "at": "02:30",
-          "action": "OFF"
         }
       ]
     },
@@ -131,6 +146,15 @@
         "power_w": 60
       },
       "schedule": [
+        {
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
+        },
+        {
+          "at": "00:15",
+          "action": "OFF"
+        },
         {
           "at": "10:30",
           "action": "ON"
@@ -150,10 +174,6 @@
         {
           "at": "22:30",
           "action": "ON"
-        },
-        {
-          "at": "00:15",
-          "action": "OFF"
         }
       ]
     },
@@ -166,6 +186,10 @@
         "cycle_minutes": 3
       },
       "schedule": [
+        {
+          "at": "00:30",
+          "action": "ON"
+        },
         {
           "at": "10:30",
           "action": "ON"
@@ -181,10 +205,6 @@
         {
           "at": "22:00",
           "action": "ON"
-        },
-        {
-          "at": "00:30",
-          "action": "ON"
         }
       ]
     },
@@ -197,12 +217,17 @@
       },
       "schedule": [
         {
-          "at": "19:00",
-          "action": "ON"
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
         },
         {
           "at": "02:00",
           "action": "OFF"
+        },
+        {
+          "at": "19:00",
+          "action": "ON"
         }
       ]
     },
@@ -214,9 +239,18 @@
         "idle_power_w": 120,
         "burst_power_w": 450,
         "burst_length_minutes": 25,
-        "burst_interval_minutes": 15
+        "burst_interval_minutes": 45
       },
       "schedule": [
+        {
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
+        },
+        {
+          "at": "02:00",
+          "action": "OFF"
+        },
         {
           "at": "12:00",
           "action": "ON"
@@ -228,10 +262,6 @@
         {
           "at": "20:00",
           "action": "ON"
-        },
-        {
-          "at": "02:00",
-          "action": "OFF"
         }
       ]
     },
@@ -243,16 +273,21 @@
         "idle_power_w": 100,
         "burst_power_w": 380,
         "burst_length_minutes": 20,
-        "burst_interval_minutes": 20
+        "burst_interval_minutes": 40
       },
       "schedule": [
         {
-          "at": "18:00",
-          "action": "ON"
+          "at": "00:00",
+          "action": "ON",
+          "jitter_time_minutes": 0
         },
         {
           "at": "01:30",
           "action": "OFF"
+        },
+        {
+          "at": "18:00",
+          "action": "ON"
         }
       ]
     },
