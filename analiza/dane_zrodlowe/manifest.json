@@ -1,11 +1,9 @@
 {
- "zrzutWykonany": "2026-08-18T15:48:17+00:00",
+ "zrzutWykonany": "2026-08-18T16:01:20+00:00",
  "zrodlo": "http://3.77.28.199/api/v1",
  "prefiksPartii": "[Partia 2026-08-18T09:38]",
  "liczbaTestow": 24,
- "liczbaCen": 2856,
- "walidacja": "PROBLEMY",
- "problemy": [
-  "ceny Jesien: 29 dob zamiast 30"
- ]
+ "liczbaCen": 2880,
+ "walidacja": "OK",
+ "problemy": []
 }

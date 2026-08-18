@@ -75,7 +75,7 @@ public class ExportService {
             BigDecimal kwh = e.getValue();
 
             BigDecimal costG11 = kwh.multiply(TariffParams.g11Price(year));
-            BigDecimal costG12 = kwh.multiply(TariffParams.g12PriceForHour(year, hour));
+            BigDecimal costG12 = kwh.multiply(TariffParams.g12PriceForHour(year, date, hour));
 
             // Cena RDN z bazy
             BigDecimal rdnPrice = energyPriceService.getPriceForHour("RDN", date, hour)
@@ -141,7 +141,7 @@ public class ExportService {
                 BigDecimal kwh = e.getValue();
 
                 BigDecimal costG11 = kwh.multiply(TariffParams.g11Price(year));
-                BigDecimal costG12 = kwh.multiply(TariffParams.g12PriceForHour(year, hour));
+                BigDecimal costG12 = kwh.multiply(TariffParams.g12PriceForHour(year, date, hour));
                 BigDecimal rdnPrice = energyPriceService.getPriceForHour("RDN", date, hour)
                         .orElse(BigDecimal.ZERO);
                 BigDecimal costRdn = rdnPrice.compareTo(BigDecimal.ZERO) > 0

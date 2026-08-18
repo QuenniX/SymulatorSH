@@ -1,0 +1,31 @@
+
+Prog oplacalnosci G12 vs G11: 23.5% zuzycia w strefie nocnej
+
+UDZIAL STREFY NOCNEJ [%] - pogrubione ponizej progu (G11 tansza od G12)
+
+Wariant                    A-Zim     A-Jes     B-Zim     B-Jes     C-Zim     C-Jes     D-Zim     D-Jes     E-Zim     E-Jes     F-Zim     F-Jes
+----------------------------------------------------------------------------------------------------------------------------------------------
+obecny (addytywny)        27.9%     22.6%*    31.4%     30.8%     27.0%     21.8%*    25.5%     19.4%*    37.7%     42.3%     28.3%     25.4% 
+x1,40                     25.5%     21.3%*    29.8%     30.2%     27.0%     24.3%     22.8%*    16.5%*    37.1%     42.4%     26.5%     23.5%*
+x1,35                     25.5%     21.3%*    29.8%     30.2%     27.0%     24.3%     22.8%*    16.5%*    37.1%     42.4%     26.5%     23.5%*
+x1,25                     24.9%     21.3%*    29.5%     30.2%     26.2%     24.3%     22.1%*    16.5%*    37.0%     42.4%     25.9%     23.5%*
+bez modyfikatora          24.3%     19.7%*    29.1%     29.6%     25.3%     23.5%     21.4%*    14.7%*    36.9%     42.4%     24.7%     22.3%*
+   (* = ponizej progu 23.5%)
+   UWAGA: udzialy powyzej pochodza z MODELU ANALITYCZNEGO, nie z pomiaru.
+   Sluza do porownan miedzy wariantami; rozstrzygniecia dla pojedynczych
+   przypadkow podaje tabela_zbiorcza.md, liczona na zmierzonych profilach.
+
+AGREGATY (24 przypadki diagonalne)
+
+Wariant                 kWh/dobe sr.  bojler %  RDN vs G11  RDN vs G12  G12 vs G11  G11>G12 (model)
+---------------------------------------------------------------------------------------------------
+obecny (addytywny)              27.8    34.2%     -8.99%    -14.08%      4.47%             4/24
+x1,40                           26.5    30.9%     -9.01%    -13.74%      4.16%             5/24
+x1,35                           26.5    30.9%     -9.01%    -13.74%      4.16%             5/24
+x1,25                           26.2    30.0%     -9.01%    -13.64%      4.07%             5/24
+bez modyfikatora                25.4    28.0%     -9.06%    -13.47%      3.89%             5/24
+
+   Kolumna 'G11>G12 (model)' liczona na profilach analitycznych i sluzy tylko
+   do sledzenia kierunku zmiany miedzy wariantami. Na zmierzonych profilach
+   (tabela_zbiorcza.md) liczba tych przypadkow jest inna - to nie jest sprzecznosc,
+   tylko roznica zrodla danych.

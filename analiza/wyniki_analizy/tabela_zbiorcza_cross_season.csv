@@ -1,97 +1,97 @@
-profil_kod;profil_nazwa;sezon_harmonogram;sezon_ceny;koszt_G11_pln;koszt_G12_pln;koszt_RDN_pln;oszczednosc_RDN_vs_G11_pct;oszczednosc_RDN_vs_G12_pct;VaR95_RDN_pln;CVaR95_RDN_pln;dni_pokryte;diagonal
-F;Para DINK;Jesien;Zima;931,53;741,56;924,17;0,79;-24,63;36,41;38,88;30;False
-F;Para DINK;Jesien;Wiosna;931,53;741,56;865,15;7,13;-16,67;32,05;32,54;30;False
-F;Para DINK;Jesien;Lato;931,53;741,56;933,53;-0,21;-25,89;33,53;34,38;30;False
-F;Para DINK;Jesien;Jesien;900,48;716,84;873,48;3,0;-21,85;34,54;35,69;29;True
-F;Para DINK;Lato;Zima;968,86;807,7;975,54;-0,69;-20,78;38,72;41,84;30;False
-F;Para DINK;Lato;Wiosna;968,86;807,7;910,52;6,02;-12,73;33,67;34,38;30;False
-F;Para DINK;Lato;Lato;968,86;807,7;982,17;-1,37;-21,6;36,13;36,92;30;True
-F;Para DINK;Lato;Jesien;936,57;780,77;928,36;0,88;-18,9;36,85;38,52;29;False
-F;Para DINK;Wiosna;Zima;639,08;512,46;633,4;0,89;-23,6;25,0;26,73;30;False
-F;Para DINK;Wiosna;Wiosna;639,08;512,46;589,86;7,7;-15,1;21,98;22,22;30;True
-F;Para DINK;Wiosna;Lato;639,08;512,46;635,77;0,52;-24,06;22,82;23,24;30;False
-F;Para DINK;Wiosna;Jesien;617,78;495,38;598,16;3,18;-20,75;23,79;24,55;29;False
-F;Para DINK;Zima;Zima;1546,02;1242,11;1526,06;1,29;-22,86;60,05;63,97;30;True
-F;Para DINK;Zima;Wiosna;1546,02;1242,11;1452,75;6,03;-16,96;53,7;54,6;30;False
-F;Para DINK;Zima;Lato;1546,02;1242,11;1565,71;-1,27;-26,05;57,28;58,79;30;False
-F;Para DINK;Zima;Jesien;1494,49;1200,71;1443,35;3,42;-20,21;57,19;59,03;29;False
-E;Studenci;Jesien;Zima;698,23;585,74;701,65;-0,49;-19,79;27,73;29,98;30;False
-E;Studenci;Jesien;Wiosna;698,23;585,74;649,93;6,92;-10,96;24,27;24,9;30;False
-E;Studenci;Jesien;Lato;698,23;585,74;710,26;-1,72;-21,26;26,34;27,13;30;False
-E;Studenci;Jesien;Jesien;674,96;566,22;663,39;1,71;-17,16;26,24;27,34;29;True
-E;Studenci;Lato;Zima;976,56;832,6;993,99;-1,78;-19,38;39,57;43,22;30;False
-E;Studenci;Lato;Wiosna;976,56;832,6;902,72;7,56;-8,42;33,97;34,67;30;False
-E;Studenci;Lato;Lato;976,56;832,6;986,59;-1,03;-18,5;36,7;37,33;30;True
-E;Studenci;Lato;Jesien;944,01;804,84;942,03;0,21;-17,04;37,49;39,29;29;False
-E;Studenci;Wiosna;Zima;622,86;512,98;622,91;-0,01;-21,43;24,73;26,75;30;False
-E;Studenci;Wiosna;Wiosna;622,86;512,98;564,03;9,45;-9,95;21,39;21,63;30;True
-E;Studenci;Wiosna;Lato;622,86;512,98;615,02;1,26;-19,89;22,4;22,62;30;False
-E;Studenci;Wiosna;Jesien;602,09;495,88;586,52;2,59;-18,28;23,33;24,27;29;False
-E;Studenci;Zima;Zima;1603,66;1349,46;1612,06;-0,52;-19,46;63,82;68,61;30;True
-E;Studenci;Zima;Wiosna;1603,66;1349,46;1542,41;3,82;-14,3;57,04;58,34;30;False
-E;Studenci;Zima;Lato;1603,66;1349,46;1656,94;-3,32;-22,79;62,29;64,12;30;False
-E;Studenci;Zima;Jesien;1550,21;1304,48;1541,53;0,56;-18,17;62,14;64,58;29;False
-D;Senior samotny;Jesien;Zima;657,85;633,23;680,11;-3,38;-7,4;26,95;30,18;30;False
-D;Senior samotny;Jesien;Wiosna;657,85;633,23;586,74;10,81;7,34;23,13;23,74;30;False
-D;Senior samotny;Jesien;Lato;657,85;633,23;657,24;0,09;-3,79;25,07;25,35;30;False
-D;Senior samotny;Jesien;Jesien;635,92;612,12;634,3;0,26;-3,62;25,84;27,05;29;True
-D;Senior samotny;Lato;Zima;751,61;705,88;783,92;-4,3;-11,06;31,23;35,31;30;False
-D;Senior samotny;Lato;Wiosna;751,61;705,88;644,36;14,27;8,72;25,74;26,27;30;False
-D;Senior samotny;Lato;Lato;751,61;705,88;729,03;3,0;-3,28;26,86;27,42;30;True
-D;Senior samotny;Lato;Jesien;726,55;682,35;724,83;0,24;-6,23;29,33;30,75;29;False
-D;Senior samotny;Wiosna;Zima;427,58;411,22;443,62;-3,75;-7,88;17,62;20,04;30;False
-D;Senior samotny;Wiosna;Wiosna;427,58;411,22;349,07;18,36;15,11;14,54;14,77;30;True
-D;Senior samotny;Wiosna;Lato;427,58;411,22;397,61;7,01;3,31;14,86;15,19;30;False
-D;Senior samotny;Wiosna;Jesien;413,33;397,51;403,7;2,33;-1,56;16,69;17,26;29;False
-D;Senior samotny;Zima;Zima;1291,34;1190,46;1337,42;-3,57;-12,34;53,18;58,57;30;True
-D;Senior samotny;Zima;Wiosna;1291,34;1190,46;1235,32;4,34;-3,77;47,02;48,21;30;False
-D;Senior samotny;Zima;Lato;1291,34;1190,46;1338,71;-3,67;-12,45;51,15;52,15;30;False
-D;Senior samotny;Zima;Jesien;1248,3;1150,78;1282,71;-2,76;-11,46;52,89;55,26;29;False
-C;Rodzina 2+2;Jesien;Zima;1066,74;1066,62;1130,11;-5,94;-5,95;45,36;50,59;30;False
-C;Rodzina 2+2;Jesien;Wiosna;1066,74;1066,62;1063,32;0,32;0,31;40,95;41,81;30;False
-C;Rodzina 2+2;Jesien;Lato;1066,74;1066,62;1139,51;-6,82;-6,83;44,98;46,1;30;False
-C;Rodzina 2+2;Jesien;Jesien;1031,18;1031,06;1110,15;-7,66;-7,67;47,42;50,23;29;True
-C;Rodzina 2+2;Lato;Zima;1269,47;1233,28;1343,66;-5,84;-8,95;53,92;60,47;30;False
-C;Rodzina 2+2;Lato;Wiosna;1269,47;1233,28;1201,14;5,38;2,61;46,56;47,39;30;False
-C;Rodzina 2+2;Lato;Lato;1269,47;1233,28;1306,64;-2,93;-5,95;50,37;50,7;30;True
-C;Rodzina 2+2;Lato;Jesien;1227,16;1192,17;1292,54;-5,33;-8,42;53,71;56,62;29;False
-C;Rodzina 2+2;Wiosna;Zima;936,22;921,15;989,83;-5,73;-7,45;39,83;44,41;30;False
-C;Rodzina 2+2;Wiosna;Wiosna;936,22;921,15;915,58;2,2;0,6;35,44;36,02;30;True
-C;Rodzina 2+2;Wiosna;Lato;936,22;921,15;978,59;-4,53;-6,23;37,83;38,5;30;False
-C;Rodzina 2+2;Wiosna;Jesien;905,01;890,45;966,85;-6,83;-8,58;41,29;43,49;29;False
-C;Rodzina 2+2;Zima;Zima;1956,99;1910,87;2061,91;-5,36;-7,9;82,54;91,23;30;True
-C;Rodzina 2+2;Zima;Wiosna;1956,99;1910,87;1952,86;0,21;-2,2;74,31;75,86;30;False
-C;Rodzina 2+2;Zima;Lato;1956,99;1910,87;2088,92;-6,74;-9,32;81,93;83,99;30;False
-C;Rodzina 2+2;Zima;Jesien;1891,76;1847,18;2016,65;-6,6;-9,17;84,42;88,94;29;False
-B;Remote worker;Jesien;Zima;779,02;754,57;824,46;-5,83;-9,26;32,98;37,47;30;False
-B;Remote worker;Jesien;Wiosna;779,02;754,57;706,07;9,36;6,43;28,39;28,95;30;False
-B;Remote worker;Jesien;Lato;779,02;754,57;781,89;-0,37;-3,62;29,95;30,51;30;False
-B;Remote worker;Jesien;Jesien;753,06;729,42;780,32;-3,62;-6,98;32,74;34,26;29;True
-B;Remote worker;Lato;Zima;967,12;928,21;1016,24;-5,08;-9,48;40,48;46,08;30;False
-B;Remote worker;Lato;Wiosna;967,12;928,21;832,82;13,89;10,28;33,87;34,55;30;False
-B;Remote worker;Lato;Lato;967,12;928,21;943,38;2,45;-1,63;35,31;36,22;30;True
-B;Remote worker;Lato;Jesien;934,89;897,27;942,71;-0,84;-5,06;38,81;40,64;29;False
-B;Remote worker;Wiosna;Zima;627,71;578,83;654,62;-4,29;-13,09;26,04;29,44;30;False
-B;Remote worker;Wiosna;Wiosna;627,71;578,83;541,85;13,68;6,39;22,02;22,35;30;True
-B;Remote worker;Wiosna;Lato;627,71;578,83;606,99;3,3;-4,86;22,48;23,13;30;False
-B;Remote worker;Wiosna;Jesien;606,78;559,54;608,29;-0,25;-8,71;25,23;26,28;29;False
-B;Remote worker;Zima;Zima;1503,42;1457,48;1579,1;-5,03;-8,34;62,99;70,41;30;True
-B;Remote worker;Zima;Wiosna;1503,42;1457,48;1438,12;4,34;1,33;56,08;57,29;30;False
-B;Remote worker;Zima;Lato;1503,42;1457,48;1574,3;-4,71;-8,01;62,05;63,25;30;False
-B;Remote worker;Zima;Jesien;1453,3;1408,9;1510,16;-3,91;-7,19;62,09;65,37;29;False
-A;Singiel-biuro;Jesien;Zima;593,67;594,38;642,27;-8,19;-8,06;26,13;29,74;30;False
-A;Singiel-biuro;Jesien;Wiosna;593,67;594,38;564,96;4,84;4,95;21,72;21,96;30;False
-A;Singiel-biuro;Jesien;Lato;593,67;594,38;604,9;-1,89;-1,77;22,68;23,18;30;False
-A;Singiel-biuro;Jesien;Jesien;573,88;574,57;623,81;-8,7;-8,57;26,12;27,78;29;True
-A;Singiel-biuro;Lato;Zima;781,92;774,17;834,1;-6,67;-7,74;33,55;38,28;30;False
-A;Singiel-biuro;Lato;Wiosna;781,92;774,17;704,29;9,93;9,03;27,94;28,37;30;False
-A;Singiel-biuro;Lato;Lato;781,92;774,17;778,47;0,44;-0,56;29,18;29,89;30;True
-A;Singiel-biuro;Lato;Jesien;755,86;748,37;789,36;-4,43;-5,48;32,53;34,42;29;False
-A;Singiel-biuro;Wiosna;Zima;462,01;447,79;491,01;-6,28;-9,65;19,85;22,34;30;False
-A;Singiel-biuro;Wiosna;Wiosna;462,01;447,79;431,48;6,61;3,64;16,53;16,64;30;True
-A;Singiel-biuro;Wiosna;Lato;462,01;447,79;464,0;-0,43;-3,62;17,13;17,46;30;False
-A;Singiel-biuro;Wiosna;Jesien;446,61;432,87;471,15;-5,49;-8,84;19,41;20,48;29;False
-A;Singiel-biuro;Zima;Zima;1228,31;1229,24;1315,78;-7,12;-7,04;53,27;60,1;30;True
-A;Singiel-biuro;Zima;Wiosna;1228,31;1229,24;1207,35;1,71;1,78;46,97;47,83;30;False
-A;Singiel-biuro;Zima;Lato;1228,31;1229,24;1297,46;-5,63;-5,55;50,76;52,2;30;False
-A;Singiel-biuro;Zima;Jesien;1187,37;1188,27;1281,33;-7,91;-7,83;54,18;57,68;29;False
+profil_kod;profil_nazwa;sezon_harmonogram;sezon_ceny;udzial_strefy_nocnej_pct;koszt_G11_pln;koszt_G12_pln;koszt_RDN_pln;roznica_RDN_vs_G11_pct;roznica_RDN_vs_G12_pct;VaR95_RDN_pln;CVaR95_RDN_pln;dni_pokryte;diagonal
+A;Singiel-biuro;Jesien;Zima;23,56;555,45;555,27;623,23;-12,2;-12,24;24,6;27,21;30;False
+A;Singiel-biuro;Jesien;Wiosna;23,32;555,45;556,03;620,62;-11,73;-11,62;24,02;24,74;30;False
+A;Singiel-biuro;Jesien;Lato;23,32;555,45;556,03;665,46;-19,8;-19,68;27,48;28,84;30;False
+A;Singiel-biuro;Jesien;Jesien;23,56;555,45;555,27;631,87;-13,76;-13,79;26,15;27,9;30;True
+A;Singiel-biuro;Lato;Zima;38,31;687,35;628,26;759,72;-10,53;-20,93;29,98;33,09;30;False
+A;Singiel-biuro;Lato;Wiosna;38,07;687,35;629,23;707,89;-2,99;-12,5;27,31;27,89;30;False
+A;Singiel-biuro;Lato;Lato;38,07;687,35;629,23;769,31;-11,92;-22,26;30,16;30,86;30;True
+A;Singiel-biuro;Lato;Jesien;38,31;687,35;628,26;748,74;-8,93;-19,18;29,83;31,36;30;False
+A;Singiel-biuro;Wiosna;Zima;28,25;335,76;326,49;373,74;-11,31;-14,47;14,75;16,25;30;False
+A;Singiel-biuro;Wiosna;Wiosna;27,85;335,76;327,28;369,8;-10,14;-12,99;14,39;14,79;30;True
+A;Singiel-biuro;Wiosna;Lato;27,85;335,76;327,28;396,08;-17,97;-21,02;16,18;16,96;30;False
+A;Singiel-biuro;Wiosna;Jesien;28,25;335,76;326,49;375,55;-11,85;-15,02;15,47;16,34;30;False
+A;Singiel-biuro;Zima;Zima;27,79;1185,42;1155,89;1322,73;-11,58;-14,43;52,18;56,89;30;True
+A;Singiel-biuro;Zima;Wiosna;27,64;1185,42;1156,93;1307,71;-10,32;-13,03;49,47;50,64;30;False
+A;Singiel-biuro;Zima;Lato;27,64;1185,42;1156,93;1389,49;-17,21;-20,1;55,52;57,81;30;False
+A;Singiel-biuro;Zima;Jesien;27,79;1185,42;1155,89;1336,21;-12,72;-15,6;54,19;56,98;30;False
+B;Pracownik zdalny;Jesien;Zima;29,09;772,41;747,34;863,15;-11,75;-15,5;33,97;37,98;30;False
+B;Pracownik zdalny;Jesien;Wiosna;24,79;772,41;766,65;753,05;2,51;1,77;29,69;30,35;30;False
+B;Pracownik zdalny;Jesien;Lato;24,79;772,41;766,65;836,74;-8,33;-9,14;32,3;32,61;30;False
+B;Pracownik zdalny;Jesien;Jesien;29,09;772,41;747,34;832,05;-7,72;-11,33;32,94;34,52;30;True
+B;Pracownik zdalny;Lato;Zima;42,04;905,37;807,97;999,11;-10,35;-23,66;39,23;43,82;30;False
+B;Pracownik zdalny;Lato;Wiosna;33,09;905,37;854,99;841,51;7,05;1,58;33,21;33,88;30;False
+B;Pracownik zdalny;Lato;Lato;33,09;905,37;854,99;945,24;-4,4;-10,56;35,26;35,74;30;True
+B;Pracownik zdalny;Lato;Jesien;42,04;905,37;807,97;948,96;-4,81;-17,45;36,87;38,5;30;False
+B;Pracownik zdalny;Wiosna;Zima;33,14;529,37;499,76;589,59;-11,38;-17,98;23,2;25,99;30;False
+B;Pracownik zdalny;Wiosna;Wiosna;30,66;529,37;507,38;485,66;8,26;4,28;19,49;19,77;30;True
+B;Pracownik zdalny;Wiosna;Lato;30,66;529,37;507,38;547,14;-3,36;-7,84;20,38;20,72;30;False
+B;Pracownik zdalny;Wiosna;Jesien;33,14;529,37;499,76;555,1;-4,86;-11,07;21,73;22,63;30;False
+B;Pracownik zdalny;Zima;Zima;32,6;1407,53;1333,16;1569,08;-11,48;-17,7;61,75;68,04;30;True
+B;Pracownik zdalny;Zima;Wiosna;26,73;1407,53;1381,17;1439,34;-2,26;-4,21;55,04;56,19;30;False
+B;Pracownik zdalny;Zima;Lato;26,73;1407,53;1381,17;1563,22;-11,06;-13,18;59,95;61,42;30;False
+B;Pracownik zdalny;Zima;Jesien;32,6;1407,53;1333,16;1540,28;-9,43;-15,54;60,92;63,62;30;False
+C;Rodzina 2+2;Jesien;Zima;24,39;1065,17;1059,68;1200,25;-12,68;-13,27;47,67;52,85;30;False
+C;Rodzina 2+2;Jesien;Wiosna;26,1;1065,17;1049,07;1135,33;-6,59;-8,22;43,39;44,26;30;False
+C;Rodzina 2+2;Jesien;Lato;26,1;1065,17;1049,07;1211,15;-13,71;-15,45;47,35;48,5;30;False
+C;Rodzina 2+2;Jesien;Jesien;24,39;1065,17;1059,68;1208,28;-13,44;-14,02;49,75;52,67;30;True
+C;Rodzina 2+2;Lato;Zima;32,61;1282,52;1214,74;1432,2;-11,67;-17,9;56,84;63,01;30;False
+C;Rodzina 2+2;Lato;Wiosna;33,41;1282,52;1208,78;1306,29;-1,85;-8,07;49,96;50,72;30;False
+C;Rodzina 2+2;Lato;Lato;33,41;1282,52;1208,78;1406,93;-9,7;-16,39;53,57;54,04;30;True
+C;Rodzina 2+2;Lato;Jesien;32,61;1282,52;1214,74;1417,68;-10,54;-16,71;57,08;59,95;30;False
+C;Rodzina 2+2;Wiosna;Zima;27,77;921,93;899,07;1034,66;-12,23;-15,08;41,14;45,57;30;False
+C;Rodzina 2+2;Wiosna;Wiosna;29,35;921,93;890,63;959,6;-4,09;-7,74;36,64;37,24;30;True
+C;Rodzina 2+2;Wiosna;Lato;29,35;921,93;890,63;1025,01;-11,18;-15,09;39,36;39,93;30;False
+C;Rodzina 2+2;Wiosna;Jesien;27,77;921,93;899,07;1031,67;-11,9;-14,75;42,05;44,12;30;False
+C;Rodzina 2+2;Zima;Zima;27,03;1785,05;1748,45;2004,73;-12,31;-14,66;79,42;87,41;30;True
+C;Rodzina 2+2;Zima;Wiosna;28,11;1785,05;1737,33;1920,82;-7,61;-10,56;72,58;74,1;30;False
+C;Rodzina 2+2;Zima;Lato;28,11;1785,05;1737,33;2043,56;-14,48;-17,63;80,04;82,13;30;False
+C;Rodzina 2+2;Zima;Jesien;27,03;1785,05;1748,45;2018,79;-13,09;-15,46;81,96;86,54;30;False
+D;Senior samotny;Jesien;Zima;20,39;605,94;616,88;675,6;-11,5;-9,52;26,6;29,74;30;False
+D;Senior samotny;Jesien;Wiosna;21,82;605,94;611,84;594,7;1,86;2,8;23,29;23,8;30;False
+D;Senior samotny;Jesien;Lato;21,82;605,94;611,84;652,64;-7,71;-6,67;24,91;25,08;30;False
+D;Senior samotny;Jesien;Jesien;20,39;605,94;616,88;653,3;-7,81;-5,9;26,22;27,4;30;True
+D;Senior samotny;Lato;Zima;33,36;747,21;704,44;825,02;-10,41;-17,12;32,48;36,24;30;False
+D;Senior samotny;Lato;Wiosna;34,69;747,21;698,66;700,27;6,28;-0,23;27,42;27,82;30;False
+D;Senior samotny;Lato;Lato;34,69;747,21;698,66;775,53;-3,79;-11,0;28,2;28,81;30;True
+D;Senior samotny;Lato;Jesien;33,36;747,21;704,44;786,19;-5,22;-11,6;30,74;32,14;30;False
+D;Senior samotny;Wiosna;Zima;20,44;401,24;408,37;445,54;-11,04;-9,1;17,51;19,73;30;False
+D;Senior samotny;Wiosna;Wiosna;22,3;401,24;404,05;362,77;9,59;10,22;14,71;14,92;30;True
+D;Senior samotny;Wiosna;Lato;22,3;401,24;404,05;404,78;-0,88;-0,18;14,92;15,28;30;False
+D;Senior samotny;Wiosna;Jesien;20,44;401,24;408,37;417,95;-4,16;-2,34;16,73;17,31;30;False
+D;Senior samotny;Zima;Zima;25,53;1238,46;1223,9;1385,77;-11,89;-13,23;54,68;60,15;30;True
+D;Senior samotny;Zima;Wiosna;26,14;1238,46;1219,47;1294,37;-4,51;-6,14;49,01;50,04;30;False
+D;Senior samotny;Zima;Lato;26,14;1238,46;1219,47;1386,03;-11,92;-13,66;53,27;54,41;30;False
+D;Senior samotny;Zima;Jesien;25,53;1238,46;1223,9;1370,3;-10,64;-11,96;54,78;57,17;30;False
+E;Studenci;Jesien;Zima;43,35;752,34;665,64;820,5;-9,06;-23,26;32,17;35,02;30;False
+E;Studenci;Jesien;Wiosna;42,17;752,34;670,82;783,25;-4,11;-16,76;29,34;30,02;30;False
+E;Studenci;Jesien;Lato;42,17;752,34;670,82;846,34;-12,49;-26,16;32,62;33,68;30;False
+E;Studenci;Jesien;Jesien;43,35;752,34;665,64;811,79;-7,9;-21,96;31,94;33,55;30;True
+E;Studenci;Lato;Zima;51,34;915,09;767,2;990,03;-8,19;-29,04;38,83;42,31;30;False
+E;Studenci;Lato;Wiosna;50,67;915,09;770,79;906,4;0,95;-17,59;34,01;34,78;30;False
+E;Studenci;Lato;Lato;50,67;915,09;770,79;987,5;-7,91;-28,12;36,65;37,3;30;True
+E;Studenci;Lato;Jesien;51,34;915,09;767,2;962,59;-5,19;-25,47;37,09;38,68;30;False
+E;Studenci;Wiosna;Zima;52,32;534,15;444,8;573,71;-7,41;-28,98;22,44;24,28;30;False
+E;Studenci;Wiosna;Wiosna;50,59;534,15;450,15;531,04;0,58;-17,97;19,79;20,28;30;True
+E;Studenci;Wiosna;Lato;50,59;534,15;450,15;576,25;-7,88;-28,01;21,25;21,65;30;False
+E;Studenci;Wiosna;Jesien;52,32;534,15;444,8;557,64;-4,4;-25,37;21,51;22,39;30;False
+E;Studenci;Zima;Zima;36,75;1387,1;1280,46;1529,08;-10,24;-19,42;60,09;65,35;30;True
+E;Studenci;Zima;Wiosna;36,69;1387,1;1280,89;1470,94;-6,04;-14,84;54,78;56,02;30;False
+E;Studenci;Zima;Lato;36,69;1387,1;1280,89;1577,31;-13,71;-23,14;60,76;63,1;30;False
+E;Studenci;Zima;Jesien;36,75;1387,1;1280,46;1522,29;-9,75;-18,89;59,91;62,79;30;False
+F;Para bez dzieci;Jesien;Zima;25,58;866,95;856,48;965,67;-11,39;-12,75;38,05;41,85;30;False
+F;Para bez dzieci;Jesien;Wiosna;25,29;866,95;857,92;949,39;-9,51;-10,66;36,51;37,56;30;False
+F;Para bez dzieci;Jesien;Lato;25,29;866,95;857,92;1020,8;-17,75;-18,98;41,75;43,4;30;False
+F;Para bez dzieci;Jesien;Jesien;25,58;866,95;856,48;969,77;-11,86;-13,23;39,55;41,83;30;True
+F;Para bez dzieci;Lato;Zima;34,91;942,89;880,44;1041,67;-10,48;-18,31;41,04;45,15;30;False
+F;Para bez dzieci;Lato;Wiosna;34,67;942,89;881,74;983,52;-4,31;-11,54;37,86;38,72;30;False
+F;Para bez dzieci;Lato;Lato;34,67;942,89;881,74;1066,87;-13,15;-21,0;42,16;43,36;30;True
+F;Para bez dzieci;Lato;Jesien;34,91;942,89;880,44;1028,71;-9,1;-16,84;40,99;43,06;30;False
+F;Para bez dzieci;Wiosna;Zima;28,29;579,16;563,07;641,34;-10,74;-13,9;25,23;27,63;30;False
+F;Para bez dzieci;Wiosna;Wiosna;27,95;579,16;564,19;631,63;-9,06;-11,95;24,34;25,01;30;True
+F;Para bez dzieci;Wiosna;Lato;27,95;579,16;564,19;679,27;-17,29;-20,4;27,76;28,84;30;False
+F;Para bez dzieci;Wiosna;Jesien;28,29;579,16;563,07;640,44;-10,58;-13,74;25,91;27,27;30;False
+F;Para bez dzieci;Zima;Zima;29,39;1551,12;1498,06;1720,98;-10,95;-14,88;67,74;73,58;30;True
+F;Para bez dzieci;Zima;Wiosna;29,3;1551,12;1498,94;1684,15;-8,58;-12,36;63,21;64,74;30;False
+F;Para bez dzieci;Zima;Lato;29,3;1551,12;1498,94;1797,74;-15,9;-19,93;70,78;73,79;30;False
+F;Para bez dzieci;Zima;Jesien;29,39;1551,12;1498,06;1723,12;-11,09;-15,02;68,75;71,91;30;False

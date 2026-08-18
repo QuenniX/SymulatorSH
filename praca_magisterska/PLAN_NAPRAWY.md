@@ -172,13 +172,36 @@ udział nocny przekracza 23,8 %, a nie przekracza go tylko profil D poza sezonem
 
 ## FAZA 3 — WARTOŚĆ MERYTORYCZNA
 
-### 3.1. Scenariusz demand response · `[ ]` — największa szansa
+### 3.1. Scenariusz demand response · `[x]` **POLICZONE** (18 VIII), `[ ]` do wpisania w tekst
 Praca nazywa się „Model systemu Smart Home", §2.5 jest o demand response, a badanie
 symuluje wyłącznie biernego odbiorcę. To pierwsze pytanie, jakie padnie na obronie.
-- [ ] Skrypt: przesunięcie pralki/zmywarki/bojlera do 3 najtańszych godzin doby (liczone na wyeksportowanym profilu, bez zmian w symulatorze)
+- [x] Skrypt `analiza/demand_response_zmierzone.py` — wariant B, liczony na **zmierzonych** profilach `E_h` z partii 24 testów (nie na modelu analitycznym)
+- [x] Wyniki: `analiza/wyniki_analizy/demand_response_zmierzone.csv` + `demand_response_wydruk.txt`
+
+**Liczby (iloraz średnich, 24 przypadki × 30 dób):**
+
+| Wielkość | Biernie | Aktywnie |
+|---|---|---|
+| RDN względem G11 | −2,2 % (droższa) | **+4,3 % (tańsza)** |
+| RDN względem G12 | −7,1 % | **−14,7 %** |
+| Rachunek RDN | 22 447 zł | 21 024 zł (**−6,3 %**) |
+| Rachunek G12 | 20 955 zł | 18 322 zł (**−12,6 %**) |
+| Udział strefy nocnej | 32,0 % | 45,9 % |
+
+**Wniosek, który idzie do §7.7 i §8:** sterowanie odwraca znak porównania RDN–G11
+(z −2,2 % na +4,3 %), ale **nie** zmienia rankingu ogólnego — G12 reaguje na to samo
+sterowanie mocniej (−12,6 % wobec −6,3 %) i pozostaje najtańsza. Przyczyna jest
+policzalna: stawka nocna G12 wynosi 0,62 zł/kWh, a średnia sześciu najtańszych godzin
+RDN to 0,95 (zima), 0,65 (wiosna), 0,85 (lato), 0,90 (jesień) zł/kWh — czyli
+**strefa nocna G12 jest tańsza od najtańszych godzin RDN w każdym sezonie**.
+Stały narzut 0,435 zł/kWh netto nie podlega przesunięciu i tłumi rozpiętość RDN.
+
 - [ ] Nowa sekcja §7.7 „Scenariusz z aktywnym sterowaniem"
 - [ ] Wiersz w tabeli 7.1: „RDN + proste przesunięcie"
-- [ ] §8: „RDN nie opłaca się biernie, opłaca się przy sterowaniu — i o X %"
+- [ ] §8: „RDN nie opłaca się biernie, opłaca się przy sterowaniu względem G11 (+4,3 %) — ale nadal przegrywa z G12, która na sterowaniu zyskuje dwa razy więcej"
+- [ ] Opisać założenia: kontrfaktyk ex post, doskonała znajomość cen D+1, bezkosztowe przesunięcie → **górne** ograniczenie wartości sterowania
+- [ ] Opisać dekompozycję profilu (składnik elastyczny odtworzony z konfiguracji i przeskalowany, sztywny jako różnica; korekta ≤ 0,58 % zużycia dobowego)
+- [ ] Wspomnieć o regule racjonalnego sterownika: rezygnuje z przesunięcia w dobach, w których ograniczenie komfortu (AGD gotowe do 07:00) czyni je nieopłacalnym — średnio 2,2 doby na 30, u seniora wiosną aż 22/30
 
 ### 3.2. Statystyki opisowe cen RDN · `[x]` policzone, `[ ]` do wpisania w tekst
 Ceny RDN to najważniejsza dana wejściowa i nie ma dla nich w pracy żadnej statystyki.
@@ -186,11 +209,78 @@ Ceny RDN to najważniejsza dana wejściowa i nie ma dla nich w pracy żadnej sta
 - [ ] Wykres: 4 nałożone krzywe dobowe `c̄_h` — to jest dokładnie to, co determinuje wynik RDN
 - [ ] §7.3: doprecyzować „ceny ujemne" — po narzucie 0,435 zł/kWh netto cena detaliczna spada do ~0,45–0,55 zł/kWh, nie do zera
 
-### 3.3. Próg 459 zł/MWh + analiza wrażliwości · `[ ]` **można pisać teraz**
+### 3.3. Próg 459 zł/MWh + analiza wrażliwości · `[x]` policzone, `[ ]` do wpisania w tekst
 `c_hurt,BEP = 1,10/1,23 − 0,435 = 0,459 zł/kWh = 459 zł/MWh`
+- [x] Skrypt `analiza/wrazliwosc_bojler.py` — 5 wariantów modyfikatora sezonowego bojlera × 24 przypadki, na rzeczywistych cenach 2025
+
+**Wrażliwość na założenie o bojlerze (najbardziej arbitralny parametr modelu):**
+
+| Wariant | kWh/dobę | udział bojlera | RDN vs G11 | RDN vs G12 | G12 vs G11 | G11 > G12 |
+|---|---|---|---|---|---|---|
+| obecny (addytywny) | 27,8 | 34,2 % | −2,33 % | −7,11 % | 4,46 % | 4/24 |
+| ×1,40 | 26,5 | 30,9 % | −2,35 % | −6,81 % | 4,17 % | 5/24 |
+| ×1,35 | 26,5 | 30,9 % | −2,35 % | −6,81 % | 4,17 % | 5/24 |
+| ×1,25 | 26,2 | 30,0 % | −2,36 % | −6,72 % | 4,09 % | 5/24 |
+| bez modyfikatora | 25,4 | 28,0 % | −2,40 % | −6,57 % | 3,92 % | 6/24 |
+
+**Wniosek:** w całym zakresie prawdopodobnych wariantów wynik RDN względem G11 zmienia
+się o **0,07 p.p.** (−2,33 % → −2,40 %) — konkluzja pracy jest odporna na to założenie
+i **przeliczanie partii nie jest uzasadnione**. Przesunięcie dotyczy natomiast przewagi
+G12 (4,46 % → 3,92 %) i liczby przypadków, w których G11 wygrywa z G12 (4/24 → 6/24),
+co należy uczciwie odnotować.
+
 - [ ] Wyprowadzić w §7 — elegancko rozdziela efekt poziomu cen od efektu kształtu
 - [ ] Tornado: `c_G11 ∈ [1,00; 1,20]`, `s_marża ∈ [0,05; 0,15]`, `s_dyst ± 20 %`
-- [ ] Przemianować §7.5 na „Walidacja krzyżowa profil × sezon" — obecna nazwa „analiza wrażliwości" jest nadużyciem
+- [ ] Wstawić powyższą tabelę do §7.5 jako właściwą analizę wrażliwości
+- [ ] Przemianować dotychczasowy §7.5 na „Walidacja krzyżowa profil × sezon" — obecna nazwa „analiza wrażliwości" jest nadużyciem
+
+### 3.3b. Stawki i strefy taryfy G12 · `[!]` **BLOKUJE TEKST §7.2**
+Moduł `analiza/taryfy.py` (jedno źródło prawdy) + `analiza/wrazliwosc_g12.py`.
+
+**Defekt do usunięcia:** strefy G12 są sezonowe. Tańsze okno popołudniowe to
+13:00–15:00 w okresie zimowym (1 X – 31 III) i **15:00–17:00 w letnim (1 IV – 30 IX)**.
+W kodzie zaszyte było 13:00–15:00 przez cały rok → Wiosna (kwiecień) i Lato (lipiec)
+liczone błędnie. Agregat rusza się o 0,2 p.p., ale pojedyncze przypadki znacznie
+więcej — Pracownik zdalny latem: udział nocny **42,0 % → 33,1 %**.
+
+**Wynik kluczowy — cała różnica G11 vs G12 sprowadza się do jednej liczby:**
+`τ = (c_dzień − c_G11) / (c_dzień − c_noc)`; G12 jest tańsza dokładnie wtedy, gdy
+zmierzony udział strefy nocnej przekracza τ. Sprawdzone numerycznie na
+**192 kombinacjach (8 wariantów stawek × 24 przypadki) — 0 rozbieżności.**
+
+| Wariant stawek | τ | G12 vs G11 | RDN vs G12 | G11 > G12 |
+|---|---|---|---|---|
+| 1,25 / 0,62 (obecny) | 23,8 % | 4,43 % | −6,90 % | 3/24 |
+| 1,17 / 0,77 | 17,5 % | 5,11 % | −7,66 % | **0/24** |
+| 1,15 / 0,85 (wąski spread) | 16,7 % | 4,06 % | −6,48 % | 0/24 |
+| 1,30 / 0,60 (szeroki spread) | 28,6 % | 1,90 % | −4,14 % | 10/24 |
+
+Znak wniosku (G12 najtańsza) trzyma się w **całym** zakresie. Rozstrzygnięcia
+wymaga natomiast zdanie „G11 bywa tańsza od G12": przy obecnych stawkach dotyczy
+3 przypadków (A-Jesień, D-Wiosna, D-Jesień), przy 1,17/0,77 — żadnego.
+
+- [ ] **Igor: pobrać PGE Obrót „ceny energii dla grup G 2026" + PGE Dystrybucja „taryfa 2026"** (WebFetch zwraca 403 / błąd certyfikatu)
+- [ ] Wpisać ustalone stawki do `taryfy.py`, przełączyć na nie `analiza_wyniki.py`, `demand_response_zmierzone.py`, `wrazliwosc_bojler.py` (mają jeszcze własne stałe)
+- [ ] Regenerować tabele i rysunki rozdz. 7 — **jednym przebiegiem, dopiero po ustaleniu stawek**
+- [ ] §7.2: wzór na τ + tabela wrażliwości powyżej; §3: przypis o sezonowości stref z powołaniem na taryfę OSD
+
+### 3.3c. Spójność backendu z rozdziałem 7 · `[x]` kod gotowy, `[ ]` deploy
+Backend liczył na starych parametrach, więc zrzuty z UI w rozdz. 5 pokazywałyby inne
+stawki niż tabela 7.1. Poprawione w `TariffParams.java`:
+
+- stawki 2026 → **1,0991 / 1,2491 / 0,6111** zł/kWh, rozpisane w komentarzu na składniki z powołaniem na obie taryfy
+- `rdnDistributionNet` **0,33 → 0,3904** (dochodzą jakościowa 0,0332 + OZE 0,0073 + kogeneracyjna 0,0030); narzut razem **0,4954**
+- strefy G12 **sezonowe** — `g12PriceForHour(year, LocalDate, hour)`, stara sygnatura oznaczona `@Deprecated`
+- `forYear()` clampuje w dół dla lat < 2024 zamiast podstawiać najnowszy rok pod datę historyczną
+- **B4 zamknięte**: `midYear` liczony przez `Period.getDays()` zwracał samą składową dni (dla stycznia 29 → rok 2025 → G11 = 0,75). Zastąpione stałą `TariffParams.ANALYSIS_YEAR = 2026` — projekcja świadomie łączy kształt cen hurtowych 2025 z poziomem stawek regulowanych 2026, spójnie z rozdz. 7
+- zaktualizowane wywołania: `CostCalculatorService` (2), `ExportService` (2)
+
+Logika zweryfikowana kompilacyjnie: zima h13 = 0,6111 / h15 = 1,2491, lato h13 = 1,2491 /
+h15 = 0,6111, po 10 godzin taniej strefy w obu okresach, `rdnFinalPrice(2026, 0)` = 0,609342
+= 0,4954 × 1,23 — zgodne z `taryfy.py`.
+
+- [ ] Deploy (backend + front jednym przebiegiem) i nowe zrzuty do rozdz. 5
+- [ ] Kontrola po deployu: w UI `koszt G11 / zużycie` ma dać **1,0991**, nie 1,10
 
 ### 3.4. Znormalizowany CVaR · `[ ]`
 Rys. 7.6 miesza ryzyko ze skalą zużycia (profil C ma najwyższy CVaR, bo zużywa najwięcej).

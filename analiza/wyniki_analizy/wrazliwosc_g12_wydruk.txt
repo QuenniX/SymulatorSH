@@ -1,0 +1,51 @@
+
+====================================================================================================
+WRAZLIWOSC WNIOSKOW NA PARAMETRY MODELU KOSZTOWEGO
+Stawki bazowe: G11 1.0991 | G12 1.2491/0.6111 zl/kWh brutto
+====================================================================================================
+
+1. MARZA SPRZEDAWCY W TARYFIE DYNAMICZNEJ  (jedyny parametr swobodny)
+
+    marza [zl/kWh]   narzut  RDN vs G11  RDN vs G12  prog hurtowy
+              0.00   0.3954       2.19%      -2.61%        498 zl/MWh
+              0.02   0.4154      -0.05%      -4.95%        478 zl/MWh
+              0.05   0.4454      -3.41%      -8.48%        448 zl/MWh
+              0.10   0.4954      -9.00%     -14.34%        398 zl/MWh  <-- baza
+              0.15   0.5454     -14.60%     -20.21%        348 zl/MWh
+
+   Marza progowa, przy ktorej RDN zrownuje sie z G11: 1.96 gr/kWh
+   Przy marzy zerowej RDN vs G12 = -2.61% - taryfa dynamiczna nie dorownuje
+   taryfie dwustrefowej nawet bez narzutu handlowego.
+
+2. DEFINICJA STREF CZASOWYCH G12
+
+   Wariant                                         G12 vs G11  RDN vs G12  G11>G12
+   sezonowe wg taryfy OSD (13-15 zima / 15-17 lato)       4.67%     -14.34%     2/24
+   caloroczne 13-15 (pierwsza wersja analizy)           4.87%     -14.58%     2/24
+   sezonowe, zegar licznika nieprzestawiany (+1 h latem)       4.03%     -13.58%     3/24
+
+3. ZMIERZONY UDZIAL STREFY TANSZEJ G12  [%]   (sezonowa / caloroczna)
+
+   Profil                          Zima          Wiosna            Lato          Jesien
+   Singiel pracujacy       27.8 /  27.8    27.9 /  28.3    38.1 /  38.3    23.6 /  23.6
+   Pracownik zdalny        32.6 /  32.6    30.7 /  33.1    33.1 /  42.0    29.1 /  29.1
+   Rodzina 2+2             27.0 /  27.0    29.3 /  27.8    33.4 /  32.6    24.4 /  24.4
+   Senior samotny          25.5 /  25.5    22.3 /  20.4    34.7 /  33.4    20.4 /  20.4
+   Studenci                36.7 /  36.7    50.6 /  52.3    50.7 /  51.3    43.4 /  43.4
+   Para bez dzieci         29.4 /  29.4    28.0 /  28.3    34.7 /  34.9    25.6 /  25.6
+   Prog tau = 23.50%
+
+4. PROG tau DLA HIPOTETYCZNYCH STAWEK G12  [%]
+   przy c_G11 = 1.0991 zl/kWh
+
+   c_dzien \ c_noc     0.55     0.61     0.70     0.80
+          1.1500        8.5      9.4     11.3     14.5
+          1.2000       15.5     17.1     20.2     25.2
+          1.2491       21.5     23.5     27.3     33.4
+          1.3000       26.8     29.2     33.5     40.2
+
+5. WERYFIKACJA: prog analityczny wobec wyniku numerycznego
+   Sprawdzono 768 kombinacji, rozbieznosci: 0  [OK]
+
+Zapisano: /mnt/user-data/uploads/PRACA_MAGISTERSKA/analiza/wyniki_analizy/wrazliwosc_g12.csv
+

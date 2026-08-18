@@ -110,7 +110,7 @@ public class CostCalculatorService {
             BigDecimal g11Cost = kwh.multiply(g11UnitPrice);
 
             // G12: dzien lub noc zaleznie od godziny
-            BigDecimal g12UnitPrice = TariffParams.g12PriceForHour(year, hourOfDay);
+            BigDecimal g12UnitPrice = TariffParams.g12PriceForHour(year, hour.toLocalDate(), hourOfDay);
             BigDecimal g12Cost = kwh.multiply(g12UnitPrice);
 
             // RDN: cena z PSE + narzuty + VAT
@@ -311,14 +311,14 @@ public class CostCalculatorService {
         for (BigDecimal v : hourlyProfileKwh) avgDailyKwh = avgDailyKwh.add(v);
 
         // Krok 2: rok srodka okresu -> parametry cenowe
-        int midYear = from.plusDays(from.until(to).getDays() / 2).getYear();
+        int tariffYear = TariffParams.ANALYSIS_YEAR;   // patrz TariffParams.ANALYSIS_YEAR
 
         // Krok 3: wczytaj ceny RDN dla calego okresu
         Map<PriceKey, BigDecimal> rdnPrices = loadRdnPricesForRange(from, to);
 
         // Krok 4: iteruj dzien po dniu, licz koszty
         List<DailyCostPoint> daily = new ArrayList<>();
-        BigDecimal g11UnitPrice = TariffParams.g11Price(midYear);
+        BigDecimal g11UnitPrice = TariffParams.g11Price(tariffYear);
         BigDecimal totalG11 = BigDecimal.ZERO;
         BigDecimal totalG12 = BigDecimal.ZERO;
         BigDecimal totalRdn = BigDecimal.ZERO;
@@ -342,13 +342,13 @@ public class CostCalculatorService {
                 dayG11 = dayG11.add(kwh.multiply(g11UnitPrice));
 
                 // G12
-                BigDecimal g12Price = TariffParams.g12PriceForHour(midYear, h);
+                BigDecimal g12Price = TariffParams.g12PriceForHour(tariffYear, cursor, h);
                 dayG12 = dayG12.add(kwh.multiply(g12Price));
 
                 // RDN
                 BigDecimal wholesale = rdnPrices.get(new PriceKey(cursor, h));
                 if (wholesale != null) {
-                    BigDecimal rdnPrice = TariffParams.rdnFinalPrice(midYear, wholesale);
+                    BigDecimal rdnPrice = TariffParams.rdnFinalPrice(tariffYear, wholesale);
                     dayRdn = dayRdn.add(kwh.multiply(rdnPrice));
                     hoursWithRdn++;
                 } else {
@@ -414,7 +414,7 @@ public class CostCalculatorService {
                 .testId(testId)
                 .from(from)
                 .to(to)
-                .year(midYear)
+                .year(tariffYear)
                 .daysInPeriod(daysInPeriod)
                 .daysWithFullPrices(daysWithFullPrices)
                 .avgDailyKwh(avgDailyKwh.setScale(3, RoundingMode.HALF_UP))

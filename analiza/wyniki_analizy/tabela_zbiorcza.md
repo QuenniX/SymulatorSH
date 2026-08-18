@@ -4,59 +4,82 @@
 
 Harmonogram sezonowy urządzeń + ceny RDN z tego samego sezonu 2025.
 
-| profil_kod   | profil_nazwa   | sezon_harmonogram   |   koszt_G11_pln |   koszt_G12_pln |   koszt_RDN_pln |   oszczednosc_RDN_vs_G11_pct |   oszczednosc_RDN_vs_G12_pct |   VaR95_RDN_pln |   CVaR95_RDN_pln |
-|:---------------|:-----------------|:--------------------|----------------:|----------------:|----------------:|-----------------------------:|-----------------------------:|----------------:|-----------------:|
-| A              | Singiel-biuro    | Jesien              |          573.88 |          574.57 |          623.81 |                        -8.70 |                        -8.57 |           26.12 |            27.78 |
-| A              | Singiel-biuro    | Lato                |          781.92 |          774.17 |          778.47 |                         0.44 |                        -0.56 |           29.18 |            29.89 |
-| A              | Singiel-biuro    | Wiosna              |          462.01 |          447.79 |          431.48 |                         6.61 |                         3.64 |           16.53 |            16.64 |
-| A              | Singiel-biuro    | Zima                |         1228.31 |         1229.24 |         1315.78 |                        -7.12 |                        -7.04 |           53.27 |            60.10 |
-| B              | Remote worker    | Jesien              |          753.06 |          729.42 |          780.32 |                        -3.62 |                        -6.98 |           32.74 |            34.26 |
-| B              | Remote worker    | Lato                |          967.12 |          928.21 |          943.38 |                         2.45 |                        -1.63 |           35.31 |            36.22 |
-| B              | Remote worker    | Wiosna              |          627.71 |          578.83 |          541.85 |                        13.68 |                         6.39 |           22.02 |            22.35 |
-| B              | Remote worker    | Zima                |         1503.42 |         1457.48 |         1579.10 |                        -5.03 |                        -8.34 |           62.99 |            70.41 |
-| C              | Rodzina 2+2      | Jesien              |         1031.18 |         1031.06 |         1110.15 |                        -7.66 |                        -7.67 |           47.42 |            50.23 |
-| C              | Rodzina 2+2      | Lato                |         1269.47 |         1233.28 |         1306.64 |                        -2.93 |                        -5.95 |           50.37 |            50.70 |
-| C              | Rodzina 2+2      | Wiosna              |          936.22 |          921.15 |          915.58 |                         2.20 |                         0.60 |           35.44 |            36.02 |
-| C              | Rodzina 2+2      | Zima                |         1956.99 |         1910.87 |         2061.91 |                        -5.36 |                        -7.90 |           82.54 |            91.23 |
-| D              | Senior samotny   | Jesien              |          635.92 |          612.12 |          634.30 |                         0.26 |                        -3.62 |           25.84 |            27.05 |
-| D              | Senior samotny   | Lato                |          751.61 |          705.88 |          729.03 |                         3.00 |                        -3.28 |           26.86 |            27.42 |
-| D              | Senior samotny   | Wiosna              |          427.58 |          411.22 |          349.07 |                        18.36 |                        15.11 |           14.54 |            14.77 |
-| D              | Senior samotny   | Zima                |         1291.34 |         1190.46 |         1337.42 |                        -3.57 |                       -12.34 |           53.18 |            58.57 |
-| E              | Studenci         | Jesien              |          674.96 |          566.22 |          663.39 |                         1.71 |                       -17.16 |           26.24 |            27.34 |
-| E              | Studenci         | Lato                |          976.56 |          832.60 |          986.59 |                        -1.03 |                       -18.50 |           36.70 |            37.33 |
-| E              | Studenci         | Wiosna              |          622.86 |          512.98 |          564.03 |                         9.45 |                        -9.95 |           21.39 |            21.63 |
-| E              | Studenci         | Zima                |         1603.66 |         1349.46 |         1612.06 |                        -0.52 |                       -19.46 |           63.82 |            68.61 |
-| F              | Para DINK        | Jesien              |          900.48 |          716.84 |          873.48 |                         3.00 |                       -21.85 |           34.54 |            35.69 |
-| F              | Para DINK        | Lato                |          968.86 |          807.70 |          982.17 |                        -1.37 |                       -21.60 |           36.13 |            36.92 |
-| F              | Para DINK        | Wiosna              |          639.08 |          512.46 |          589.86 |                         7.70 |                       -15.10 |           21.98 |            22.22 |
-| F              | Para DINK        | Zima                |         1546.02 |         1242.11 |         1526.06 |                         1.29 |                       -22.86 |           60.05 |            63.97 |
+| profil_kod   | profil_nazwa     | sezon_harmonogram   |   udzial_strefy_nocnej_pct |   koszt_G11_pln |   koszt_G12_pln |   koszt_RDN_pln |   roznica_RDN_vs_G11_pct |   roznica_RDN_vs_G12_pct |   VaR95_RDN_pln |   CVaR95_RDN_pln |
+|:-------------|:-----------------|:--------------------|---------------------------:|----------------:|----------------:|----------------:|-------------------------:|-------------------------:|----------------:|-----------------:|
+| A            | Singiel-biuro    | Jesien              |                      23.56 |          555.45 |          555.27 |          631.87 |                   -13.76 |                   -13.79 |           26.15 |            27.90 |
+| A            | Singiel-biuro    | Lato                |                      38.07 |          687.35 |          629.23 |          769.31 |                   -11.92 |                   -22.26 |           30.16 |            30.86 |
+| A            | Singiel-biuro    | Wiosna              |                      27.85 |          335.76 |          327.28 |          369.80 |                   -10.14 |                   -12.99 |           14.39 |            14.79 |
+| A            | Singiel-biuro    | Zima                |                      27.79 |         1185.42 |         1155.89 |         1322.73 |                   -11.58 |                   -14.43 |           52.18 |            56.89 |
+| B            | Pracownik zdalny | Jesien              |                      29.09 |          772.41 |          747.34 |          832.05 |                    -7.72 |                   -11.33 |           32.94 |            34.52 |
+| B            | Pracownik zdalny | Lato                |                      33.09 |          905.37 |          854.99 |          945.24 |                    -4.40 |                   -10.56 |           35.26 |            35.74 |
+| B            | Pracownik zdalny | Wiosna              |                      30.66 |          529.37 |          507.38 |          485.66 |                     8.26 |                     4.28 |           19.49 |            19.77 |
+| B            | Pracownik zdalny | Zima                |                      32.60 |         1407.53 |         1333.16 |         1569.08 |                   -11.48 |                   -17.70 |           61.75 |            68.04 |
+| C            | Rodzina 2+2      | Jesien              |                      24.39 |         1065.17 |         1059.68 |         1208.28 |                   -13.44 |                   -14.02 |           49.75 |            52.67 |
+| C            | Rodzina 2+2      | Lato                |                      33.41 |         1282.52 |         1208.78 |         1406.93 |                    -9.70 |                   -16.39 |           53.57 |            54.04 |
+| C            | Rodzina 2+2      | Wiosna              |                      29.35 |          921.93 |          890.63 |          959.60 |                    -4.09 |                    -7.74 |           36.64 |            37.24 |
+| C            | Rodzina 2+2      | Zima                |                      27.03 |         1785.05 |         1748.45 |         2004.73 |                   -12.31 |                   -14.66 |           79.42 |            87.41 |
+| D            | Senior samotny   | Jesien              |                      20.39 |          605.94 |          616.88 |          653.30 |                    -7.81 |                    -5.90 |           26.22 |            27.40 |
+| D            | Senior samotny   | Lato                |                      34.69 |          747.21 |          698.66 |          775.53 |                    -3.79 |                   -11.00 |           28.20 |            28.81 |
+| D            | Senior samotny   | Wiosna              |                      22.30 |          401.24 |          404.05 |          362.77 |                     9.59 |                    10.22 |           14.71 |            14.92 |
+| D            | Senior samotny   | Zima                |                      25.53 |         1238.46 |         1223.90 |         1385.77 |                   -11.89 |                   -13.23 |           54.68 |            60.15 |
+| E            | Studenci         | Jesien              |                      43.35 |          752.34 |          665.64 |          811.79 |                    -7.90 |                   -21.96 |           31.94 |            33.55 |
+| E            | Studenci         | Lato                |                      50.67 |          915.09 |          770.79 |          987.50 |                    -7.91 |                   -28.12 |           36.65 |            37.30 |
+| E            | Studenci         | Wiosna              |                      50.59 |          534.15 |          450.15 |          531.04 |                     0.58 |                   -17.97 |           19.79 |            20.28 |
+| E            | Studenci         | Zima                |                      36.75 |         1387.10 |         1280.46 |         1529.08 |                   -10.24 |                   -19.42 |           60.09 |            65.35 |
+| F            | Para bez dzieci  | Jesien              |                      25.58 |          866.95 |          856.48 |          969.77 |                   -11.86 |                   -13.23 |           39.55 |            41.83 |
+| F            | Para bez dzieci  | Lato                |                      34.67 |          942.89 |          881.74 |         1066.87 |                   -13.15 |                   -21.00 |           42.16 |            43.36 |
+| F            | Para bez dzieci  | Wiosna              |                      27.95 |          579.16 |          564.19 |          631.63 |                    -9.06 |                   -11.95 |           24.34 |            25.01 |
+| F            | Para bez dzieci  | Zima                |                      29.39 |         1551.12 |         1498.06 |         1720.98 |                   -10.95 |                   -14.88 |           67.74 |            73.58 |
 
 ## Agregaty
 
 ### Średnia per profil (diagonal)
 
-| profil_kod   | profil_nazwa   |   koszt_G11_pln |   koszt_G12_pln |   koszt_RDN_pln |   oszczednosc_RDN_vs_G11_pct |   oszczednosc_RDN_vs_G12_pct |
-|:---------------|:-----------------|----------------:|----------------:|----------------:|-----------------------------:|-----------------------------:|
-| A              | Singiel-biuro    |          761.53 |          756.44 |          787.38 |                        -2.19 |                        -3.13 |
-| B              | Remote worker    |          962.83 |          923.49 |          961.16 |                         1.87 |                        -2.64 |
-| C              | Rodzina 2+2      |         1298.47 |         1274.09 |         1348.57 |                        -3.44 |                        -5.23 |
-| D              | Senior samotny   |          776.61 |          729.92 |          762.45 |                         4.51 |                        -1.03 |
-| E              | Studenci         |          969.51 |          815.32 |          956.52 |                         2.40 |                       -16.27 |
-| F              | Para DINK        |         1013.61 |          819.78 |          992.89 |                         2.66 |                       -20.35 |
+| profil_kod   | profil_nazwa     |   koszt_G11_pln |   koszt_G12_pln |   koszt_RDN_pln |   roznica_RDN_vs_G11_pct |   roznica_RDN_vs_G12_pct |
+|:-------------|:-----------------|----------------:|----------------:|----------------:|-------------------------:|-------------------------:|
+| A            | Singiel-biuro    |          691.00 |          666.92 |          773.43 |                   -11.85 |                   -15.87 |
+| B            | Pracownik zdalny |          903.67 |          860.72 |          958.01 |                    -3.83 |                    -8.83 |
+| C            | Rodzina 2+2      |         1263.67 |         1226.88 |         1394.88 |                    -9.88 |                   -13.20 |
+| D            | Senior samotny   |          748.21 |          735.87 |          794.34 |                    -3.48 |                    -4.98 |
+| E            | Studenci         |          897.17 |          791.76 |          964.85 |                    -6.37 |                   -21.87 |
+| F            | Para bez dzieci  |          985.03 |          950.12 |         1097.31 |                   -11.25 |                   -15.27 |
 
 ### Średnia per sezon cenowy (diagonal)
 
-| sezon_harmonogram   |   koszt_G11_pln |   koszt_G12_pln |   koszt_RDN_pln |   oszczednosc_RDN_vs_G11_pct |   oszczednosc_RDN_vs_G12_pct |
-|:--------------------|----------------:|----------------:|----------------:|-----------------------------:|-----------------------------:|
-| Jesien              |          761.58 |          705.04 |          780.91 |                        -2.50 |                       -10.97 |
-| Lato                |          952.59 |          880.31 |          954.38 |                         0.09 |                        -8.59 |
-| Wiosna              |          619.24 |          564.07 |          565.31 |                         9.67 |                         0.12 |
-| Zima                |         1521.62 |         1396.60 |         1572.06 |                        -3.39 |                       -12.99 |
+| sezon_harmonogram   |   koszt_G11_pln |   koszt_G12_pln |   koszt_RDN_pln |   roznica_RDN_vs_G11_pct |   roznica_RDN_vs_G12_pct |
+|:--------------------|----------------:|----------------:|----------------:|-------------------------:|-------------------------:|
+| Jesien              |          769.71 |          750.22 |          851.18 |                   -10.41 |                   -13.37 |
+| Lato                |          913.41 |          840.70 |          991.90 |                    -8.48 |                   -18.22 |
+| Wiosna              |          550.27 |          523.95 |          556.75 |                    -0.81 |                    -6.02 |
+| Zima                |         1425.78 |         1373.32 |         1588.73 |                   -11.41 |                   -15.72 |
 
 ### Podsumowanie ogólne (diagonal)
 
-- **Średni koszt G11:** 963.76 zł
-- **Średni koszt G12:** 886.50 zł
-- **Średni koszt RDN:** 968.16 zł
-- **Średnia oszczędność RDN vs G11:** 0.97%
-- **Średnia oszczędność RDN vs G12:** -8.11%
+- **Średni koszt G11:** 914.79 zł
+- **Średni koszt G12:** 872.05 zł
+- **Średni koszt RDN:** 997.14 zł
+- **Średnia różnica kosztu RDN vs G11:** -7.78%
+- **Średnia różnica kosztu RDN vs G12:** -13.33%
+
+### Ujęcie kwotowe (iloraz średnich, ważone zużyciem)
+
+- **Suma kosztów:** G11 = 21954.98 zł, G12 = 20929.08 zł, RDN = 23931.31 zł
+- **RDN vs G11:** -9.00% (średnia z procentów: -7.78%)
+- **RDN vs G12:** -14.34% (średnia z procentów: -13.33%)
+- **G12 vs G11:** 4.67%
+
+### Próg opłacalności G12
+
+- **Próg udziału strefy nocnej:** τ = 23.50%
+- **Próg ceny hurtowej dla RDN vs G11:** 398 zł/MWh
+- **Przypadki, w których G11 jest tańsza od G12:** D-Jesien, D-Wiosna
+- **Kontrola:** zbiór przewidziany progiem zgodny ze zbiorem wyznaczonym kosztowo
+
+### Przypadki nierozstrzygnięte (udział strefy nocnej w granicach ±1 p.p. od progu)
+
+| przypadek | udział strefy nocnej | G11 | G12 | różnica |
+|:---|---:|---:|---:|---:|
+| A-Jesien | 23.56% | 555.45 zł | 555.27 zł | -0.18 zł |
+| C-Jesien | 24.39% | 1065.17 zł | 1059.68 zł | -5.49 zł |
+
+W tych przypadkach wskazanie tańszej taryfy nie ma znaczenia praktycznego i nie powinno być raportowane jako rozstrzygnięcie.

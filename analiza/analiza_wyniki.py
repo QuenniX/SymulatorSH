@@ -50,11 +50,16 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Dict, List, Optional, Tuple
 
+import csv
+import glob
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import requests
+
+import taryfy as T
 
 # ============================================================================
 #  KONFIGURACJA
@@ -64,7 +69,7 @@ BASE_URL = "http://3.77.28.199/api/v1"
 # BASE_URL = "http://localhost:8080/api/v1"
 
 KEY_FILE = "api_key.txt"
-BATCH_NAME_PREFIX = "[Partia 2026-08-06T18:57]"
+BATCH_NAME_PREFIX = "[Partia 2026-08-18T09:38]"
 OUTPUT_DIR = "wyniki_analizy"
 
 # --- Sezony meteorologiczne 2025 (środek każdego sezonu, 30 dni) ---
@@ -76,20 +81,27 @@ SEASONS = {
 }
 SEASON_ORDER = ["Zima", "Wiosna", "Lato", "Jesien"]
 
-# --- Taryfa 2026 (z backend/tariff/TariffParams.java - koniec tarczy mrozeniowej) ---
-# Uzasadnienie: testy uruchomione w 2026, wiec backend rowniez uzyl parametrow 2026.
-# Rok 2025 mial tarcze mrozeniowa (G11=0.75), ktora zaniza G11 sztucznie i sprawia
-# ze RDN wyglada nieoplacalnie. 2026 to pierwszy rok bez tarczy - realny rynek.
-G11_PLN_KWH = 1.10
-G12_DAY_PLN_KWH = 1.25
-G12_NIGHT_PLN_KWH = 0.62
-G12_NIGHT_HOURS = {22, 23, 0, 1, 2, 3, 4, 5, 13, 14}
+# --- Taryfa 2026: parametry pochodza z modulu taryfy.py ---
+# Stawki zlozone ze skladnikow taryf zatwierdzonych przez Prezesa URE:
+#   PGE Obrot S.A.,      taryfa dla grup G, od 1 I 2026    - cena energii czynnej
+#   PGE Dystrybucja S.A., taryfa na 2026, tekst jednolity   - stawki sieciowe i strefy
+# Rok 2025 mial tarcze mrozeniowa (G11=0,75), ktora zanizala G11 sztucznie; testy
+# uruchomiono w 2026, wiec model uzywa parametrow 2026 - pierwszego roku bez tarczy.
+G11_PLN_KWH = T.G11                  # 1,0991
+G12_DAY_PLN_KWH = T.G12_DZIEN        # 1,2491
+G12_NIGHT_PLN_KWH = T.G12_NOC        # 0,6111
+VAT_MULTIPLIER = T.VAT
 
-# --- RDN 2026: rdnFinal = (wholesale + 0.33 + 0.005 + 0.10) * 1.23 ---
-RDN_DISTRIBUTION_NET = 0.33
-RDN_EXCISE_NET = 0.005
-RDN_MARGIN_NET = 0.10
-VAT_MULTIPLIER = 1.23
+# Narzut taryfy dynamicznej: odbiorca RDN jest rozliczany dystrybucyjnie w grupie
+# G11, ponosi wiec te same stawki sieciowe i systemowe; roznica dotyczy wylacznie
+# skladnika energii. Marza sprzedawcy jest jedynym parametrem swobodnym.
+RDN_NARZUT_NET = T.NARZUT            # 0,4954 = 0,3469 + 0,0485 + marza 0,10
+
+# Zrodlo danych: "pliki" = katalog dane_zrodlowe (zrzut z eksport_danych.py),
+# "api" = odpytanie produkcji. Tryb plikowy jest domyslny, bo nie wymaga
+# dzialajacej instancji EC2 i gwarantuje powtarzalnosc wynikow w pracy.
+ZRODLO_DANYCH = "pliki"
+DANE_ZRODLOWE = "dane_zrodlowe"
 
 # --- Profile i sezony harmonogramowe (z partii user'a) ---
 PROFILES = {
@@ -213,13 +225,18 @@ def build_daily_profile(hourly_breakdown: List[dict]) -> np.ndarray:
 
 
 def rdn_final_price(wholesale_pln_kwh: float) -> float:
-    """Formuła z TariffParams.java: (wholesale + narzuty) × VAT."""
-    net = wholesale_pln_kwh + RDN_DISTRIBUTION_NET + RDN_EXCISE_NET + RDN_MARGIN_NET
-    return net * VAT_MULTIPLIER
+    """Cena detaliczna taryfy dynamicznej: (hurt + narzut) × VAT."""
+    return (wholesale_pln_kwh + RDN_NARZUT_NET) * VAT_MULTIPLIER
 
 
-def g12_price_for_hour(hour: int) -> float:
-    return G12_NIGHT_PLN_KWH if hour in G12_NIGHT_HOURS else G12_DAY_PLN_KWH
+def g12_price_for_hour(hour: int, sezon: str) -> float:
+    """
+    Cena G12 dla godziny doby. Strefy sa SEZONOWE - okno popoludniowe strefy
+    tanszej to 13:00-15:00 w okresie zimowym (1 X - 31 III) i 15:00-17:00
+    w letnim (1 IV - 30 IX), zgodnie z taryfa PGE Dystrybucja dla grup C12b/G12.
+    Decyduje sezon CENOWY, bo to on wyznacza date kalendarzowa zuzycia.
+    """
+    return T.g12_cena(hour, sezon)
 
 
 def group_prices_by_day(prices: List[dict]) -> Dict[str, Dict[int, float]]:
@@ -248,6 +265,7 @@ class SeasonalCost:
 def recalculate_costs(
     daily_profile_kwh: np.ndarray,
     prices_by_day: Dict[str, Dict[int, float]],
+    sezon_cen: str,
 ) -> SeasonalCost:
     """
     Dla profilu dobowego (24 wartości kWh) i 30-dniowych cen sezonowych
@@ -275,7 +293,7 @@ def recalculate_costs(
             price_rdn = hour_prices[h]
             day_rdn += kwh * price_rdn
             day_g11 += kwh * G11_PLN_KWH
-            day_g12 += kwh * g12_price_for_hour(h)
+            day_g12 += kwh * g12_price_for_hour(h, sezon_cen)
         daily_costs_rdn.append(day_rdn)
         total_rdn += day_rdn
         total_g11 += day_g11
@@ -305,6 +323,91 @@ def recalculate_costs(
 # ============================================================================
 #  MAIN FLOW - pobranie danych + rekalkulacja
 # ============================================================================
+
+def _zbuduj_wiersze(
+    profiles: Dict[str, np.ndarray],
+    seasonal_prices: Dict[str, Dict[str, Dict[int, float]]],
+) -> pd.DataFrame:
+    """Wspolna re-kalkulacja: 24 testy × 4 sezony cenowe = 96 wynikow."""
+    rows = []
+    for key, profile in profiles.items():
+        code, sezon_harm = key.split("_")
+        arch_label = PROFILES.get(code, code)
+        for sezon_cen in SEASON_ORDER:
+            sc = recalculate_costs(profile, seasonal_prices[sezon_cen], sezon_cen)
+            saving_vs_g11 = ((sc.cost_g11 - sc.cost_rdn) / sc.cost_g11 * 100) if sc.cost_g11 > 0 else 0
+            saving_vs_g12 = ((sc.cost_g12 - sc.cost_rdn) / sc.cost_g12 * 100) if sc.cost_g12 > 0 else 0
+            rows.append({
+                "profil_kod": code,
+                "profil_nazwa": arch_label,
+                "sezon_harmonogram": sezon_harm,
+                "sezon_ceny": sezon_cen,
+                "udzial_strefy_nocnej_pct": round(T.udzial_nocny(list(profile), sezon_cen) * 100, 2),
+                "koszt_G11_pln": round(sc.cost_g11, 2),
+                "koszt_G12_pln": round(sc.cost_g12, 2),
+                "koszt_RDN_pln": round(sc.cost_rdn, 2),
+                "roznica_RDN_vs_G11_pct": round(saving_vs_g11, 2),
+                "roznica_RDN_vs_G12_pct": round(saving_vs_g12, 2),
+                "VaR95_RDN_pln": round(sc.var_95_rdn, 2),
+                "CVaR95_RDN_pln": round(sc.cvar_95_rdn, 2),
+                "dni_pokryte": sc.days_covered,
+                "diagonal": sezon_harm == sezon_cen,
+            })
+    df = pd.DataFrame(rows)
+    print(f"  [OK] Wygenerowano {len(df)} wierszy")
+    return df
+
+
+def gather_all_data_pliki() -> Tuple[pd.DataFrame, Dict[str, np.ndarray]]:
+    """
+    Wariant offline: dane z katalogu dane_zrodlowe (zrzut z eksport_danych.py).
+    Nie wymaga dzialajacej instancji EC2 i daje powtarzalny wynik - to on jest
+    podstawa liczb raportowanych w pracy.
+    """
+    kat = os.path.join(os.path.dirname(os.path.abspath(__file__)), DANE_ZRODLOWE)
+    if not os.path.isdir(kat):
+        raise SystemExit(f"[BLAD] Brak katalogu {kat}. Uruchom najpierw eksport_danych.py")
+
+    print(f"\n[1/3] Wczytuje profile godzinowe z {DANE_ZRODLOWE}/profile/ ...")
+    profiles: Dict[str, np.ndarray] = {}
+    for sciezka in sorted(glob.glob(os.path.join(kat, "profile", "*.csv"))):
+        klucz = os.path.splitext(os.path.basename(sciezka))[0]      # np. "A_Zima"
+        sumy, licz = np.zeros(24), np.zeros(24)
+        with open(sciezka, encoding="utf-8-sig", newline="") as f:
+            for r in csv.DictReader(f):
+                h = datetime.fromisoformat(r["hour"]).hour
+                sumy[h] += float(r["kwh"])
+                licz[h] += 1
+        if licz.min() == 0:
+            raise SystemExit(f"[BLAD] {sciezka}: brak danych dla godziny {int(licz.argmin())}")
+        godzin = int(licz.sum())
+        if godzin != 720:
+            print(f"    [!!] {klucz}: {godzin} godzin zamiast 720 ({godzin / 720:.1%} pokrycia)")
+        profiles[klucz] = sumy / licz
+    print(f"  [OK] Wczytano {len(profiles)} profili dobowych")
+    if len(profiles) != 24:
+        print(f"  [WARN] Oczekiwano 24 profili, jest {len(profiles)}")
+
+    print(f"\n[2/3] Wczytuje ceny hurtowe z {DANE_ZRODLOWE}/ceny/wszystkie.csv ...")
+    seasonal_prices: Dict[str, Dict[str, Dict[int, float]]] = defaultdict(lambda: defaultdict(dict))
+    plik_cen = os.path.join(kat, "ceny", "wszystkie.csv")
+    with open(plik_cen, encoding="utf-8-sig", newline="") as f:
+        for r in csv.DictReader(f):
+            hurt_kwh = float(str(r["cena_pln_mwh"]).replace(",", ".")) / 1000.0
+            seasonal_prices[r["sezon"]][str(r["data"])[:10]][int(r["godz"])] = rdn_final_price(hurt_kwh)
+    for sezon, (from_d, to_d) in SEASONS.items():
+        by_day = seasonal_prices.get(sezon, {})
+        oczekiwane = (to_d - from_d).days + 1
+        if len(by_day) != oczekiwane:
+            raise ValueError(f"{sezon}: {len(by_day)} dob zamiast {oczekiwane}")
+        niepelne = {d: sorted(set(range(24)) - set(hp)) for d, hp in by_day.items() if len(hp) != 24}
+        if niepelne:
+            raise ValueError(f"{sezon}: doby z brakujacymi godzinami -> {niepelne}")
+        print(f"    {sezon:7s}: {len(by_day)} dob x 24 godziny  [OK]")
+
+    print("\n[3/3] Re-kalkulacja: 24 testy x 4 sezony cenowe = 96 wynikow...")
+    return _zbuduj_wiersze(profiles, seasonal_prices), profiles
+
 
 def gather_all_data(api_key: str) -> Tuple[pd.DataFrame, Dict[str, np.ndarray]]:
     """
@@ -371,33 +474,7 @@ def gather_all_data(api_key: str) -> Tuple[pd.DataFrame, Dict[str, np.ndarray]]:
         print(f"      [OK] kompletnosc {expected_days} dni x 24 godziny")
 
     print("\n[4/4] Re-kalkulacja: 24 testy x 4 sezony cenowe = 96 wynikow...")
-    rows = []
-    for key, profile in profiles.items():
-        code, sezon_harm = key.split("_")
-        arch_label = PROFILES.get(code, code)
-        for sezon_cen in SEASON_ORDER:
-            sc = recalculate_costs(profile, seasonal_prices[sezon_cen])
-            saving_vs_g11 = ((sc.cost_g11 - sc.cost_rdn) / sc.cost_g11 * 100) if sc.cost_g11 > 0 else 0
-            saving_vs_g12 = ((sc.cost_g12 - sc.cost_rdn) / sc.cost_g12 * 100) if sc.cost_g12 > 0 else 0
-            rows.append({
-                "profil_kod": code,
-                "profil_nazwa": arch_label,
-                "sezon_harmonogram": sezon_harm,
-                "sezon_ceny": sezon_cen,
-                "koszt_G11_pln": round(sc.cost_g11, 2),
-                "koszt_G12_pln": round(sc.cost_g12, 2),
-                "koszt_RDN_pln": round(sc.cost_rdn, 2),
-                "oszczednosc_RDN_vs_G11_pct": round(saving_vs_g11, 2),
-                "oszczednosc_RDN_vs_G12_pct": round(saving_vs_g12, 2),
-                "VaR95_RDN_pln": round(sc.var_95_rdn, 2),
-                "CVaR95_RDN_pln": round(sc.cvar_95_rdn, 2),
-                "dni_pokryte": sc.days_covered,
-                "diagonal": sezon_harm == sezon_cen,
-            })
-
-    df = pd.DataFrame(rows)
-    print(f"  [OK] Wygenerowano {len(df)} wierszy")
-    return df, profiles
+    return _zbuduj_wiersze(profiles, seasonal_prices), profiles
 
 
 # ============================================================================
@@ -408,7 +485,7 @@ def wykres_1_heatmap_diagonal(df: pd.DataFrame, out_path: str) -> None:
     """Heatmap 6×4: profil × sezon (tryb diagonal - harmonogram=ceny)."""
     diag = df[df["diagonal"]].copy()
     pivot = diag.pivot_table(index="profil_kod", columns="sezon_harmonogram",
-                              values="oszczednosc_RDN_vs_G11_pct", aggfunc="mean")
+                              values="roznica_RDN_vs_G11_pct", aggfunc="mean")
     pivot = pivot.reindex(index=list(PROFILES.keys()), columns=SEASON_ORDER)
 
     # Skala symetryczna wokol zera - pozytywne zielone, negatywne czerwone
@@ -421,7 +498,7 @@ def wykres_1_heatmap_diagonal(df: pd.DataFrame, out_path: str) -> None:
     ax.set_xticklabels(SEASON_ORDER, fontsize=11)
     ax.set_yticks(range(len(PROFILES)))
     ax.set_yticklabels([f"{k}: {PROFILES[k]}" for k in PROFILES.keys()], fontsize=10)
-    ax.set_title("Wykres 1: Oszczednosc RDN vs G11 [%] - tryb diagonalny\n"
+    ax.set_title("Wykres 1: Roznica kosztu RDN wzgledem G11 [%] - tryb diagonalny\n"
                  "(harmonogram sezonowy urzadzen + ceny RDN z tego samego sezonu 2025)",
                  fontsize=12)
 
@@ -433,7 +510,7 @@ def wykres_1_heatmap_diagonal(df: pd.DataFrame, out_path: str) -> None:
                 color = "white" if v < -vmax * 0.55 else "black"
                 ax.text(j, i, f"{v:+.1f}%", ha="center", va="center",
                         color=color, fontweight="bold", fontsize=11)
-    cbar = fig.colorbar(im, ax=ax, label="Oszczednosc [%]  (dodatnie=RDN taniej, ujemne=drozej)")
+    cbar = fig.colorbar(im, ax=ax, label="Roznica kosztu [%]   dodatnie = RDN tansza, ujemne = RDN drozsza")
     cbar.ax.tick_params(labelsize=9)
     plt.tight_layout()
     plt.savefig(out_path)
@@ -441,22 +518,28 @@ def wykres_1_heatmap_diagonal(df: pd.DataFrame, out_path: str) -> None:
 
 
 def wykres_2_ranking_profilow(df: pd.DataFrame, out_path: str) -> None:
-    """Ranking profili - średnia oszczędność z 4 sezonów (diagonal)."""
+    """Ranking profili - średnia różnica kosztu z 4 sezonów (diagonal)."""
     diag = df[df["diagonal"]].copy()
-    ranking = diag.groupby("profil_kod")["oszczednosc_RDN_vs_G11_pct"].mean().sort_values(ascending=False)
+    # barh rysuje pierwszy element na DOLE, wiec sortowanie rosnace stawia
+    # najkorzystniejszy profil na gorze - zgodnie z konwencja czytania rankingu.
+    ranking = diag.groupby("profil_kod")["roznica_RDN_vs_G11_pct"].mean().sort_values(ascending=True)
 
     fig, ax = plt.subplots(figsize=(11, 6))
     labels = [f"{k}: {PROFILES[k]}" for k in ranking.index]
     colors = ["#d73027" if v < 0 else "#1a9850" for v in ranking.values]
     bars = ax.barh(labels, ranking.values, color=colors, edgecolor="black")
     ax.axvline(0, color="black", linewidth=1.0)
-    ax.set_xlabel("Srednia oszczednosc RDN vs G11 [%] (usredniona po 4 sezonach)", fontsize=11)
-    ax.set_title("Wykres 2: Ranking profilow gospodarstw domowych\n(im wyzej wartosc, tym bardziej oplacalny RDN)", fontsize=12)
-    # Etykiety na koncu slupka (poza slupkiem zeby nie nakladalo sie na tekst osi Y)
-    xmax = max(abs(ranking.min()), abs(ranking.max())) * 1.15
-    ax.set_xlim(-xmax, xmax)
+    ax.set_xlabel("Srednia roznica kosztu RDN wzgledem G11 [%] (po 4 sezonach)", fontsize=11)
+    ax.set_title("Wykres 2: Ranking profilow gospodarstw domowych\n(od najkorzystniejszego u gory; dodatnie = RDN tansza od G11)", fontsize=12)
+    # Zakres osi dobierany do danych, a nie symetrycznie wzgledem zera - przy
+    # samych wartosciach ujemnych symetria marnowala polowe szerokosci wykresu
+    # i wpychala etykiete najdluzszego slupka na opisy osi Y.
+    lo = min(0.0, float(ranking.min()))
+    hi = max(0.0, float(ranking.max()))
+    pad = (hi - lo) * 0.22 or 1.0
+    ax.set_xlim(lo - pad, hi + pad)
     for bar, v in zip(bars, ranking.values):
-        offset = xmax * 0.02
+        offset = (hi - lo) * 0.02
         ax.text(v + (offset if v >= 0 else -offset), bar.get_y() + bar.get_height() / 2,
                 f"{v:+.1f}%", va="center",
                 ha="left" if v >= 0 else "right",
@@ -467,9 +550,9 @@ def wykres_2_ranking_profilow(df: pd.DataFrame, out_path: str) -> None:
 
 
 def wykres_3_boxplot_sezony(df: pd.DataFrame, out_path: str) -> None:
-    """Box plot: rozkład oszczędności per sezon cenowy (wszystkie 96 punktów)."""
+    """Box plot: rozkład różnicy kosztu per sezon cenowy (wszystkie 96 punktów)."""
     fig, ax = plt.subplots(figsize=(9, 5.5))
-    data = [df[df["sezon_ceny"] == s]["oszczednosc_RDN_vs_G11_pct"].values for s in SEASON_ORDER]
+    data = [df[df["sezon_ceny"] == s]["roznica_RDN_vs_G11_pct"].values for s in SEASON_ORDER]
     bp = ax.boxplot(data, labels=SEASON_ORDER, patch_artist=True, showmeans=True,
                      meanprops={"marker": "D", "markerfacecolor": "red", "markersize": 8})
     palette = ["#3498db", "#2ecc71", "#f39c12", "#e67e22"]
@@ -477,9 +560,9 @@ def wykres_3_boxplot_sezony(df: pd.DataFrame, out_path: str) -> None:
         patch.set_facecolor(color)
         patch.set_alpha(0.6)
     ax.axhline(0, color="black", linewidth=0.8, linestyle="--")
-    ax.set_ylabel("Oszczednosc RDN vs G11 [%]")
+    ax.set_ylabel("Roznica kosztu RDN wzgledem G11 [%]")
     ax.set_xlabel("Sezon cenowy")
-    ax.set_title("Wykres 3: Rozklad oszczednosci per sezon cenowy\n"
+    ax.set_title("Wykres 3: Rozklad roznicy kosztu per sezon cenowy\n"
                  "(6 profilow x 4 harmonogramy = 24 punkty per sezon; czerwony romb = srednia)")
     plt.tight_layout()
     plt.savefig(out_path)
@@ -487,22 +570,22 @@ def wykres_3_boxplot_sezony(df: pd.DataFrame, out_path: str) -> None:
 
 
 def wykres_4_scatter_savings_vs_risk(df: pd.DataFrame, out_path: str) -> None:
-    """Scatter: oszczędność vs CVaR (klasyczny trade-off zysk/ryzyko)."""
+    """Scatter: różnica kosztu vs CVaR (trade-off zysk/ryzyko)."""
     diag = df[df["diagonal"]].copy()
     fig, ax = plt.subplots(figsize=(9, 6.5))
     palette = {"Zima": "#3498db", "Wiosna": "#2ecc71", "Lato": "#f39c12", "Jesien": "#e67e22"}
     for sezon in SEASON_ORDER:
         sub = diag[diag["sezon_ceny"] == sezon]
-        ax.scatter(sub["CVaR95_RDN_pln"], sub["oszczednosc_RDN_vs_G11_pct"],
+        ax.scatter(sub["CVaR95_RDN_pln"], sub["roznica_RDN_vs_G11_pct"],
                    s=140, color=palette[sezon], edgecolor="black", alpha=0.85, label=sezon)
         for _, row in sub.iterrows():
-            ax.annotate(row["profil_kod"], (row["CVaR95_RDN_pln"], row["oszczednosc_RDN_vs_G11_pct"]),
+            ax.annotate(row["profil_kod"], (row["CVaR95_RDN_pln"], row["roznica_RDN_vs_G11_pct"]),
                         xytext=(6, 6), textcoords="offset points", fontsize=9)
     ax.axhline(0, color="black", linewidth=0.8, linestyle="--")
     ax.set_xlabel("CVaR 95% dziennego kosztu RDN [zl] (im wiecej, tym wyzsze ryzyko)")
-    ax.set_ylabel("Oszczednosc RDN vs G11 [%]")
+    ax.set_ylabel("Roznica kosztu RDN wzgledem G11 [%]")
     ax.set_title("Wykres 4: Trade-off zysk vs ryzyko dla 24 przypadkow diagonalnych\n"
-                 "(prawy gorny rog = wysoka oszczednosc + wysokie ryzyko dnia drogi)")
+                 "(prawy gorny rog = korzystny wynik przy wysokim ryzyku dnia drogiego)")
     ax.legend(title="Sezon", loc="best")
     plt.tight_layout()
     plt.savefig(out_path)
@@ -537,15 +620,15 @@ def wykres_5_bar_taryfy(df: pd.DataFrame, out_path: str) -> None:
 def wykres_6_ranking_sezonow(df: pd.DataFrame, out_path: str) -> None:
     """Ranking sezonów cenowych - który sezon najbardziej korzysta na RDN."""
     diag = df[df["diagonal"]].copy()
-    ranking = diag.groupby("sezon_ceny")["oszczednosc_RDN_vs_G11_pct"].mean().reindex(SEASON_ORDER)
+    ranking = diag.groupby("sezon_ceny")["roznica_RDN_vs_G11_pct"].mean().reindex(SEASON_ORDER)
 
     fig, ax = plt.subplots(figsize=(9, 6))
     colors = ["#3498db", "#2ecc71", "#f39c12", "#e67e22"]
     bars = ax.bar(ranking.index, ranking.values, color=colors, edgecolor="black")
     ax.axhline(0, color="black", linewidth=1.0)
-    ax.set_ylabel("Srednia oszczednosc RDN vs G11 [%]", fontsize=11)
+    ax.set_ylabel("Srednia roznica kosztu RDN wzgledem G11 [%]", fontsize=11)
     ax.set_xlabel("Sezon cenowy", fontsize=11)
-    ax.set_title("Wykres 6: Ranking sezonow cenowych\n(usredniona oszczednosc z 6 profilow diagonalnych)", fontsize=12)
+    ax.set_title("Wykres 6: Ranking sezonow cenowych\n(usredniona roznica kosztu z 6 profilow diagonalnych)", fontsize=12)
     # Etykiety NAD lub POD slupkiem, nie w srodku - lepsza czytelnosc
     y_range = ranking.max() - ranking.min()
     padding = max(abs(y_range) * 0.05, 0.5)
@@ -568,7 +651,7 @@ def wykres_7_sensitivity(df: pd.DataFrame, out_path: str) -> None:
     df2 = df.copy()
     df2["etykieta"] = df2["profil_kod"] + "-" + df2["sezon_harmonogram"].str[:4]
     pivot = df2.pivot_table(index="etykieta", columns="sezon_ceny",
-                             values="oszczednosc_RDN_vs_G11_pct", aggfunc="mean")
+                             values="roznica_RDN_vs_G11_pct", aggfunc="mean")
     pivot = pivot.reindex(columns=SEASON_ORDER)
     row_order = [f"{k}-{s[:4]}" for k in PROFILES.keys() for s in SCHEDULE_SEASONS]
     pivot = pivot.reindex(index=[r for r in row_order if r in pivot.index])
@@ -582,7 +665,7 @@ def wykres_7_sensitivity(df: pd.DataFrame, out_path: str) -> None:
     ax.set_xticklabels([f"Ceny {s}" for s in SEASON_ORDER], fontsize=10)
     ax.set_yticks(range(len(pivot.index)))
     ax.set_yticklabels(pivot.index, fontsize=9)
-    ax.set_title("Wykres 7 (sensitivity): Oszczednosc RDN vs G11 [%] - 96 kombinacji\n"
+    ax.set_title("Wykres 7 (sensitivity): Roznica kosztu RDN wzgledem G11 [%] - 96 kombinacji\n"
                  "(wiersz = profil+harmonogram, kolumna = sezon cenowy)", fontsize=12)
     for i in range(pivot.shape[0]):
         for j in range(pivot.shape[1]):
@@ -591,7 +674,7 @@ def wykres_7_sensitivity(df: pd.DataFrame, out_path: str) -> None:
                 color = "white" if v < -vmax * 0.55 else "black"
                 ax.text(j, i, f"{v:+.0f}", ha="center", va="center",
                         color=color, fontsize=9, fontweight="bold")
-    cbar = fig.colorbar(im, ax=ax, label="Oszczednosc [%]  (dodatnie=RDN taniej)")
+    cbar = fig.colorbar(im, ax=ax, label="Roznica kosztu [%]   dodatnie = RDN tansza")
     cbar.ax.tick_params(labelsize=9)
     plt.tight_layout()
     plt.savefig(out_path)
@@ -606,8 +689,9 @@ def zapisz_tabele(df: pd.DataFrame, out_dir: str) -> None:
     """Zapisuje tabelę w CSV i Markdown do wklejenia w pracy."""
     diag = df[df["diagonal"]].copy().sort_values(["profil_kod", "sezon_harmonogram"])
     cols = ["profil_kod", "profil_nazwa", "sezon_harmonogram",
+            "udzial_strefy_nocnej_pct",
             "koszt_G11_pln", "koszt_G12_pln", "koszt_RDN_pln",
-            "oszczednosc_RDN_vs_G11_pct", "oszczednosc_RDN_vs_G12_pct",
+            "roznica_RDN_vs_G11_pct", "roznica_RDN_vs_G12_pct",
             "VaR95_RDN_pln", "CVaR95_RDN_pln"]
 
     # CSV pełny (96 + diagonal)
@@ -625,13 +709,13 @@ def zapisz_tabele(df: pd.DataFrame, out_dir: str) -> None:
         f.write("\n\n## Agregaty\n\n### Średnia per profil (diagonal)\n\n")
         agg_arch = diag.groupby(["profil_kod", "profil_nazwa"])[
             ["koszt_G11_pln", "koszt_G12_pln", "koszt_RDN_pln",
-             "oszczednosc_RDN_vs_G11_pct", "oszczednosc_RDN_vs_G12_pct"]
+             "roznica_RDN_vs_G11_pct", "roznica_RDN_vs_G12_pct"]
         ].mean().reset_index()
         f.write(agg_arch.to_markdown(index=False, floatfmt=".2f"))
         f.write("\n\n### Średnia per sezon cenowy (diagonal)\n\n")
         agg_sezon = diag.groupby("sezon_harmonogram")[
             ["koszt_G11_pln", "koszt_G12_pln", "koszt_RDN_pln",
-             "oszczednosc_RDN_vs_G11_pct", "oszczednosc_RDN_vs_G12_pct"]
+             "roznica_RDN_vs_G11_pct", "roznica_RDN_vs_G12_pct"]
         ].mean().reset_index()
         f.write(agg_sezon.to_markdown(index=False, floatfmt=".2f"))
         # Grand total
@@ -639,8 +723,54 @@ def zapisz_tabele(df: pd.DataFrame, out_dir: str) -> None:
         f.write(f"- **Średni koszt G11:** {diag['koszt_G11_pln'].mean():.2f} zł\n")
         f.write(f"- **Średni koszt G12:** {diag['koszt_G12_pln'].mean():.2f} zł\n")
         f.write(f"- **Średni koszt RDN:** {diag['koszt_RDN_pln'].mean():.2f} zł\n")
-        f.write(f"- **Średnia oszczędność RDN vs G11:** {diag['oszczednosc_RDN_vs_G11_pct'].mean():.2f}%\n")
-        f.write(f"- **Średnia oszczędność RDN vs G12:** {diag['oszczednosc_RDN_vs_G12_pct'].mean():.2f}%\n")
+        f.write(f"- **Średnia różnica kosztu RDN vs G11:** {diag['roznica_RDN_vs_G11_pct'].mean():.2f}%\n")
+        f.write(f"- **Średnia różnica kosztu RDN vs G12:** {diag['roznica_RDN_vs_G12_pct'].mean():.2f}%\n")
+
+        # Średnia z procentów nie równa się procentowi ze średnich (efekt Simpsona):
+        # pierwsza traktuje każde gospodarstwo jednakowo, druga waży je zużyciem.
+        # W pracy raportowane są obie, bo odpowiadają na różne pytania.
+        s11 = diag["koszt_G11_pln"].sum()
+        s12 = diag["koszt_G12_pln"].sum()
+        srdn = diag["koszt_RDN_pln"].sum()
+        f.write("\n### Ujęcie kwotowe (iloraz średnich, ważone zużyciem)\n\n")
+        f.write(f"- **Suma kosztów:** G11 = {s11:.2f} zł, G12 = {s12:.2f} zł, RDN = {srdn:.2f} zł\n")
+        f.write(f"- **RDN vs G11:** {(s11 - srdn) / s11 * 100:.2f}% "
+                f"(średnia z procentów: {diag['roznica_RDN_vs_G11_pct'].mean():.2f}%)\n")
+        f.write(f"- **RDN vs G12:** {(s12 - srdn) / s12 * 100:.2f}% "
+                f"(średnia z procentów: {diag['roznica_RDN_vs_G12_pct'].mean():.2f}%)\n")
+        f.write(f"- **G12 vs G11:** {(s11 - s12) / s11 * 100:.2f}%\n")
+
+        # Kontrola spójności: warunek analityczny 'udział strefy nocnej < próg'
+        # musi pokrywać się z faktem 'G11 tańsza od G12'. Rozbieżność = błąd modelu.
+        prog = T.prog_udzialu_nocnego() * 100
+        ponizej = set(diag.loc[diag["udzial_strefy_nocnej_pct"] < prog, "profil_kod"]
+                      + "-" + diag.loc[diag["udzial_strefy_nocnej_pct"] < prog, "sezon_harmonogram"])
+        tansze = set(diag.loc[diag["koszt_G11_pln"] < diag["koszt_G12_pln"], "profil_kod"]
+                     + "-" + diag.loc[diag["koszt_G11_pln"] < diag["koszt_G12_pln"], "sezon_harmonogram"])
+        f.write(f"\n### Próg opłacalności G12\n\n")
+        f.write(f"- **Próg udziału strefy nocnej:** τ = {prog:.2f}%\n")
+        f.write(f"- **Próg ceny hurtowej dla RDN vs G11:** {T.prog_ceny_hurtowej():.0f} zł/MWh\n")
+        f.write(f"- **Przypadki, w których G11 jest tańsza od G12:** "
+                f"{', '.join(sorted(tansze)) if tansze else 'brak'}\n")
+        f.write(f"- **Kontrola:** zbiór przewidziany progiem {'zgodny' if ponizej == tansze else 'ROZBIEŻNY'}"
+                f" ze zbiorem wyznaczonym kosztowo\n")
+
+        # Przypadki lezace tak blisko progu, ze o wyniku decyduja grosze. Podawanie
+        # ich jako rozstrzygnietych bylo by nadinterpretacja - roznica kosztu jest
+        # mniejsza niz niepewnosc samego modelu zuzycia.
+        blisko = diag[(diag["udzial_strefy_nocnej_pct"] - prog).abs() < 1.0]
+        if not blisko.empty:
+            f.write("\n### Przypadki nierozstrzygnięte (udział strefy nocnej w granicach ±1 p.p. od progu)\n\n")
+            f.write("| przypadek | udział strefy nocnej | G11 | G12 | różnica |\n")
+            f.write("|:---|---:|---:|---:|---:|\n")
+            for _, r in blisko.iterrows():
+                d = r["koszt_G12_pln"] - r["koszt_G11_pln"]
+                f.write(f"| {r['profil_kod']}-{r['sezon_harmonogram']} "
+                        f"| {r['udzial_strefy_nocnej_pct']:.2f}% "
+                        f"| {r['koszt_G11_pln']:.2f} zł | {r['koszt_G12_pln']:.2f} zł "
+                        f"| {d:+.2f} zł |\n")
+            f.write("\nW tych przypadkach wskazanie tańszej taryfy nie ma znaczenia praktycznego "
+                    "i nie powinno być raportowane jako rozstrzygnięcie.\n")
 
 
 def zapisz_wnioski(df: pd.DataFrame, out_dir: str) -> None:
@@ -650,40 +780,53 @@ def zapisz_wnioski(df: pd.DataFrame, out_dir: str) -> None:
     with open(os.path.join(out_dir, "wnioski_hipotezy.md"), "w", encoding="utf-8") as f:
         f.write("# Automatyczna weryfikacja hipotez badawczych\n\n")
         f.write("_Wygenerowane przez analiza_wyniki.py na podstawie 24 testów baseline._\n\n")
+        f.write("Konwencja znaku: wartość dodatnia oznacza, że taryfa dynamiczna jest **tańsza** "
+                "od taryfy odniesienia, ujemna - że jest **droższa**.\n\n")
+        f.write(f"Parametry: G11 = {G11_PLN_KWH:.4f}, G12 = {G12_DAY_PLN_KWH:.4f}/{G12_NIGHT_PLN_KWH:.4f} zł/kWh, "
+                f"narzut RDN = {RDN_NARZUT_NET:.4f} zł/kWh (marża sprzedawcy {T.MARZA:.2f} zł/kWh).\n\n")
+
+        # Kazda hipoteza raportowana w dwoch ujeciach: srednia z procentow traktuje
+        # kazde gospodarstwo jednakowo, iloraz srednich wazy je zuzyciem (efekt
+        # Simpsona). Podawanie tylko jednej z nich zaciemnia obraz.
+        s11, s12, srdn = (diag["koszt_G11_pln"].sum(), diag["koszt_G12_pln"].sum(),
+                          diag["koszt_RDN_pln"].sum())
+        kw11 = (s11 - srdn) / s11 * 100
+        kw12 = (s12 - srdn) / s12 * 100
 
         # H1: RDN opłacalny średnio
-        avg = diag["oszczednosc_RDN_vs_G11_pct"].mean()
+        avg = diag["roznica_RDN_vs_G11_pct"].mean()
         f.write(f"## H1: RDN jest średnio opłacalny wobec G11 dla polskich gospodarstw\n\n")
-        f.write(f"**Wynik:** Średnia oszczędność = **{avg:.2f}%** (uśredniona po 24 przypadkach).\n")
-        f.write(f"**Weryfikacja:** {'POTWIERDZONA' if avg > 0 else 'NIEPOTWIERDZONA'} (próg: >0%).\n\n")
+        f.write(f"**Wynik:** średnia z procentów = **{avg:.2f}%**, ujęcie kwotowe = **{kw11:.2f}%**.\n")
+        f.write(f"**Weryfikacja:** {'POTWIERDZONA' if avg > 0 and kw11 > 0 else 'NIEPOTWIERDZONA'} "
+                f"(próg: >0% w obu ujęciach).\n\n")
 
         # H2: RDN opłacalny > G12
-        avg_g12 = diag["oszczednosc_RDN_vs_G12_pct"].mean()
+        avg_g12 = diag["roznica_RDN_vs_G12_pct"].mean()
         f.write(f"## H2: RDN jest opłacalny również wobec G12 (dzień/noc)\n\n")
-        f.write(f"**Wynik:** Średnia oszczędność = **{avg_g12:.2f}%**.\n")
-        f.write(f"**Weryfikacja:** {'POTWIERDZONA' if avg_g12 > 0 else 'NIEPOTWIERDZONA'}.\n\n")
+        f.write(f"**Wynik:** średnia z procentów = **{avg_g12:.2f}%**, ujęcie kwotowe = **{kw12:.2f}%**.\n")
+        f.write(f"**Weryfikacja:** {'POTWIERDZONA' if avg_g12 > 0 and kw12 > 0 else 'NIEPOTWIERDZONA'}.\n\n")
 
         # H3: Opłacalność różni się między profilami
-        by_arch = diag.groupby("profil_kod")["oszczednosc_RDN_vs_G11_pct"].mean()
+        by_arch = diag.groupby("profil_kod")["roznica_RDN_vs_G11_pct"].mean()
         best_arch = by_arch.idxmax()
         worst_arch = by_arch.idxmin()
         spread = by_arch.max() - by_arch.min()
-        f.write(f"## H3: Opłacalność RDN różni się istotnie między profilami\n\n")
+        f.write(f"## H3: Wynik taryfy dynamicznej różni się istotnie między profilami\n\n")
         f.write(f"**Wynik:** Najlepszy profil = **{best_arch} ({PROFILES[best_arch]})** "
                 f"({by_arch.max():.2f}%), najgorszy = **{worst_arch} ({PROFILES[worst_arch]})** "
                 f"({by_arch.min():.2f}%). Rozstęp = **{spread:.2f} pp**.\n")
         f.write(f"**Weryfikacja:** {'POTWIERDZONA' if spread > 2 else 'NIEPOTWIERDZONA'} (próg: rozstęp > 2 pp).\n\n")
 
         # H4: Zima ma większą oszczędność niż lato (większe amplitudy cen)
-        by_sezon = diag.groupby("sezon_harmonogram")["oszczednosc_RDN_vs_G11_pct"].mean()
+        by_sezon = diag.groupby("sezon_harmonogram")["roznica_RDN_vs_G11_pct"].mean()
         zima = by_sezon.get("Zima", 0.0)
         lato = by_sezon.get("Lato", 0.0)
-        f.write(f"## H4: Zima ma większą oszczędność na RDN niż lato (większe amplitudy cen)\n\n")
+        f.write(f"## H4: Zimą taryfa dynamiczna wypada korzystniej niż latem (większe amplitudy cen)\n\n")
         f.write(f"**Wynik:** Zima = **{zima:.2f}%**, Lato = **{lato:.2f}%** (różnica: {zima - lato:.2f} pp).\n")
         f.write(f"**Weryfikacja:** {'POTWIERDZONA' if zima > lato else 'NIEPOTWIERDZONA'}.\n\n")
 
         # H5: Wnioski są robust (cross-season sensitivity)
-        cross_by_arch = df.groupby("profil_kod")["oszczednosc_RDN_vs_G11_pct"].mean()
+        cross_by_arch = df.groupby("profil_kod")["roznica_RDN_vs_G11_pct"].mean()
         cross_best = cross_by_arch.idxmax()
         f.write(f"## H5: Ranking profili jest robust względem sezonu cenowego\n\n")
         f.write(f"**Wynik:** Diagonal - najlepszy = **{best_arch}**. Cross-season 96 punktów - najlepszy = **{cross_best}**.\n")
@@ -691,12 +834,12 @@ def zapisz_wnioski(df: pd.DataFrame, out_dir: str) -> None:
 
         # Dodatkowe insighty
         f.write(f"## Dodatkowe obserwacje\n\n")
-        f.write(f"- Największa oszczędność (%): **{diag['oszczednosc_RDN_vs_G11_pct'].max():.2f}%** "
-                f"({diag.loc[diag['oszczednosc_RDN_vs_G11_pct'].idxmax(), 'profil_nazwa']} - "
-                f"{diag.loc[diag['oszczednosc_RDN_vs_G11_pct'].idxmax(), 'sezon_harmonogram']})\n")
-        f.write(f"- Najmniejsza (najgorsza): **{diag['oszczednosc_RDN_vs_G11_pct'].min():.2f}%** "
-                f"({diag.loc[diag['oszczednosc_RDN_vs_G11_pct'].idxmin(), 'profil_nazwa']} - "
-                f"{diag.loc[diag['oszczednosc_RDN_vs_G11_pct'].idxmin(), 'sezon_harmonogram']})\n")
+        f.write(f"- Najkorzystniejszy przypadek: **{diag['roznica_RDN_vs_G11_pct'].max():.2f}%** "
+                f"({diag.loc[diag['roznica_RDN_vs_G11_pct'].idxmax(), 'profil_nazwa']} - "
+                f"{diag.loc[diag['roznica_RDN_vs_G11_pct'].idxmax(), 'sezon_harmonogram']})\n")
+        f.write(f"- Najmniej korzystny przypadek: **{diag['roznica_RDN_vs_G11_pct'].min():.2f}%** "
+                f"({diag.loc[diag['roznica_RDN_vs_G11_pct'].idxmin(), 'profil_nazwa']} - "
+                f"{diag.loc[diag['roznica_RDN_vs_G11_pct'].idxmin(), 'sezon_harmonogram']})\n")
         f.write(f"- Średni miesięczny koszt: G11={diag['koszt_G11_pln'].mean():.2f} zł, "
                 f"G12={diag['koszt_G12_pln'].mean():.2f} zł, RDN={diag['koszt_RDN_pln'].mean():.2f} zł\n")
         f.write(f"- Średni CVaR RDN (dzień drogi): **{diag['CVaR95_RDN_pln'].mean():.2f} zł** "
@@ -714,14 +857,20 @@ def main() -> None:
     print("=" * 74)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    print(f"\n  Endpoint: {BASE_URL}")
-    print(f"  Katalog wynikowy: {OUTPUT_DIR}/")
+    print(f"\n  Katalog wynikowy: {OUTPUT_DIR}/")
+    print(f"  Zrodlo danych: {ZRODLO_DANYCH}")
+    print(f"  Taryfy: G11 {G11_PLN_KWH:.4f} | G12 {G12_DAY_PLN_KWH:.4f}/{G12_NIGHT_PLN_KWH:.4f}"
+          f" | narzut RDN {RDN_NARZUT_NET:.4f} (marza {T.MARZA:.2f}) zl/kWh")
+    print(f"  Prog udzialu strefy nocnej: {T.prog_udzialu_nocnego() * 100:.2f}%"
+          f" | prog ceny hurtowej: {T.prog_ceny_hurtowej():.0f} zl/MWh")
 
-    print("\n[0/4] Autentykacja...")
-    api_key = load_or_register_key()
-
-    # Zbierz wszystko przez API
-    df, profiles = gather_all_data(api_key)
+    if ZRODLO_DANYCH == "pliki":
+        df, profiles = gather_all_data_pliki()
+    else:
+        print(f"\n  Endpoint: {BASE_URL}")
+        print("\n[0/4] Autentykacja...")
+        api_key = load_or_register_key()
+        df, profiles = gather_all_data(api_key)
 
     if df.empty:
         print("\n[BLAD] Nie zebrano zadnych danych - sprawdz partie testow.")
