@@ -44,13 +44,46 @@ if ($jsonFiles.Count -eq 0) {
 }
 Write-Host "[INFO] Plikow do wgrania: $($jsonFiles.Count)" -ForegroundColor Gray
 
+# UWAGA PowerShell 5.1: Invoke-RestMethod potrafi zwrocic tablice JSON jako
+# POJEDYNCZY obiekt-tablice. Wtedy $existing.Count = 1, a $_.name zwraca sklejone
+# nazwy wszystkich szablonow (member enumeration) - filtr "Profil *" przepuszcza
+# calosc jako jeden element i DELETE leci na sklejone UUID-y. Rozwijamy jawnie.
+function Expand-Items($raw) {
+    $out = @()
+    foreach ($item in @($raw)) {
+        if ($null -eq $item) { continue }
+        if ($item -is [System.Collections.IEnumerable] -and $item -isnot [string]) {
+            foreach ($sub in $item) { if ($null -ne $sub) { $out += $sub } }
+        } else {
+            $out += $item
+        }
+    }
+    return ,$out
+}
+
 try {
-    $existing = @(Invoke-RestMethod -Uri $backendUrl -Method GET)
+    $existing = Expand-Items (Invoke-RestMethod -Uri $backendUrl -Method GET)
 } catch {
     $existing = @()
 }
 $stale = @($existing | Where-Object { $_.name -like "Profil *" })
+
+# Zabezpieczenie: kazdy szablon do skasowania musi miec pojedynczy, poprawny UUID.
+foreach ($t in $stale) {
+    $idText = "$($t.templateId)"
+    if ($idText -notmatch '^[0-9a-fA-F-]{36}$') {
+        Write-Host "[BLAD] Szablon '$($t.name)' ma niepoprawny templateId: '$idText'" -ForegroundColor Red
+        Write-Host "       Przerywam, zeby nie uszkodzic bazy." -ForegroundColor Red
+        exit 1
+    }
+}
+
 Write-Host "[INFO] Szablonow w bazie: $($existing.Count), w tym profilowych do podmiany: $($stale.Count)" -ForegroundColor Gray
+$wlasne = @($existing | Where-Object { $_.name -notlike "Profil *" })
+if ($wlasne.Count -gt 0) {
+    Write-Host "[INFO] Szablony wlasne (nietykane): $($wlasne.Count)" -ForegroundColor Gray
+    $wlasne | ForEach-Object { Write-Host "         - $($_.name)" -ForegroundColor DarkGray }
+}
 Write-Host ""
 
 # ---- Krok 1: skasuj stare szablony profilowe ----

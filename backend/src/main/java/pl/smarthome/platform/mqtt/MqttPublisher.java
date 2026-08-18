@@ -58,6 +58,18 @@ public class MqttPublisher {
             options.setCleanSession(true);
             options.setConnectionTimeout(10);
             options.setKeepAliveInterval(30);
+            // Domyslny limit Paho to 10 wiadomosci "w locie". Przy QoS 1 kazda czeka na
+            // PUBACK, a petla symulacji publikuje wszystkie urzadzenia jednego testu
+            // w jednym przebiegu (15 urzadzen x 4 rownolegle testy = do 60 publikacji
+            // naraz). Po przekroczeniu limitu publish() rzuca "Too many publishes in
+            // progress" i pomiar przepada.
+            //
+            // Utrata NIE jest losowa: okno zapelnia sie w trakcie petli po urzadzeniach,
+            // wiec gina konsekwentnie urzadzenia z KONCA listy. Generator dopisuje
+            // grzejniki na koncu konfiguracji zimowej, czyli tracone bylo zuzycie
+            // najwiekszych odbiornikow sezonu grzewczego (heater_livingroom 2000 W,
+            // heater_bedroom 1500 W) - blad systematyczny zanizajacy zuzycie zimowe.
+            options.setMaxInflight(1000);
 
             client.connect(options);
             log.info("MqttPublisher połączony z brokerem: {}", config.getBrokerUrl());
