@@ -1,0 +1,5042 @@
+[
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 0,
+  "pricePlnMwh": 16.26,
+  "pricePlnKwh": 0.0163
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 1,
+  "pricePlnMwh": -8.78,
+  "pricePlnKwh": -0.0088
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 2,
+  "pricePlnMwh": -16.61,
+  "pricePlnKwh": -0.0166
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 3,
+  "pricePlnMwh": -25.25,
+  "pricePlnKwh": -0.0253
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 4,
+  "pricePlnMwh": -44.25,
+  "pricePlnKwh": -0.0443
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 5,
+  "pricePlnMwh": -38.97,
+  "pricePlnKwh": -0.039
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 6,
+  "pricePlnMwh": -79.79,
+  "pricePlnKwh": -0.0798
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 7,
+  "pricePlnMwh": -87.6,
+  "pricePlnKwh": -0.0876
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 8,
+  "pricePlnMwh": -128.09,
+  "pricePlnKwh": -0.1281
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 9,
+  "pricePlnMwh": -245.07,
+  "pricePlnKwh": -0.2451
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 10,
+  "pricePlnMwh": -282.14,
+  "pricePlnKwh": -0.2821
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 11,
+  "pricePlnMwh": -261.04,
+  "pricePlnKwh": -0.261
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 12,
+  "pricePlnMwh": -202.28,
+  "pricePlnKwh": -0.2023
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 13,
+  "pricePlnMwh": -45.46,
+  "pricePlnKwh": -0.0455
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 14,
+  "pricePlnMwh": -16.57,
+  "pricePlnKwh": -0.0166
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 15,
+  "pricePlnMwh": 37.24,
+  "pricePlnKwh": 0.0372
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 16,
+  "pricePlnMwh": 57.39,
+  "pricePlnKwh": 0.0574
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 17,
+  "pricePlnMwh": 59.24,
+  "pricePlnKwh": 0.0592
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 18,
+  "pricePlnMwh": 53.25,
+  "pricePlnKwh": 0.0533
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 19,
+  "pricePlnMwh": 50.36,
+  "pricePlnKwh": 0.0504
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 20,
+  "pricePlnMwh": 44.86,
+  "pricePlnKwh": 0.0449
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 21,
+  "pricePlnMwh": 21.63,
+  "pricePlnKwh": 0.0216
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 22,
+  "pricePlnMwh": 17.41,
+  "pricePlnKwh": 0.0174
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-01",
+  "hour": 23,
+  "pricePlnMwh": -18.59,
+  "pricePlnKwh": -0.0186
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 0,
+  "pricePlnMwh": -64.55,
+  "pricePlnKwh": -0.0646
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 1,
+  "pricePlnMwh": -41.34,
+  "pricePlnKwh": -0.0413
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 2,
+  "pricePlnMwh": -61.96,
+  "pricePlnKwh": -0.062
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 3,
+  "pricePlnMwh": -45.05,
+  "pricePlnKwh": -0.0451
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 4,
+  "pricePlnMwh": -48.09,
+  "pricePlnKwh": -0.0481
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 5,
+  "pricePlnMwh": -2.15,
+  "pricePlnKwh": -0.0022
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 6,
+  "pricePlnMwh": 145.48,
+  "pricePlnKwh": 0.1455
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 7,
+  "pricePlnMwh": 354.88,
+  "pricePlnKwh": 0.3549
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 8,
+  "pricePlnMwh": 413.92,
+  "pricePlnKwh": 0.4139
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 9,
+  "pricePlnMwh": 438.65,
+  "pricePlnKwh": 0.4387
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 10,
+  "pricePlnMwh": 441.66,
+  "pricePlnKwh": 0.4417
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 11,
+  "pricePlnMwh": 423.24,
+  "pricePlnKwh": 0.4232
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 12,
+  "pricePlnMwh": 395.69,
+  "pricePlnKwh": 0.3957
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 13,
+  "pricePlnMwh": 434.32,
+  "pricePlnKwh": 0.4343
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 14,
+  "pricePlnMwh": 464.27,
+  "pricePlnKwh": 0.4643
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 15,
+  "pricePlnMwh": 530.56,
+  "pricePlnKwh": 0.5306
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 16,
+  "pricePlnMwh": 562.68,
+  "pricePlnKwh": 0.5627
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 17,
+  "pricePlnMwh": 603.2,
+  "pricePlnKwh": 0.6032
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 18,
+  "pricePlnMwh": 611.04,
+  "pricePlnKwh": 0.611
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 19,
+  "pricePlnMwh": 560.38,
+  "pricePlnKwh": 0.5604
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 20,
+  "pricePlnMwh": 530.92,
+  "pricePlnKwh": 0.5309
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 21,
+  "pricePlnMwh": 448.25,
+  "pricePlnKwh": 0.4483
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 22,
+  "pricePlnMwh": 436.85,
+  "pricePlnKwh": 0.4369
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-02",
+  "hour": 23,
+  "pricePlnMwh": 340.2,
+  "pricePlnKwh": 0.3402
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 0,
+  "pricePlnMwh": 372.26,
+  "pricePlnKwh": 0.3723
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 1,
+  "pricePlnMwh": 309.72,
+  "pricePlnKwh": 0.3097
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 2,
+  "pricePlnMwh": 302.08,
+  "pricePlnKwh": 0.3021
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 3,
+  "pricePlnMwh": 295.58,
+  "pricePlnKwh": 0.2956
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 4,
+  "pricePlnMwh": 259.27,
+  "pricePlnKwh": 0.2593
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 5,
+  "pricePlnMwh": 308.95,
+  "pricePlnKwh": 0.309
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 6,
+  "pricePlnMwh": 424.17,
+  "pricePlnKwh": 0.4242
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 7,
+  "pricePlnMwh": 426.97,
+  "pricePlnKwh": 0.427
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 8,
+  "pricePlnMwh": 465.0,
+  "pricePlnKwh": 0.465
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 9,
+  "pricePlnMwh": 452.83,
+  "pricePlnKwh": 0.4528
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 10,
+  "pricePlnMwh": 383.48,
+  "pricePlnKwh": 0.3835
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 11,
+  "pricePlnMwh": 347.87,
+  "pricePlnKwh": 0.3479
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 12,
+  "pricePlnMwh": 363.03,
+  "pricePlnKwh": 0.363
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 13,
+  "pricePlnMwh": 373.91,
+  "pricePlnKwh": 0.3739
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 14,
+  "pricePlnMwh": 396.07,
+  "pricePlnKwh": 0.3961
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 15,
+  "pricePlnMwh": 423.62,
+  "pricePlnKwh": 0.4236
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 16,
+  "pricePlnMwh": 460.92,
+  "pricePlnKwh": 0.4609
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 17,
+  "pricePlnMwh": 470.99,
+  "pricePlnKwh": 0.471
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 18,
+  "pricePlnMwh": 475.65,
+  "pricePlnKwh": 0.4757
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 19,
+  "pricePlnMwh": 474.36,
+  "pricePlnKwh": 0.4744
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 20,
+  "pricePlnMwh": 421.97,
+  "pricePlnKwh": 0.422
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 21,
+  "pricePlnMwh": 379.25,
+  "pricePlnKwh": 0.3793
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 22,
+  "pricePlnMwh": 380.03,
+  "pricePlnKwh": 0.38
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-03",
+  "hour": 23,
+  "pricePlnMwh": 296.83,
+  "pricePlnKwh": 0.2968
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 0,
+  "pricePlnMwh": 253.87,
+  "pricePlnKwh": 0.2539
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 1,
+  "pricePlnMwh": 270.45,
+  "pricePlnKwh": 0.2705
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 2,
+  "pricePlnMwh": 248.8,
+  "pricePlnKwh": 0.2488
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 3,
+  "pricePlnMwh": 280.62,
+  "pricePlnKwh": 0.2806
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 4,
+  "pricePlnMwh": 321.18,
+  "pricePlnKwh": 0.3212
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 5,
+  "pricePlnMwh": 368.49,
+  "pricePlnKwh": 0.3685
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 6,
+  "pricePlnMwh": 424.43,
+  "pricePlnKwh": 0.4244
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 7,
+  "pricePlnMwh": 495.95,
+  "pricePlnKwh": 0.496
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 8,
+  "pricePlnMwh": 538.93,
+  "pricePlnKwh": 0.5389
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 9,
+  "pricePlnMwh": 555.6,
+  "pricePlnKwh": 0.5556
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 10,
+  "pricePlnMwh": 536.41,
+  "pricePlnKwh": 0.5364
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 11,
+  "pricePlnMwh": 524.2,
+  "pricePlnKwh": 0.5242
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 12,
+  "pricePlnMwh": 527.42,
+  "pricePlnKwh": 0.5274
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 13,
+  "pricePlnMwh": 545.1,
+  "pricePlnKwh": 0.5451
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 14,
+  "pricePlnMwh": 601.62,
+  "pricePlnKwh": 0.6016
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 15,
+  "pricePlnMwh": 761.95,
+  "pricePlnKwh": 0.762
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 16,
+  "pricePlnMwh": 638.12,
+  "pricePlnKwh": 0.6381
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 17,
+  "pricePlnMwh": 654.42,
+  "pricePlnKwh": 0.6544
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 18,
+  "pricePlnMwh": 622.13,
+  "pricePlnKwh": 0.6221
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 19,
+  "pricePlnMwh": 592.64,
+  "pricePlnKwh": 0.5926
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 20,
+  "pricePlnMwh": 556.66,
+  "pricePlnKwh": 0.5567
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 21,
+  "pricePlnMwh": 512.79,
+  "pricePlnKwh": 0.5128
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 22,
+  "pricePlnMwh": 490.3,
+  "pricePlnKwh": 0.4903
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-04",
+  "hour": 23,
+  "pricePlnMwh": 441.84,
+  "pricePlnKwh": 0.4418
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 0,
+  "pricePlnMwh": 437.3,
+  "pricePlnKwh": 0.4373
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 1,
+  "pricePlnMwh": 393.55,
+  "pricePlnKwh": 0.3936
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 2,
+  "pricePlnMwh": 376.88,
+  "pricePlnKwh": 0.3769
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 3,
+  "pricePlnMwh": 368.26,
+  "pricePlnKwh": 0.3683
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 4,
+  "pricePlnMwh": 359.93,
+  "pricePlnKwh": 0.3599
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 5,
+  "pricePlnMwh": 341.2,
+  "pricePlnKwh": 0.3412
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 6,
+  "pricePlnMwh": 334.88,
+  "pricePlnKwh": 0.3349
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 7,
+  "pricePlnMwh": 379.09,
+  "pricePlnKwh": 0.3791
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 8,
+  "pricePlnMwh": 406.59,
+  "pricePlnKwh": 0.4066
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 9,
+  "pricePlnMwh": 440.41,
+  "pricePlnKwh": 0.4404
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 10,
+  "pricePlnMwh": 442.98,
+  "pricePlnKwh": 0.443
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 11,
+  "pricePlnMwh": 436.63,
+  "pricePlnKwh": 0.4366
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 12,
+  "pricePlnMwh": 449.14,
+  "pricePlnKwh": 0.4491
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 13,
+  "pricePlnMwh": 461.11,
+  "pricePlnKwh": 0.4611
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 14,
+  "pricePlnMwh": 497.92,
+  "pricePlnKwh": 0.4979
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 15,
+  "pricePlnMwh": 497.73,
+  "pricePlnKwh": 0.4977
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 16,
+  "pricePlnMwh": 482.96,
+  "pricePlnKwh": 0.483
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 17,
+  "pricePlnMwh": 465.16,
+  "pricePlnKwh": 0.4652
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 18,
+  "pricePlnMwh": 439.97,
+  "pricePlnKwh": 0.44
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 19,
+  "pricePlnMwh": 446.14,
+  "pricePlnKwh": 0.4461
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 20,
+  "pricePlnMwh": 401.15,
+  "pricePlnKwh": 0.4012
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 21,
+  "pricePlnMwh": 369.49,
+  "pricePlnKwh": 0.3695
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 22,
+  "pricePlnMwh": 302.01,
+  "pricePlnKwh": 0.302
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-05",
+  "hour": 23,
+  "pricePlnMwh": 173.99,
+  "pricePlnKwh": 0.174
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 0,
+  "pricePlnMwh": 138.01,
+  "pricePlnKwh": 0.138
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 1,
+  "pricePlnMwh": 127.01,
+  "pricePlnKwh": 0.127
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 2,
+  "pricePlnMwh": 88.55,
+  "pricePlnKwh": 0.0886
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 3,
+  "pricePlnMwh": 78.04,
+  "pricePlnKwh": 0.078
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 4,
+  "pricePlnMwh": 86.89,
+  "pricePlnKwh": 0.0869
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 5,
+  "pricePlnMwh": 132.41,
+  "pricePlnKwh": 0.1324
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 6,
+  "pricePlnMwh": 211.9,
+  "pricePlnKwh": 0.2119
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 7,
+  "pricePlnMwh": 270.58,
+  "pricePlnKwh": 0.2706
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 8,
+  "pricePlnMwh": 312.34,
+  "pricePlnKwh": 0.3123
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 9,
+  "pricePlnMwh": 294.9,
+  "pricePlnKwh": 0.2949
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 10,
+  "pricePlnMwh": 269.5,
+  "pricePlnKwh": 0.2695
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 11,
+  "pricePlnMwh": 221.48,
+  "pricePlnKwh": 0.2215
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 12,
+  "pricePlnMwh": 229.23,
+  "pricePlnKwh": 0.2292
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 13,
+  "pricePlnMwh": 299.27,
+  "pricePlnKwh": 0.2993
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 14,
+  "pricePlnMwh": 334.24,
+  "pricePlnKwh": 0.3342
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 15,
+  "pricePlnMwh": 365.44,
+  "pricePlnKwh": 0.3654
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 16,
+  "pricePlnMwh": 380.29,
+  "pricePlnKwh": 0.3803
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 17,
+  "pricePlnMwh": 361.24,
+  "pricePlnKwh": 0.3612
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 18,
+  "pricePlnMwh": 325.63,
+  "pricePlnKwh": 0.3256
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 19,
+  "pricePlnMwh": 313.41,
+  "pricePlnKwh": 0.3134
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 20,
+  "pricePlnMwh": 301.19,
+  "pricePlnKwh": 0.3012
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 21,
+  "pricePlnMwh": 231.07,
+  "pricePlnKwh": 0.2311
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 22,
+  "pricePlnMwh": 193.88,
+  "pricePlnKwh": 0.1939
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-06",
+  "hour": 23,
+  "pricePlnMwh": 123.31,
+  "pricePlnKwh": 0.1233
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 0,
+  "pricePlnMwh": 70.78,
+  "pricePlnKwh": 0.0708
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 1,
+  "pricePlnMwh": 79.09,
+  "pricePlnKwh": 0.0791
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 2,
+  "pricePlnMwh": 68.5,
+  "pricePlnKwh": 0.0685
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 3,
+  "pricePlnMwh": 67.94,
+  "pricePlnKwh": 0.0679
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 4,
+  "pricePlnMwh": 95.02,
+  "pricePlnKwh": 0.095
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 5,
+  "pricePlnMwh": 200.16,
+  "pricePlnKwh": 0.2002
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 6,
+  "pricePlnMwh": 419.67,
+  "pricePlnKwh": 0.4197
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 7,
+  "pricePlnMwh": 455.86,
+  "pricePlnKwh": 0.4559
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 8,
+  "pricePlnMwh": 506.42,
+  "pricePlnKwh": 0.5064
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 9,
+  "pricePlnMwh": 489.05,
+  "pricePlnKwh": 0.4891
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 10,
+  "pricePlnMwh": 443.61,
+  "pricePlnKwh": 0.4436
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 11,
+  "pricePlnMwh": 433.54,
+  "pricePlnKwh": 0.4335
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 12,
+  "pricePlnMwh": 446.41,
+  "pricePlnKwh": 0.4464
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 13,
+  "pricePlnMwh": 483.52,
+  "pricePlnKwh": 0.4835
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 14,
+  "pricePlnMwh": 491.43,
+  "pricePlnKwh": 0.4914
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 15,
+  "pricePlnMwh": 521.84,
+  "pricePlnKwh": 0.5218
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 16,
+  "pricePlnMwh": 572.72,
+  "pricePlnKwh": 0.5727
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 17,
+  "pricePlnMwh": 530.65,
+  "pricePlnKwh": 0.5307
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 18,
+  "pricePlnMwh": 518.74,
+  "pricePlnKwh": 0.5187
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 19,
+  "pricePlnMwh": 492.89,
+  "pricePlnKwh": 0.4929
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 20,
+  "pricePlnMwh": 420.96,
+  "pricePlnKwh": 0.421
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 21,
+  "pricePlnMwh": 366.85,
+  "pricePlnKwh": 0.3669
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 22,
+  "pricePlnMwh": 342.25,
+  "pricePlnKwh": 0.3423
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-07",
+  "hour": 23,
+  "pricePlnMwh": 247.55,
+  "pricePlnKwh": 0.2476
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 0,
+  "pricePlnMwh": 253.62,
+  "pricePlnKwh": 0.2536
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 1,
+  "pricePlnMwh": 230.3,
+  "pricePlnKwh": 0.2303
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 2,
+  "pricePlnMwh": 202.91,
+  "pricePlnKwh": 0.2029
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 3,
+  "pricePlnMwh": 195.82,
+  "pricePlnKwh": 0.1958
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 4,
+  "pricePlnMwh": 209.67,
+  "pricePlnKwh": 0.2097
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 5,
+  "pricePlnMwh": 300.07,
+  "pricePlnKwh": 0.3001
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 6,
+  "pricePlnMwh": 436.06,
+  "pricePlnKwh": 0.4361
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 7,
+  "pricePlnMwh": 483.3,
+  "pricePlnKwh": 0.4833
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 8,
+  "pricePlnMwh": 529.42,
+  "pricePlnKwh": 0.5294
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 9,
+  "pricePlnMwh": 484.7,
+  "pricePlnKwh": 0.4847
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 10,
+  "pricePlnMwh": 439.58,
+  "pricePlnKwh": 0.4396
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 11,
+  "pricePlnMwh": 428.71,
+  "pricePlnKwh": 0.4287
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 12,
+  "pricePlnMwh": 422.45,
+  "pricePlnKwh": 0.4225
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 13,
+  "pricePlnMwh": 458.81,
+  "pricePlnKwh": 0.4588
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 14,
+  "pricePlnMwh": 499.12,
+  "pricePlnKwh": 0.4991
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 15,
+  "pricePlnMwh": 564.61,
+  "pricePlnKwh": 0.5646
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 16,
+  "pricePlnMwh": 617.71,
+  "pricePlnKwh": 0.6177
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 17,
+  "pricePlnMwh": 635.75,
+  "pricePlnKwh": 0.6358
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 18,
+  "pricePlnMwh": 620.77,
+  "pricePlnKwh": 0.6208
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 19,
+  "pricePlnMwh": 598.11,
+  "pricePlnKwh": 0.5981
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 20,
+  "pricePlnMwh": 559.04,
+  "pricePlnKwh": 0.559
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 21,
+  "pricePlnMwh": 503.64,
+  "pricePlnKwh": 0.5036
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 22,
+  "pricePlnMwh": 478.12,
+  "pricePlnKwh": 0.4781
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-08",
+  "hour": 23,
+  "pricePlnMwh": 440.49,
+  "pricePlnKwh": 0.4405
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 0,
+  "pricePlnMwh": 439.79,
+  "pricePlnKwh": 0.4398
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 1,
+  "pricePlnMwh": 430.16,
+  "pricePlnKwh": 0.4302
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 2,
+  "pricePlnMwh": 421.35,
+  "pricePlnKwh": 0.4214
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 3,
+  "pricePlnMwh": 417.03,
+  "pricePlnKwh": 0.417
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 4,
+  "pricePlnMwh": 432.41,
+  "pricePlnKwh": 0.4324
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 5,
+  "pricePlnMwh": 460.32,
+  "pricePlnKwh": 0.4603
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 6,
+  "pricePlnMwh": 573.33,
+  "pricePlnKwh": 0.5733
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 7,
+  "pricePlnMwh": 650.5,
+  "pricePlnKwh": 0.6505
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 8,
+  "pricePlnMwh": 700.5,
+  "pricePlnKwh": 0.7005
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 9,
+  "pricePlnMwh": 682.03,
+  "pricePlnKwh": 0.682
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 10,
+  "pricePlnMwh": 644.13,
+  "pricePlnKwh": 0.6441
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 11,
+  "pricePlnMwh": 610.03,
+  "pricePlnKwh": 0.61
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 12,
+  "pricePlnMwh": 580.72,
+  "pricePlnKwh": 0.5807
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 13,
+  "pricePlnMwh": 583.28,
+  "pricePlnKwh": 0.5833
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 14,
+  "pricePlnMwh": 591.13,
+  "pricePlnKwh": 0.5911
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 15,
+  "pricePlnMwh": 598.0,
+  "pricePlnKwh": 0.598
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 16,
+  "pricePlnMwh": 640.54,
+  "pricePlnKwh": 0.6405
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 17,
+  "pricePlnMwh": 589.74,
+  "pricePlnKwh": 0.5897
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 18,
+  "pricePlnMwh": 567.62,
+  "pricePlnKwh": 0.5676
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 19,
+  "pricePlnMwh": 538.71,
+  "pricePlnKwh": 0.5387
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 20,
+  "pricePlnMwh": 500.46,
+  "pricePlnKwh": 0.5005
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 21,
+  "pricePlnMwh": 439.63,
+  "pricePlnKwh": 0.4396
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 22,
+  "pricePlnMwh": 434.67,
+  "pricePlnKwh": 0.4347
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-09",
+  "hour": 23,
+  "pricePlnMwh": 367.41,
+  "pricePlnKwh": 0.3674
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 0,
+  "pricePlnMwh": 320.82,
+  "pricePlnKwh": 0.3208
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 1,
+  "pricePlnMwh": 298.24,
+  "pricePlnKwh": 0.2982
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 2,
+  "pricePlnMwh": 235.29,
+  "pricePlnKwh": 0.2353
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 3,
+  "pricePlnMwh": 216.88,
+  "pricePlnKwh": 0.2169
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 4,
+  "pricePlnMwh": 267.12,
+  "pricePlnKwh": 0.2671
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 5,
+  "pricePlnMwh": 309.52,
+  "pricePlnKwh": 0.3095
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 6,
+  "pricePlnMwh": 427.05,
+  "pricePlnKwh": 0.4271
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 7,
+  "pricePlnMwh": 488.38,
+  "pricePlnKwh": 0.4884
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 8,
+  "pricePlnMwh": 560.09,
+  "pricePlnKwh": 0.5601
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 9,
+  "pricePlnMwh": 551.63,
+  "pricePlnKwh": 0.5516
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 10,
+  "pricePlnMwh": 511.42,
+  "pricePlnKwh": 0.5114
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 11,
+  "pricePlnMwh": 471.81,
+  "pricePlnKwh": 0.4718
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 12,
+  "pricePlnMwh": 457.14,
+  "pricePlnKwh": 0.4571
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 13,
+  "pricePlnMwh": 459.98,
+  "pricePlnKwh": 0.46
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 14,
+  "pricePlnMwh": 478.42,
+  "pricePlnKwh": 0.4784
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 15,
+  "pricePlnMwh": 522.55,
+  "pricePlnKwh": 0.5226
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 16,
+  "pricePlnMwh": 571.86,
+  "pricePlnKwh": 0.5719
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 17,
+  "pricePlnMwh": 605.04,
+  "pricePlnKwh": 0.605
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 18,
+  "pricePlnMwh": 597.32,
+  "pricePlnKwh": 0.5973
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 19,
+  "pricePlnMwh": 576.32,
+  "pricePlnKwh": 0.5763
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 20,
+  "pricePlnMwh": 533.46,
+  "pricePlnKwh": 0.5335
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 21,
+  "pricePlnMwh": 482.23,
+  "pricePlnKwh": 0.4822
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 22,
+  "pricePlnMwh": 476.25,
+  "pricePlnKwh": 0.4763
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-10",
+  "hour": 23,
+  "pricePlnMwh": 421.61,
+  "pricePlnKwh": 0.4216
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 0,
+  "pricePlnMwh": 418.23,
+  "pricePlnKwh": 0.4182
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 1,
+  "pricePlnMwh": 380.25,
+  "pricePlnKwh": 0.3803
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 2,
+  "pricePlnMwh": 354.99,
+  "pricePlnKwh": 0.355
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 3,
+  "pricePlnMwh": 321.03,
+  "pricePlnKwh": 0.321
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 4,
+  "pricePlnMwh": 317.99,
+  "pricePlnKwh": 0.318
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 5,
+  "pricePlnMwh": 315.93,
+  "pricePlnKwh": 0.3159
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 6,
+  "pricePlnMwh": 338.2,
+  "pricePlnKwh": 0.3382
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 7,
+  "pricePlnMwh": 397.26,
+  "pricePlnKwh": 0.3973
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 8,
+  "pricePlnMwh": 446.67,
+  "pricePlnKwh": 0.4467
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 9,
+  "pricePlnMwh": 451.12,
+  "pricePlnKwh": 0.4511
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 10,
+  "pricePlnMwh": 443.41,
+  "pricePlnKwh": 0.4434
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 11,
+  "pricePlnMwh": 426.48,
+  "pricePlnKwh": 0.4265
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 12,
+  "pricePlnMwh": 410.6,
+  "pricePlnKwh": 0.4106
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 13,
+  "pricePlnMwh": 409.18,
+  "pricePlnKwh": 0.4092
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 14,
+  "pricePlnMwh": 422.6,
+  "pricePlnKwh": 0.4226
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 15,
+  "pricePlnMwh": 448.71,
+  "pricePlnKwh": 0.4487
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 16,
+  "pricePlnMwh": 477.38,
+  "pricePlnKwh": 0.4774
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 17,
+  "pricePlnMwh": 491.19,
+  "pricePlnKwh": 0.4912
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 18,
+  "pricePlnMwh": 495.5,
+  "pricePlnKwh": 0.4955
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 19,
+  "pricePlnMwh": 489.53,
+  "pricePlnKwh": 0.4895
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 20,
+  "pricePlnMwh": 455.83,
+  "pricePlnKwh": 0.4558
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 21,
+  "pricePlnMwh": 440.35,
+  "pricePlnKwh": 0.4404
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 22,
+  "pricePlnMwh": 422.59,
+  "pricePlnKwh": 0.4226
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-11",
+  "hour": 23,
+  "pricePlnMwh": 407.98,
+  "pricePlnKwh": 0.408
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 0,
+  "pricePlnMwh": 375.04,
+  "pricePlnKwh": 0.375
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 1,
+  "pricePlnMwh": 366.5,
+  "pricePlnKwh": 0.3665
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 2,
+  "pricePlnMwh": 354.87,
+  "pricePlnKwh": 0.3549
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 3,
+  "pricePlnMwh": 335.0,
+  "pricePlnKwh": 0.335
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 4,
+  "pricePlnMwh": 339.26,
+  "pricePlnKwh": 0.3393
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 5,
+  "pricePlnMwh": 332.74,
+  "pricePlnKwh": 0.3327
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 6,
+  "pricePlnMwh": 343.13,
+  "pricePlnKwh": 0.3431
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 7,
+  "pricePlnMwh": 386.04,
+  "pricePlnKwh": 0.386
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 8,
+  "pricePlnMwh": 423.23,
+  "pricePlnKwh": 0.4232
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 9,
+  "pricePlnMwh": 457.48,
+  "pricePlnKwh": 0.4575
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 10,
+  "pricePlnMwh": 453.83,
+  "pricePlnKwh": 0.4538
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 11,
+  "pricePlnMwh": 426.19,
+  "pricePlnKwh": 0.4262
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 12,
+  "pricePlnMwh": 423.97,
+  "pricePlnKwh": 0.424
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 13,
+  "pricePlnMwh": 427.76,
+  "pricePlnKwh": 0.4278
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 14,
+  "pricePlnMwh": 449.52,
+  "pricePlnKwh": 0.4495
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 15,
+  "pricePlnMwh": 486.67,
+  "pricePlnKwh": 0.4867
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 16,
+  "pricePlnMwh": 532.54,
+  "pricePlnKwh": 0.5325
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 17,
+  "pricePlnMwh": 559.23,
+  "pricePlnKwh": 0.5592
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 18,
+  "pricePlnMwh": 568.54,
+  "pricePlnKwh": 0.5685
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 19,
+  "pricePlnMwh": 563.45,
+  "pricePlnKwh": 0.5635
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 20,
+  "pricePlnMwh": 544.61,
+  "pricePlnKwh": 0.5446
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 21,
+  "pricePlnMwh": 517.3,
+  "pricePlnKwh": 0.5173
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 22,
+  "pricePlnMwh": 498.57,
+  "pricePlnKwh": 0.4986
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-12",
+  "hour": 23,
+  "pricePlnMwh": 467.53,
+  "pricePlnKwh": 0.4675
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 0,
+  "pricePlnMwh": 459.59,
+  "pricePlnKwh": 0.4596
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 1,
+  "pricePlnMwh": 433.46,
+  "pricePlnKwh": 0.4335
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 2,
+  "pricePlnMwh": 431.94,
+  "pricePlnKwh": 0.4319
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 3,
+  "pricePlnMwh": 423.47,
+  "pricePlnKwh": 0.4235
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 4,
+  "pricePlnMwh": 437.47,
+  "pricePlnKwh": 0.4375
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 5,
+  "pricePlnMwh": 476.76,
+  "pricePlnKwh": 0.4768
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 6,
+  "pricePlnMwh": 620.6,
+  "pricePlnKwh": 0.6206
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 7,
+  "pricePlnMwh": 784.78,
+  "pricePlnKwh": 0.7848
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 8,
+  "pricePlnMwh": 911.96,
+  "pricePlnKwh": 0.912
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 9,
+  "pricePlnMwh": 770.34,
+  "pricePlnKwh": 0.7703
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 10,
+  "pricePlnMwh": 642.65,
+  "pricePlnKwh": 0.6427
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 11,
+  "pricePlnMwh": 588.54,
+  "pricePlnKwh": 0.5885
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 12,
+  "pricePlnMwh": 561.89,
+  "pricePlnKwh": 0.5619
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 13,
+  "pricePlnMwh": 594.28,
+  "pricePlnKwh": 0.5943
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 14,
+  "pricePlnMwh": 623.67,
+  "pricePlnKwh": 0.6237
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 15,
+  "pricePlnMwh": 657.08,
+  "pricePlnKwh": 0.6571
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 16,
+  "pricePlnMwh": 648.39,
+  "pricePlnKwh": 0.6484
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 17,
+  "pricePlnMwh": 659.75,
+  "pricePlnKwh": 0.6598
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 18,
+  "pricePlnMwh": 642.38,
+  "pricePlnKwh": 0.6424
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 19,
+  "pricePlnMwh": 620.01,
+  "pricePlnKwh": 0.62
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 20,
+  "pricePlnMwh": 561.58,
+  "pricePlnKwh": 0.5616
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 21,
+  "pricePlnMwh": 497.51,
+  "pricePlnKwh": 0.4975
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 22,
+  "pricePlnMwh": 482.34,
+  "pricePlnKwh": 0.4823
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-13",
+  "hour": 23,
+  "pricePlnMwh": 437.43,
+  "pricePlnKwh": 0.4374
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 0,
+  "pricePlnMwh": 454.77,
+  "pricePlnKwh": 0.4548
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 1,
+  "pricePlnMwh": 435.47,
+  "pricePlnKwh": 0.4355
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 2,
+  "pricePlnMwh": 416.88,
+  "pricePlnKwh": 0.4169
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 3,
+  "pricePlnMwh": 411.62,
+  "pricePlnKwh": 0.4116
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 4,
+  "pricePlnMwh": 420.48,
+  "pricePlnKwh": 0.4205
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 5,
+  "pricePlnMwh": 449.9,
+  "pricePlnKwh": 0.4499
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 6,
+  "pricePlnMwh": 521.54,
+  "pricePlnKwh": 0.5215
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 7,
+  "pricePlnMwh": 623.14,
+  "pricePlnKwh": 0.6231
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 8,
+  "pricePlnMwh": 673.66,
+  "pricePlnKwh": 0.6737
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 9,
+  "pricePlnMwh": 589.54,
+  "pricePlnKwh": 0.5895
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 10,
+  "pricePlnMwh": 512.11,
+  "pricePlnKwh": 0.5121
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 11,
+  "pricePlnMwh": 487.78,
+  "pricePlnKwh": 0.4878
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 12,
+  "pricePlnMwh": 469.85,
+  "pricePlnKwh": 0.4699
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 13,
+  "pricePlnMwh": 489.91,
+  "pricePlnKwh": 0.4899
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 14,
+  "pricePlnMwh": 501.32,
+  "pricePlnKwh": 0.5013
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 15,
+  "pricePlnMwh": 527.83,
+  "pricePlnKwh": 0.5278
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 16,
+  "pricePlnMwh": 573.53,
+  "pricePlnKwh": 0.5735
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 17,
+  "pricePlnMwh": 630.23,
+  "pricePlnKwh": 0.6302
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 18,
+  "pricePlnMwh": 638.92,
+  "pricePlnKwh": 0.6389
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 19,
+  "pricePlnMwh": 602.29,
+  "pricePlnKwh": 0.6023
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 20,
+  "pricePlnMwh": 530.36,
+  "pricePlnKwh": 0.5304
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 21,
+  "pricePlnMwh": 472.92,
+  "pricePlnKwh": 0.4729
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 22,
+  "pricePlnMwh": 478.26,
+  "pricePlnKwh": 0.4783
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-14",
+  "hour": 23,
+  "pricePlnMwh": 468.72,
+  "pricePlnKwh": 0.4687
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 0,
+  "pricePlnMwh": 461.23,
+  "pricePlnKwh": 0.4612
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 1,
+  "pricePlnMwh": 450.84,
+  "pricePlnKwh": 0.4508
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 2,
+  "pricePlnMwh": 456.37,
+  "pricePlnKwh": 0.4564
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 3,
+  "pricePlnMwh": 456.13,
+  "pricePlnKwh": 0.4561
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 4,
+  "pricePlnMwh": 470.17,
+  "pricePlnKwh": 0.4702
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 5,
+  "pricePlnMwh": 491.26,
+  "pricePlnKwh": 0.4913
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 6,
+  "pricePlnMwh": 598.56,
+  "pricePlnKwh": 0.5986
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 7,
+  "pricePlnMwh": 811.39,
+  "pricePlnKwh": 0.8114
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 8,
+  "pricePlnMwh": 1036.51,
+  "pricePlnKwh": 1.0365
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 9,
+  "pricePlnMwh": 1208.36,
+  "pricePlnKwh": 1.2084
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 10,
+  "pricePlnMwh": 1007.42,
+  "pricePlnKwh": 1.0074
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 11,
+  "pricePlnMwh": 1025.19,
+  "pricePlnKwh": 1.0252
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 12,
+  "pricePlnMwh": 1009.47,
+  "pricePlnKwh": 1.0095
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 13,
+  "pricePlnMwh": 1100.84,
+  "pricePlnKwh": 1.1008
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 14,
+  "pricePlnMwh": 1052.23,
+  "pricePlnKwh": 1.0522
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 15,
+  "pricePlnMwh": 1192.55,
+  "pricePlnKwh": 1.1926
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 16,
+  "pricePlnMwh": 1376.29,
+  "pricePlnKwh": 1.3763
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 17,
+  "pricePlnMwh": 1311.33,
+  "pricePlnKwh": 1.3113
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 18,
+  "pricePlnMwh": 1201.98,
+  "pricePlnKwh": 1.202
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 19,
+  "pricePlnMwh": 1190.7,
+  "pricePlnKwh": 1.1907
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 20,
+  "pricePlnMwh": 886.98,
+  "pricePlnKwh": 0.887
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 21,
+  "pricePlnMwh": 658.1,
+  "pricePlnKwh": 0.6581
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 22,
+  "pricePlnMwh": 605.82,
+  "pricePlnKwh": 0.6058
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-15",
+  "hour": 23,
+  "pricePlnMwh": 566.8,
+  "pricePlnKwh": 0.5668
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 0,
+  "pricePlnMwh": 539.16,
+  "pricePlnKwh": 0.5392
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 1,
+  "pricePlnMwh": 502.25,
+  "pricePlnKwh": 0.5023
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 2,
+  "pricePlnMwh": 493.54,
+  "pricePlnKwh": 0.4935
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 3,
+  "pricePlnMwh": 482.74,
+  "pricePlnKwh": 0.4827
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 4,
+  "pricePlnMwh": 484.27,
+  "pricePlnKwh": 0.4843
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 5,
+  "pricePlnMwh": 510.34,
+  "pricePlnKwh": 0.5103
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 6,
+  "pricePlnMwh": 602.98,
+  "pricePlnKwh": 0.603
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 7,
+  "pricePlnMwh": 743.52,
+  "pricePlnKwh": 0.7435
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 8,
+  "pricePlnMwh": 818.23,
+  "pricePlnKwh": 0.8182
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 9,
+  "pricePlnMwh": 749.45,
+  "pricePlnKwh": 0.7495
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 10,
+  "pricePlnMwh": 664.38,
+  "pricePlnKwh": 0.6644
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 11,
+  "pricePlnMwh": 600.79,
+  "pricePlnKwh": 0.6008
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 12,
+  "pricePlnMwh": 574.97,
+  "pricePlnKwh": 0.575
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 13,
+  "pricePlnMwh": 580.66,
+  "pricePlnKwh": 0.5807
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 14,
+  "pricePlnMwh": 605.63,
+  "pricePlnKwh": 0.6056
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 15,
+  "pricePlnMwh": 678.71,
+  "pricePlnKwh": 0.6787
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 16,
+  "pricePlnMwh": 750.27,
+  "pricePlnKwh": 0.7503
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 17,
+  "pricePlnMwh": 770.07,
+  "pricePlnKwh": 0.7701
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 18,
+  "pricePlnMwh": 779.35,
+  "pricePlnKwh": 0.7794
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 19,
+  "pricePlnMwh": 720.73,
+  "pricePlnKwh": 0.7207
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 20,
+  "pricePlnMwh": 606.39,
+  "pricePlnKwh": 0.6064
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 21,
+  "pricePlnMwh": 560.81,
+  "pricePlnKwh": 0.5608
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 22,
+  "pricePlnMwh": 524.44,
+  "pricePlnKwh": 0.5244
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-16",
+  "hour": 23,
+  "pricePlnMwh": 483.81,
+  "pricePlnKwh": 0.4838
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 0,
+  "pricePlnMwh": 487.42,
+  "pricePlnKwh": 0.4874
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 1,
+  "pricePlnMwh": 469.47,
+  "pricePlnKwh": 0.4695
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 2,
+  "pricePlnMwh": 465.65,
+  "pricePlnKwh": 0.4657
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 3,
+  "pricePlnMwh": 470.57,
+  "pricePlnKwh": 0.4706
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 4,
+  "pricePlnMwh": 477.71,
+  "pricePlnKwh": 0.4777
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 5,
+  "pricePlnMwh": 504.86,
+  "pricePlnKwh": 0.5049
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 6,
+  "pricePlnMwh": 590.51,
+  "pricePlnKwh": 0.5905
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 7,
+  "pricePlnMwh": 756.35,
+  "pricePlnKwh": 0.7564
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 8,
+  "pricePlnMwh": 844.28,
+  "pricePlnKwh": 0.8443
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 9,
+  "pricePlnMwh": 749.24,
+  "pricePlnKwh": 0.7492
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 10,
+  "pricePlnMwh": 625.51,
+  "pricePlnKwh": 0.6255
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 11,
+  "pricePlnMwh": 536.3,
+  "pricePlnKwh": 0.5363
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 12,
+  "pricePlnMwh": 524.72,
+  "pricePlnKwh": 0.5247
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 13,
+  "pricePlnMwh": 526.12,
+  "pricePlnKwh": 0.5261
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 14,
+  "pricePlnMwh": 554.51,
+  "pricePlnKwh": 0.5545
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 15,
+  "pricePlnMwh": 628.06,
+  "pricePlnKwh": 0.6281
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 16,
+  "pricePlnMwh": 712.28,
+  "pricePlnKwh": 0.7123
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 17,
+  "pricePlnMwh": 699.9,
+  "pricePlnKwh": 0.6999
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 18,
+  "pricePlnMwh": 731.22,
+  "pricePlnKwh": 0.7312
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 19,
+  "pricePlnMwh": 711.53,
+  "pricePlnKwh": 0.7115
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 20,
+  "pricePlnMwh": 615.21,
+  "pricePlnKwh": 0.6152
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 21,
+  "pricePlnMwh": 549.64,
+  "pricePlnKwh": 0.5496
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 22,
+  "pricePlnMwh": 568.83,
+  "pricePlnKwh": 0.5688
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-17",
+  "hour": 23,
+  "pricePlnMwh": 518.94,
+  "pricePlnKwh": 0.5189
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 0,
+  "pricePlnMwh": 513.92,
+  "pricePlnKwh": 0.5139
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 1,
+  "pricePlnMwh": 501.33,
+  "pricePlnKwh": 0.5013
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 2,
+  "pricePlnMwh": 492.17,
+  "pricePlnKwh": 0.4922
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 3,
+  "pricePlnMwh": 487.08,
+  "pricePlnKwh": 0.4871
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 4,
+  "pricePlnMwh": 479.89,
+  "pricePlnKwh": 0.4799
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 5,
+  "pricePlnMwh": 494.31,
+  "pricePlnKwh": 0.4943
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 6,
+  "pricePlnMwh": 507.97,
+  "pricePlnKwh": 0.508
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 7,
+  "pricePlnMwh": 545.54,
+  "pricePlnKwh": 0.5455
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 8,
+  "pricePlnMwh": 609.93,
+  "pricePlnKwh": 0.6099
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 9,
+  "pricePlnMwh": 597.74,
+  "pricePlnKwh": 0.5977
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 10,
+  "pricePlnMwh": 527.45,
+  "pricePlnKwh": 0.5275
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 11,
+  "pricePlnMwh": 510.44,
+  "pricePlnKwh": 0.5104
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 12,
+  "pricePlnMwh": 497.79,
+  "pricePlnKwh": 0.4978
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 13,
+  "pricePlnMwh": 490.37,
+  "pricePlnKwh": 0.4904
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 14,
+  "pricePlnMwh": 510.78,
+  "pricePlnKwh": 0.5108
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 15,
+  "pricePlnMwh": 570.1,
+  "pricePlnKwh": 0.5701
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 16,
+  "pricePlnMwh": 640.83,
+  "pricePlnKwh": 0.6408
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 17,
+  "pricePlnMwh": 690.31,
+  "pricePlnKwh": 0.6903
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 18,
+  "pricePlnMwh": 715.22,
+  "pricePlnKwh": 0.7152
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 19,
+  "pricePlnMwh": 705.93,
+  "pricePlnKwh": 0.7059
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 20,
+  "pricePlnMwh": 645.56,
+  "pricePlnKwh": 0.6456
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 21,
+  "pricePlnMwh": 593.23,
+  "pricePlnKwh": 0.5932
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 22,
+  "pricePlnMwh": 557.64,
+  "pricePlnKwh": 0.5576
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-18",
+  "hour": 23,
+  "pricePlnMwh": 531.97,
+  "pricePlnKwh": 0.532
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 0,
+  "pricePlnMwh": 534.64,
+  "pricePlnKwh": 0.5346
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 1,
+  "pricePlnMwh": 513.47,
+  "pricePlnKwh": 0.5135
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 2,
+  "pricePlnMwh": 507.7,
+  "pricePlnKwh": 0.5077
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 3,
+  "pricePlnMwh": 502.36,
+  "pricePlnKwh": 0.5024
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 4,
+  "pricePlnMwh": 497.04,
+  "pricePlnKwh": 0.497
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 5,
+  "pricePlnMwh": 498.14,
+  "pricePlnKwh": 0.4981
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 6,
+  "pricePlnMwh": 504.43,
+  "pricePlnKwh": 0.5044
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 7,
+  "pricePlnMwh": 512.61,
+  "pricePlnKwh": 0.5126
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 8,
+  "pricePlnMwh": 528.32,
+  "pricePlnKwh": 0.5283
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 9,
+  "pricePlnMwh": 520.63,
+  "pricePlnKwh": 0.5206
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 10,
+  "pricePlnMwh": 498.67,
+  "pricePlnKwh": 0.4987
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 11,
+  "pricePlnMwh": 465.52,
+  "pricePlnKwh": 0.4655
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 12,
+  "pricePlnMwh": 463.62,
+  "pricePlnKwh": 0.4636
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 13,
+  "pricePlnMwh": 451.56,
+  "pricePlnKwh": 0.4516
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 14,
+  "pricePlnMwh": 484.56,
+  "pricePlnKwh": 0.4846
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 15,
+  "pricePlnMwh": 526.63,
+  "pricePlnKwh": 0.5266
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 16,
+  "pricePlnMwh": 590.09,
+  "pricePlnKwh": 0.5901
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 17,
+  "pricePlnMwh": 629.87,
+  "pricePlnKwh": 0.6299
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 18,
+  "pricePlnMwh": 660.53,
+  "pricePlnKwh": 0.6605
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 19,
+  "pricePlnMwh": 655.73,
+  "pricePlnKwh": 0.6557
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 20,
+  "pricePlnMwh": 618.29,
+  "pricePlnKwh": 0.6183
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 21,
+  "pricePlnMwh": 573.85,
+  "pricePlnKwh": 0.5739
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 22,
+  "pricePlnMwh": 532.08,
+  "pricePlnKwh": 0.5321
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-19",
+  "hour": 23,
+  "pricePlnMwh": 511.66,
+  "pricePlnKwh": 0.5117
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 0,
+  "pricePlnMwh": 517.6,
+  "pricePlnKwh": 0.5176
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 1,
+  "pricePlnMwh": 505.35,
+  "pricePlnKwh": 0.5054
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 2,
+  "pricePlnMwh": 497.04,
+  "pricePlnKwh": 0.497
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 3,
+  "pricePlnMwh": 490.29,
+  "pricePlnKwh": 0.4903
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 4,
+  "pricePlnMwh": 496.57,
+  "pricePlnKwh": 0.4966
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 5,
+  "pricePlnMwh": 528.41,
+  "pricePlnKwh": 0.5284
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 6,
+  "pricePlnMwh": 649.95,
+  "pricePlnKwh": 0.65
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 7,
+  "pricePlnMwh": 817.24,
+  "pricePlnKwh": 0.8172
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 8,
+  "pricePlnMwh": 868.96,
+  "pricePlnKwh": 0.869
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 9,
+  "pricePlnMwh": 725.3,
+  "pricePlnKwh": 0.7253
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 10,
+  "pricePlnMwh": 617.76,
+  "pricePlnKwh": 0.6178
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 11,
+  "pricePlnMwh": 658.85,
+  "pricePlnKwh": 0.6589
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 12,
+  "pricePlnMwh": 642.81,
+  "pricePlnKwh": 0.6428
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 13,
+  "pricePlnMwh": 598.53,
+  "pricePlnKwh": 0.5985
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 14,
+  "pricePlnMwh": 622.08,
+  "pricePlnKwh": 0.6221
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 15,
+  "pricePlnMwh": 818.09,
+  "pricePlnKwh": 0.8181
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 16,
+  "pricePlnMwh": 848.81,
+  "pricePlnKwh": 0.8488
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 17,
+  "pricePlnMwh": 778.58,
+  "pricePlnKwh": 0.7786
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 18,
+  "pricePlnMwh": 734.24,
+  "pricePlnKwh": 0.7342
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 19,
+  "pricePlnMwh": 735.79,
+  "pricePlnKwh": 0.7358
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 20,
+  "pricePlnMwh": 629.45,
+  "pricePlnKwh": 0.6295
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 21,
+  "pricePlnMwh": 578.12,
+  "pricePlnKwh": 0.5781
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 22,
+  "pricePlnMwh": 555.57,
+  "pricePlnKwh": 0.5556
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-20",
+  "hour": 23,
+  "pricePlnMwh": 527.51,
+  "pricePlnKwh": 0.5275
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 0,
+  "pricePlnMwh": 527.72,
+  "pricePlnKwh": 0.5277
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 1,
+  "pricePlnMwh": 495.19,
+  "pricePlnKwh": 0.4952
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 2,
+  "pricePlnMwh": 492.32,
+  "pricePlnKwh": 0.4923
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 3,
+  "pricePlnMwh": 486.61,
+  "pricePlnKwh": 0.4866
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 4,
+  "pricePlnMwh": 485.14,
+  "pricePlnKwh": 0.4851
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 5,
+  "pricePlnMwh": 513.75,
+  "pricePlnKwh": 0.5138
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 6,
+  "pricePlnMwh": 604.65,
+  "pricePlnKwh": 0.6047
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 7,
+  "pricePlnMwh": 780.28,
+  "pricePlnKwh": 0.7803
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 8,
+  "pricePlnMwh": 877.64,
+  "pricePlnKwh": 0.8776
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 9,
+  "pricePlnMwh": 754.02,
+  "pricePlnKwh": 0.754
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 10,
+  "pricePlnMwh": 611.83,
+  "pricePlnKwh": 0.6118
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 11,
+  "pricePlnMwh": 606.93,
+  "pricePlnKwh": 0.6069
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 12,
+  "pricePlnMwh": 623.05,
+  "pricePlnKwh": 0.6231
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 13,
+  "pricePlnMwh": 633.12,
+  "pricePlnKwh": 0.6331
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 14,
+  "pricePlnMwh": 666.81,
+  "pricePlnKwh": 0.6668
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 15,
+  "pricePlnMwh": 799.21,
+  "pricePlnKwh": 0.7992
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 16,
+  "pricePlnMwh": 908.84,
+  "pricePlnKwh": 0.9088
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 17,
+  "pricePlnMwh": 988.24,
+  "pricePlnKwh": 0.9882
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 18,
+  "pricePlnMwh": 926.56,
+  "pricePlnKwh": 0.9266
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 19,
+  "pricePlnMwh": 891.87,
+  "pricePlnKwh": 0.8919
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 20,
+  "pricePlnMwh": 740.86,
+  "pricePlnKwh": 0.7409
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 21,
+  "pricePlnMwh": 563.57,
+  "pricePlnKwh": 0.5636
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 22,
+  "pricePlnMwh": 583.81,
+  "pricePlnKwh": 0.5838
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-21",
+  "hour": 23,
+  "pricePlnMwh": 534.15,
+  "pricePlnKwh": 0.5342
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 0,
+  "pricePlnMwh": 539.18,
+  "pricePlnKwh": 0.5392
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 1,
+  "pricePlnMwh": 520.53,
+  "pricePlnKwh": 0.5205
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 2,
+  "pricePlnMwh": 513.46,
+  "pricePlnKwh": 0.5135
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 3,
+  "pricePlnMwh": 509.23,
+  "pricePlnKwh": 0.5092
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 4,
+  "pricePlnMwh": 512.72,
+  "pricePlnKwh": 0.5127
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 5,
+  "pricePlnMwh": 536.35,
+  "pricePlnKwh": 0.5364
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 6,
+  "pricePlnMwh": 637.7,
+  "pricePlnKwh": 0.6377
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 7,
+  "pricePlnMwh": 844.92,
+  "pricePlnKwh": 0.8449
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 8,
+  "pricePlnMwh": 944.0,
+  "pricePlnKwh": 0.944
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 9,
+  "pricePlnMwh": 723.23,
+  "pricePlnKwh": 0.7232
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 10,
+  "pricePlnMwh": 551.38,
+  "pricePlnKwh": 0.5514
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 11,
+  "pricePlnMwh": 529.36,
+  "pricePlnKwh": 0.5294
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 12,
+  "pricePlnMwh": 525.31,
+  "pricePlnKwh": 0.5253
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 13,
+  "pricePlnMwh": 545.49,
+  "pricePlnKwh": 0.5455
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 14,
+  "pricePlnMwh": 544.92,
+  "pricePlnKwh": 0.5449
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 15,
+  "pricePlnMwh": 737.56,
+  "pricePlnKwh": 0.7376
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 16,
+  "pricePlnMwh": 747.71,
+  "pricePlnKwh": 0.7477
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 17,
+  "pricePlnMwh": 668.53,
+  "pricePlnKwh": 0.6685
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 18,
+  "pricePlnMwh": 592.84,
+  "pricePlnKwh": 0.5928
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 19,
+  "pricePlnMwh": 604.24,
+  "pricePlnKwh": 0.6042
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 20,
+  "pricePlnMwh": 533.99,
+  "pricePlnKwh": 0.534
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 21,
+  "pricePlnMwh": 493.87,
+  "pricePlnKwh": 0.4939
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 22,
+  "pricePlnMwh": 486.58,
+  "pricePlnKwh": 0.4866
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-22",
+  "hour": 23,
+  "pricePlnMwh": 451.07,
+  "pricePlnKwh": 0.4511
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 0,
+  "pricePlnMwh": 461.64,
+  "pricePlnKwh": 0.4616
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 1,
+  "pricePlnMwh": 432.66,
+  "pricePlnKwh": 0.4327
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 2,
+  "pricePlnMwh": 430.6,
+  "pricePlnKwh": 0.4306
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 3,
+  "pricePlnMwh": 413.42,
+  "pricePlnKwh": 0.4134
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 4,
+  "pricePlnMwh": 414.58,
+  "pricePlnKwh": 0.4146
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 5,
+  "pricePlnMwh": 433.15,
+  "pricePlnKwh": 0.4332
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 6,
+  "pricePlnMwh": 497.51,
+  "pricePlnKwh": 0.4975
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 7,
+  "pricePlnMwh": 575.65,
+  "pricePlnKwh": 0.5757
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 8,
+  "pricePlnMwh": 621.82,
+  "pricePlnKwh": 0.6218
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 9,
+  "pricePlnMwh": 573.02,
+  "pricePlnKwh": 0.573
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 10,
+  "pricePlnMwh": 494.82,
+  "pricePlnKwh": 0.4948
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 11,
+  "pricePlnMwh": 473.06,
+  "pricePlnKwh": 0.4731
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 12,
+  "pricePlnMwh": 445.68,
+  "pricePlnKwh": 0.4457
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 13,
+  "pricePlnMwh": 461.83,
+  "pricePlnKwh": 0.4618
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 14,
+  "pricePlnMwh": 472.67,
+  "pricePlnKwh": 0.4727
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 15,
+  "pricePlnMwh": 480.74,
+  "pricePlnKwh": 0.4807
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 16,
+  "pricePlnMwh": 499.17,
+  "pricePlnKwh": 0.4992
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 17,
+  "pricePlnMwh": 517.05,
+  "pricePlnKwh": 0.5171
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 18,
+  "pricePlnMwh": 506.31,
+  "pricePlnKwh": 0.5063
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 19,
+  "pricePlnMwh": 486.7,
+  "pricePlnKwh": 0.4867
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 20,
+  "pricePlnMwh": 450.75,
+  "pricePlnKwh": 0.4508
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 21,
+  "pricePlnMwh": 398.94,
+  "pricePlnKwh": 0.3989
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 22,
+  "pricePlnMwh": 402.26,
+  "pricePlnKwh": 0.4023
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-23",
+  "hour": 23,
+  "pricePlnMwh": 397.88,
+  "pricePlnKwh": 0.3979
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 0,
+  "pricePlnMwh": 385.91,
+  "pricePlnKwh": 0.3859
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 1,
+  "pricePlnMwh": 382.03,
+  "pricePlnKwh": 0.382
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 2,
+  "pricePlnMwh": 382.19,
+  "pricePlnKwh": 0.3822
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 3,
+  "pricePlnMwh": 387.56,
+  "pricePlnKwh": 0.3876
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 4,
+  "pricePlnMwh": 424.76,
+  "pricePlnKwh": 0.4248
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 5,
+  "pricePlnMwh": 450.76,
+  "pricePlnKwh": 0.4508
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 6,
+  "pricePlnMwh": 506.18,
+  "pricePlnKwh": 0.5062
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 7,
+  "pricePlnMwh": 554.64,
+  "pricePlnKwh": 0.5546
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 8,
+  "pricePlnMwh": 608.25,
+  "pricePlnKwh": 0.6083
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 9,
+  "pricePlnMwh": 581.54,
+  "pricePlnKwh": 0.5815
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 10,
+  "pricePlnMwh": 517.69,
+  "pricePlnKwh": 0.5177
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 11,
+  "pricePlnMwh": 478.01,
+  "pricePlnKwh": 0.478
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 12,
+  "pricePlnMwh": 462.12,
+  "pricePlnKwh": 0.4621
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 13,
+  "pricePlnMwh": 469.58,
+  "pricePlnKwh": 0.4696
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 14,
+  "pricePlnMwh": 478.75,
+  "pricePlnKwh": 0.4788
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 15,
+  "pricePlnMwh": 529.69,
+  "pricePlnKwh": 0.5297
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 16,
+  "pricePlnMwh": 546.98,
+  "pricePlnKwh": 0.547
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 17,
+  "pricePlnMwh": 518.71,
+  "pricePlnKwh": 0.5187
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 18,
+  "pricePlnMwh": 449.99,
+  "pricePlnKwh": 0.45
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 19,
+  "pricePlnMwh": 421.98,
+  "pricePlnKwh": 0.422
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 20,
+  "pricePlnMwh": 409.37,
+  "pricePlnKwh": 0.4094
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 21,
+  "pricePlnMwh": 348.15,
+  "pricePlnKwh": 0.3482
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 22,
+  "pricePlnMwh": 341.77,
+  "pricePlnKwh": 0.3418
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-24",
+  "hour": 23,
+  "pricePlnMwh": 275.75,
+  "pricePlnKwh": 0.2758
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 0,
+  "pricePlnMwh": 331.88,
+  "pricePlnKwh": 0.3319
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 1,
+  "pricePlnMwh": 322.98,
+  "pricePlnKwh": 0.323
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 2,
+  "pricePlnMwh": 321.5,
+  "pricePlnKwh": 0.3215
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 3,
+  "pricePlnMwh": 320.73,
+  "pricePlnKwh": 0.3207
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 4,
+  "pricePlnMwh": 335.84,
+  "pricePlnKwh": 0.3358
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 5,
+  "pricePlnMwh": 344.15,
+  "pricePlnKwh": 0.3442
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 6,
+  "pricePlnMwh": 367.04,
+  "pricePlnKwh": 0.367
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 7,
+  "pricePlnMwh": 413.97,
+  "pricePlnKwh": 0.414
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 8,
+  "pricePlnMwh": 448.02,
+  "pricePlnKwh": 0.448
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 9,
+  "pricePlnMwh": 443.22,
+  "pricePlnKwh": 0.4432
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 10,
+  "pricePlnMwh": 419.76,
+  "pricePlnKwh": 0.4198
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 11,
+  "pricePlnMwh": 397.01,
+  "pricePlnKwh": 0.397
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 12,
+  "pricePlnMwh": 385.53,
+  "pricePlnKwh": 0.3855
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 13,
+  "pricePlnMwh": 384.51,
+  "pricePlnKwh": 0.3845
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 14,
+  "pricePlnMwh": 407.19,
+  "pricePlnKwh": 0.4072
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 15,
+  "pricePlnMwh": 466.05,
+  "pricePlnKwh": 0.4661
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 16,
+  "pricePlnMwh": 532.07,
+  "pricePlnKwh": 0.5321
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 17,
+  "pricePlnMwh": 567.6,
+  "pricePlnKwh": 0.5676
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 18,
+  "pricePlnMwh": 584.34,
+  "pricePlnKwh": 0.5843
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 19,
+  "pricePlnMwh": 572.21,
+  "pricePlnKwh": 0.5722
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 20,
+  "pricePlnMwh": 543.96,
+  "pricePlnKwh": 0.544
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 21,
+  "pricePlnMwh": 519.4,
+  "pricePlnKwh": 0.5194
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 22,
+  "pricePlnMwh": 513.74,
+  "pricePlnKwh": 0.5137
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-25",
+  "hour": 23,
+  "pricePlnMwh": 488.84,
+  "pricePlnKwh": 0.4888
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 0,
+  "pricePlnMwh": 512.75,
+  "pricePlnKwh": 0.5128
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 1,
+  "pricePlnMwh": 479.86,
+  "pricePlnKwh": 0.4799
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 2,
+  "pricePlnMwh": 464.76,
+  "pricePlnKwh": 0.4648
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 3,
+  "pricePlnMwh": 451.16,
+  "pricePlnKwh": 0.4512
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 4,
+  "pricePlnMwh": 449.6,
+  "pricePlnKwh": 0.4496
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 5,
+  "pricePlnMwh": 454.0,
+  "pricePlnKwh": 0.454
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 6,
+  "pricePlnMwh": 469.56,
+  "pricePlnKwh": 0.4696
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 7,
+  "pricePlnMwh": 494.85,
+  "pricePlnKwh": 0.4949
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 8,
+  "pricePlnMwh": 521.35,
+  "pricePlnKwh": 0.5214
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 9,
+  "pricePlnMwh": 502.93,
+  "pricePlnKwh": 0.5029
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 10,
+  "pricePlnMwh": 463.2,
+  "pricePlnKwh": 0.4632
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 11,
+  "pricePlnMwh": 443.62,
+  "pricePlnKwh": 0.4436
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 12,
+  "pricePlnMwh": 425.15,
+  "pricePlnKwh": 0.4252
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 13,
+  "pricePlnMwh": 425.26,
+  "pricePlnKwh": 0.4253
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 14,
+  "pricePlnMwh": 433.93,
+  "pricePlnKwh": 0.4339
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 15,
+  "pricePlnMwh": 475.6,
+  "pricePlnKwh": 0.4756
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 16,
+  "pricePlnMwh": 525.04,
+  "pricePlnKwh": 0.525
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 17,
+  "pricePlnMwh": 545.91,
+  "pricePlnKwh": 0.5459
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 18,
+  "pricePlnMwh": 529.58,
+  "pricePlnKwh": 0.5296
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 19,
+  "pricePlnMwh": 494.45,
+  "pricePlnKwh": 0.4945
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 20,
+  "pricePlnMwh": 464.52,
+  "pricePlnKwh": 0.4645
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 21,
+  "pricePlnMwh": 421.8,
+  "pricePlnKwh": 0.4218
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 22,
+  "pricePlnMwh": 405.44,
+  "pricePlnKwh": 0.4054
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-26",
+  "hour": 23,
+  "pricePlnMwh": 391.57,
+  "pricePlnKwh": 0.3916
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 0,
+  "pricePlnMwh": 288.28,
+  "pricePlnKwh": 0.2883
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 1,
+  "pricePlnMwh": 296.59,
+  "pricePlnKwh": 0.2966
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 2,
+  "pricePlnMwh": 302.93,
+  "pricePlnKwh": 0.3029
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 3,
+  "pricePlnMwh": 308.27,
+  "pricePlnKwh": 0.3083
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 4,
+  "pricePlnMwh": 350.83,
+  "pricePlnKwh": 0.3508
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 5,
+  "pricePlnMwh": 394.12,
+  "pricePlnKwh": 0.3941
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 6,
+  "pricePlnMwh": 474.66,
+  "pricePlnKwh": 0.4747
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 7,
+  "pricePlnMwh": 525.78,
+  "pricePlnKwh": 0.5258
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 8,
+  "pricePlnMwh": 518.92,
+  "pricePlnKwh": 0.5189
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 9,
+  "pricePlnMwh": 441.37,
+  "pricePlnKwh": 0.4414
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 10,
+  "pricePlnMwh": 368.65,
+  "pricePlnKwh": 0.3687
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 11,
+  "pricePlnMwh": 350.24,
+  "pricePlnKwh": 0.3502
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 12,
+  "pricePlnMwh": 348.03,
+  "pricePlnKwh": 0.348
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 13,
+  "pricePlnMwh": 364.4,
+  "pricePlnKwh": 0.3644
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 14,
+  "pricePlnMwh": 393.14,
+  "pricePlnKwh": 0.3931
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 15,
+  "pricePlnMwh": 474.4,
+  "pricePlnKwh": 0.4744
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 16,
+  "pricePlnMwh": 494.53,
+  "pricePlnKwh": 0.4945
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 17,
+  "pricePlnMwh": 519.55,
+  "pricePlnKwh": 0.5196
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 18,
+  "pricePlnMwh": 506.33,
+  "pricePlnKwh": 0.5063
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 19,
+  "pricePlnMwh": 508.36,
+  "pricePlnKwh": 0.5084
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 20,
+  "pricePlnMwh": 469.35,
+  "pricePlnKwh": 0.4694
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 21,
+  "pricePlnMwh": 396.45,
+  "pricePlnKwh": 0.3965
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 22,
+  "pricePlnMwh": 413.49,
+  "pricePlnKwh": 0.4135
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-27",
+  "hour": 23,
+  "pricePlnMwh": 380.97,
+  "pricePlnKwh": 0.381
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 0,
+  "pricePlnMwh": 345.78,
+  "pricePlnKwh": 0.3458
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 1,
+  "pricePlnMwh": 356.2,
+  "pricePlnKwh": 0.3562
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 2,
+  "pricePlnMwh": 368.86,
+  "pricePlnKwh": 0.3689
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 3,
+  "pricePlnMwh": 404.23,
+  "pricePlnKwh": 0.4042
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 4,
+  "pricePlnMwh": 427.01,
+  "pricePlnKwh": 0.427
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 5,
+  "pricePlnMwh": 429.88,
+  "pricePlnKwh": 0.4299
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 6,
+  "pricePlnMwh": 517.9,
+  "pricePlnKwh": 0.5179
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 7,
+  "pricePlnMwh": 573.6,
+  "pricePlnKwh": 0.5736
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 8,
+  "pricePlnMwh": 593.25,
+  "pricePlnKwh": 0.5933
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 9,
+  "pricePlnMwh": 546.02,
+  "pricePlnKwh": 0.546
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 10,
+  "pricePlnMwh": 511.64,
+  "pricePlnKwh": 0.5116
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 11,
+  "pricePlnMwh": 501.42,
+  "pricePlnKwh": 0.5014
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 12,
+  "pricePlnMwh": 495.98,
+  "pricePlnKwh": 0.496
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 13,
+  "pricePlnMwh": 509.16,
+  "pricePlnKwh": 0.5092
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 14,
+  "pricePlnMwh": 531.85,
+  "pricePlnKwh": 0.5319
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 15,
+  "pricePlnMwh": 591.88,
+  "pricePlnKwh": 0.5919
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 16,
+  "pricePlnMwh": 622.9,
+  "pricePlnKwh": 0.6229
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 17,
+  "pricePlnMwh": 621.83,
+  "pricePlnKwh": 0.6218
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 18,
+  "pricePlnMwh": 590.86,
+  "pricePlnKwh": 0.5909
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 19,
+  "pricePlnMwh": 554.06,
+  "pricePlnKwh": 0.5541
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 20,
+  "pricePlnMwh": 497.65,
+  "pricePlnKwh": 0.4977
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 21,
+  "pricePlnMwh": 408.71,
+  "pricePlnKwh": 0.4087
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 22,
+  "pricePlnMwh": 420.39,
+  "pricePlnKwh": 0.4204
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-28",
+  "hour": 23,
+  "pricePlnMwh": 391.29,
+  "pricePlnKwh": 0.3913
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 0,
+  "pricePlnMwh": 361.72,
+  "pricePlnKwh": 0.3617
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 1,
+  "pricePlnMwh": 346.95,
+  "pricePlnKwh": 0.347
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 2,
+  "pricePlnMwh": 333.16,
+  "pricePlnKwh": 0.3332
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 3,
+  "pricePlnMwh": 332.55,
+  "pricePlnKwh": 0.3326
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 4,
+  "pricePlnMwh": 346.86,
+  "pricePlnKwh": 0.3469
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 5,
+  "pricePlnMwh": 402.3,
+  "pricePlnKwh": 0.4023
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 6,
+  "pricePlnMwh": 496.37,
+  "pricePlnKwh": 0.4964
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 7,
+  "pricePlnMwh": 563.9,
+  "pricePlnKwh": 0.5639
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 8,
+  "pricePlnMwh": 599.34,
+  "pricePlnKwh": 0.5993
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 9,
+  "pricePlnMwh": 529.05,
+  "pricePlnKwh": 0.5291
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 10,
+  "pricePlnMwh": 450.27,
+  "pricePlnKwh": 0.4503
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 11,
+  "pricePlnMwh": 396.15,
+  "pricePlnKwh": 0.3962
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 12,
+  "pricePlnMwh": 371.68,
+  "pricePlnKwh": 0.3717
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 13,
+  "pricePlnMwh": 388.83,
+  "pricePlnKwh": 0.3888
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 14,
+  "pricePlnMwh": 409.69,
+  "pricePlnKwh": 0.4097
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 15,
+  "pricePlnMwh": 477.91,
+  "pricePlnKwh": 0.4779
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 16,
+  "pricePlnMwh": 536.99,
+  "pricePlnKwh": 0.537
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 17,
+  "pricePlnMwh": 606.3,
+  "pricePlnKwh": 0.6063
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 18,
+  "pricePlnMwh": 601.95,
+  "pricePlnKwh": 0.602
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 19,
+  "pricePlnMwh": 565.66,
+  "pricePlnKwh": 0.5657
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 20,
+  "pricePlnMwh": 477.63,
+  "pricePlnKwh": 0.4776
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 21,
+  "pricePlnMwh": 423.47,
+  "pricePlnKwh": 0.4235
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 22,
+  "pricePlnMwh": 434.17,
+  "pricePlnKwh": 0.4342
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-29",
+  "hour": 23,
+  "pricePlnMwh": 398.03,
+  "pricePlnKwh": 0.398
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 0,
+  "pricePlnMwh": 405.38,
+  "pricePlnKwh": 0.4054
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 1,
+  "pricePlnMwh": 397.96,
+  "pricePlnKwh": 0.398
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 2,
+  "pricePlnMwh": 397.63,
+  "pricePlnKwh": 0.3976
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 3,
+  "pricePlnMwh": 401.73,
+  "pricePlnKwh": 0.4017
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 4,
+  "pricePlnMwh": 416.61,
+  "pricePlnKwh": 0.4166
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 5,
+  "pricePlnMwh": 471.44,
+  "pricePlnKwh": 0.4714
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 6,
+  "pricePlnMwh": 573.23,
+  "pricePlnKwh": 0.5732
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 7,
+  "pricePlnMwh": 646.68,
+  "pricePlnKwh": 0.6467
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 8,
+  "pricePlnMwh": 665.76,
+  "pricePlnKwh": 0.6658
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 9,
+  "pricePlnMwh": 613.74,
+  "pricePlnKwh": 0.6137
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 10,
+  "pricePlnMwh": 517.31,
+  "pricePlnKwh": 0.5173
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 11,
+  "pricePlnMwh": 497.09,
+  "pricePlnKwh": 0.4971
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 12,
+  "pricePlnMwh": 478.34,
+  "pricePlnKwh": 0.4783
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 13,
+  "pricePlnMwh": 495.91,
+  "pricePlnKwh": 0.4959
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 14,
+  "pricePlnMwh": 549.02,
+  "pricePlnKwh": 0.549
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 15,
+  "pricePlnMwh": 634.63,
+  "pricePlnKwh": 0.6346
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 16,
+  "pricePlnMwh": 692.32,
+  "pricePlnKwh": 0.6923
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 17,
+  "pricePlnMwh": 751.48,
+  "pricePlnKwh": 0.7515
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 18,
+  "pricePlnMwh": 732.43,
+  "pricePlnKwh": 0.7324
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 19,
+  "pricePlnMwh": 688.22,
+  "pricePlnKwh": 0.6882
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 20,
+  "pricePlnMwh": 632.02,
+  "pricePlnKwh": 0.632
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 21,
+  "pricePlnMwh": 565.01,
+  "pricePlnKwh": 0.565
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 22,
+  "pricePlnMwh": 537.33,
+  "pricePlnKwh": 0.5373
+ },
+ {
+  "market": "RDN",
+  "deliveryDate": "2025-01-30",
+  "hour": 23,
+  "pricePlnMwh": 505.2,
+  "pricePlnKwh": 0.5052
+ }
+]

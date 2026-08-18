@@ -93,6 +93,9 @@ Wszystko poniżej jest w working tree, niezacommitowane.
       `okno symulowane ... (margines nad granica retencji: X h Y min)`. Margines < 1 h → WARN.
 - [ ] **Kontrola po partii:** w logach backendu mają być dwie linie na test —
       `„potok pomiarowy czysty"` oraz `„zagregowano 720 godzin"`. Cokolwiek innego = rerun.
+- [ ] **EKSPORT DANYCH — `python analiza/eksport_danych.py`.** Priorytet: retencja InfluxDB
+      kasuje pomiary dobę po dobie od 19 VIII; do 11 IX zniknie ~23 z 30 dób. Zrzut odcina
+      analizę od EC2 i stanowi załącznik do pracy. Walidacja: 24 testy × 720 godzin.
 - [ ] `python archetypes/oczekiwane_kwh.py` → porównać z `K_G11 / 33` z nowej tabeli.
       Rozbieżność > 3 % oznacza błąd w potoku, nie w konfiguracji.
 
@@ -177,7 +180,7 @@ symuluje wyłącznie biernego odbiorcę. To pierwsze pytanie, jakie padnie na ob
 - [ ] Wiersz w tabeli 7.1: „RDN + proste przesunięcie"
 - [ ] §8: „RDN nie opłaca się biernie, opłaca się przy sterowaniu — i o X %"
 
-### 3.2. Statystyki opisowe cen RDN · `[ ]`
+### 3.2. Statystyki opisowe cen RDN · `[x]` policzone, `[ ]` do wpisania w tekst
 Ceny RDN to najważniejsza dana wejściowa i nie ma dla nich w pracy żadnej statystyki.
 - [ ] Tabela: sezon × (średnia, mediana, SD, min, max, liczba godzin < 0)
 - [ ] Wykres: 4 nałożone krzywe dobowe `c̄_h` — to jest dokładnie to, co determinuje wynik RDN

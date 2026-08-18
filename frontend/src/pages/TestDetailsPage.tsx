@@ -151,7 +151,25 @@ export default function TestDetailsPage() {
     [points, effectiveStart, test?.speedFactor, timeMode],
   );
 
-  const totalKwh = points.reduce((s, p) => s + p.powerW, 0) / 60 / 1000;
+  // Interwal emisji wyznaczany z danych: wszystkie urzadzenia raportuja w tych samych
+  // momentach, wiec mediana odstepu miedzy kolejnymi unikatowymi znacznikami czasu to
+  // krok emisji. Poprzednia wersja dzielila przez 60, zakladajac probke co minute -
+  // przy domyslnej emisji co 5 min zanizalo to zuzycie dokladnie pieciokrotnie
+  // (np. 73 kWh zamiast 365 kWh dla testu 30-dniowego).
+  const totalKwh = useMemo(() => {
+    if (points.length === 0) return 0;
+    const stamps = Array.from(
+      new Set(points.map((p) => new Date(p.timestamp).getTime())),
+    ).sort((a, b) => a - b);
+    let stepMin = (test?.config as { emitEveryNMinutes?: number } | null)?.emitEveryNMinutes ?? 5;
+    if (stamps.length > 2) {
+      const gaps: number[] = [];
+      for (let i = 1; i < stamps.length; i++) gaps.push(stamps[i] - stamps[i - 1]);
+      gaps.sort((a, b) => a - b);
+      stepMin = Math.max(1, Math.round(gaps[Math.floor(gaps.length / 2)] / 60000));
+    }
+    return (points.reduce((s, p) => s + p.powerW, 0) * stepMin) / 60 / 1000;
+  }, [points, test?.config]);
 
   // Lista urzadzen z konfiguracji testu (z polem `room` do grupowania wykresow).
   const configDevices = useMemo(() => {

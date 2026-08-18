@@ -90,13 +90,25 @@ public class PseApiClient {
                 return List.of();
             }
             Iterator<JsonNode> items = valueArr.elements();
+            int pominiete = 0;
             while (items.hasNext()) {
                 JsonNode item = items.next();
-                Integer hour = extractHour(item);
-                BigDecimal price = extractPrice(item);
-                if (hour != null && price != null && hour >= 0 && hour <= 23) {
-                    byHour.computeIfAbsent(hour, h -> new ArrayList<>()).add(price);
+                // Kazdy rekord parsujemy osobno - pojedynczy nietypowy wpis ma zostac
+                // pominiety i policzony, a nie wywalic parsowanie calej doby.
+                try {
+                    Integer hour = extractHour(item);
+                    BigDecimal price = extractPrice(item);
+                    if (hour != null && price != null && hour >= 0 && hour <= 23) {
+                        byHour.computeIfAbsent(hour, h -> new ArrayList<>()).add(price);
+                    } else {
+                        pominiete++;
+                    }
+                } catch (RuntimeException ex) {
+                    pominiete++;
                 }
+            }
+            if (pominiete > 0) {
+                log.warn("PSE API {}: pominieto {} nieparsowalnych rekordow", deliveryDate, pominiete);
             }
         } catch (Exception e) {
             log.error("Blad parsowania odpowiedzi PSE: {}", e.getMessage());
@@ -114,10 +126,13 @@ public class PseApiClient {
             result.add(new HourPrice(deliveryDate, hour, avg));
         }
 
+        int kwadransow = byHour.values().stream().mapToInt(List::size).sum();
         log.info("PSE API: pobrano {} kwadransow dla {}, zagregowano do {} godzin",
-                byHour.values().stream().mapToInt(List::size).sum(),
-                deliveryDate,
-                result.size());
+                kwadransow, deliveryDate, result.size());
+        if (result.size() != 24) {
+            log.warn("PSE API {}: NIEPELNA DOBA - {} godzin zamiast 24. Brakujace godziny "
+                    + "wypadna z analizy kosztowej.", deliveryDate, result.size());
+        }
         return result;
     }
 
@@ -135,10 +150,23 @@ public class PseApiClient {
             String period = item.get("period").asText();
             String[] parts = period.split(" - ");
             if (parts.length == 2) {
-                String startTime = parts[0].trim();  // "00:00"
+                String startTime = parts[0].trim();  // "00:00", w dobie DST "02a:00"
                 String[] hm = startTime.split(":");
                 if (hm.length == 2) {
-                    return Integer.parseInt(hm[0]);
+                    // W dobie przejscia na czas zimowy (ostatnia niedziela pazdziernika)
+                    // godzina 02:00 wystepuje dwa razy, a PSE odroznia je sufiksem
+                    // literowym: "02a" (jeszcze czas letni) i "02b" (juz zimowy).
+                    // Integer.parseInt("02a") rzucalo NumberFormatException, a poniewaz
+                    // try/catch obejmowal cala petle - odrzucana byla CALA doba
+                    // (100 kwadransow realnych danych). Wyciagamy same cyfry, przez co
+                    // oba bloki mapuja sie na godzine 2 i zostaja usrednione. Doba
+                    // wychodzi 24-godzinna, zgodnie z reszta potoku (profil E_h ma
+                    // 24 sloty, strefy G12 zdefiniowane na 24 godzinach).
+                    String cyfry = hm[0].replaceAll("\\D", "");
+                    if (cyfry.isEmpty()) {
+                        return null;
+                    }
+                    return Integer.parseInt(cyfry);
                 }
             }
         }
