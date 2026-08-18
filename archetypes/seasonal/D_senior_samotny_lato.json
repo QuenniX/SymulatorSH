@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.08,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -283,6 +283,6 @@
       ]
     }
   ],
-  "name": "Archetyp D: Senior samotny - Lato",
+  "name": "Profil D: Senior samotny - Lato",
   "description": "[LATO] Osoba 65+ na emeryturze, mieszka sama w kawalerce/M2. W domu caly dzien. TV dlugo (5-8h), czajnik czesto. Ograniczone AGD. ~24% polskich gospodarstw to gospodarstwa senioralne. Duzy udzial staly w godzinach szczytu = ryzyko dla RDN. Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
 }

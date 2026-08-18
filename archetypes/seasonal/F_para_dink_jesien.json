@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2500,
         "duty_cycle": 0.2,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -277,6 +277,6 @@
       ]
     }
   ],
-  "name": "Archetyp F: Para pracujaca bez dzieci (DINK) - Jesien",
+  "name": "Profil F: Para pracujaca bez dzieci (DINK) - Jesien",
   "description": "[JESIEN] Para 30-45 lat, oboje pracujacy 8-17, mieszkanie M3 (50-70 m2). 'Double Income, No Kids'. Rano i wieczorem w domu. Piekarnik i zmywarka regularnie, pralka co 3-4 dni, klimatyzacja latem. Segment rosnacy z wyzszymi dochodami. Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 }

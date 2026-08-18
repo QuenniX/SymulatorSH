@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.15000000000000002,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -254,6 +254,6 @@
       ]
     }
   ],
-  "name": "Archetyp A: Singiel-biuro - Jesien",
+  "name": "Profil A: Singiel-biuro - Jesien",
   "description": "[JESIEN] Osoba 28-40 lat, mieszka sama w M2 (35-45 m2), pracuje w biurze 8-17. W domu wieczorami 18-23:30 i weekendy nieregularnie. Reprezentuje ~28% polskich gospodarstw jednoosobowych (GUS). Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 }

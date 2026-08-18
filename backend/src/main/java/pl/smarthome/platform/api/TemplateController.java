@@ -25,7 +25,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/templates")
 @RequiredArgsConstructor
-@Tag(name = "Szablony", description = "Wielokrotnego użytku konfiguracje testów - 6 gotowych archetypów gospodarstw + własne szablony użytkownika.")
+@Tag(name = "Szablony", description = "Wielokrotnego użytku konfiguracje testów - 6 gotowych profili gospodarstw + własne szablony użytkownika.")
 public class TemplateController {
 
     private final TemplateService templateService;
@@ -34,7 +34,7 @@ public class TemplateController {
     @Operation(
             summary = "Lista wszystkich szablonów (nazwa + opis, bez pełnej konfiguracji)",
             description = "Zwraca listę zwięzłych obiektów `TemplateSummary`. Dla pełnego config użyj GET `/templates/{id}`. "
-                    + "Domyślnie w bazie są 24 gotowe szablony (6 archetypów × 4 sezony) plus własne dodane przez użytkownika."
+                    + "Domyślnie w bazie są 24 gotowe szablony (6 profili × 4 sezony) plus własne dodane przez użytkownika."
     )
     public List<TemplateSummary> listTemplates() {
         return templateService.listTemplates();

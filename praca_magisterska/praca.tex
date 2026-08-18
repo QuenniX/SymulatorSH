@@ -1,0 +1,325 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% Praca magisterska: Model systemu Smart Home
+%%% Autor: Igor Guła
+%%% Wydzial Elektrotechniki i Informatyki, Politechnika Rzeszowska
+%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt,twoside]{article}
+
+\usepackage{weiiszablon}
+
+\author{Igor Guła}
+\studentID{169784}
+
+\title{Model systemu Smart Home}
+\titleEN{Smart Home System Model}
+
+% 2 = praca magisterska
+\newcommand{\rodzajPracyNo}{2}
+
+\supervisor{dr inż. Michał Markiewicz}
+\supervisorEN{Michał Markiewicz, PhD}
+
+\abstract{
+Praca prezentuje projekt oraz implementację platformy SymulatorSH — modelu systemu smart home
+umożliwiającego symulację zużycia energii elektrycznej w gospodarstwach domowych oraz analizę
+opłacalności różnych taryf energetycznych. System składa się z modułowego symulatora dwunastu
+typów urządzeń AGD/RTV, backendu w architekturze REST (Spring Boot 3.3 / Java 21), interfejsu
+webowego (React 18 / TypeScript) oraz publicznego API zgodnego ze standardem OpenAPI 3.0.
+Aplikacja została wdrożona w chmurze AWS EC2 i integruje się z bazami PostgreSQL (Neon Cloud),
+InfluxDB Cloud oraz brokerem MQTT. Jako studium zastosowania modelu przeprowadzono analizę
+opłacalności dynamicznej taryfy RDN (Rynek Dnia Następnego) względem tradycyjnych taryf
+G11 i G12, wykorzystując rzeczywiste ceny hurtowe z Polskich Sieci Elektroenergetycznych
+dla sześciu profili gospodarstw domowych w czterech sezonach meteorologicznych.
+}
+
+\abstractEN{
+This thesis presents the design and implementation of the SymulatorSH platform — a smart
+home system model enabling simulation of household electricity consumption and analysis of
+different energy tariff profitability. The system consists of a modular simulator of twelve
+types of household appliances, a REST backend (Spring Boot 3.3 / Java 21), a web interface
+(React 18 / TypeScript), and a public API compliant with OpenAPI 3.0 standard. The application
+has been deployed to AWS EC2 cloud and integrates with PostgreSQL (Neon Cloud), InfluxDB
+Cloud databases, and an MQTT broker. As a case study, an analysis of dynamic RDN (Day-Ahead
+Market) tariff profitability was performed against traditional G11 and G12 tariffs, using
+real wholesale prices from Polish Power Grid for six household profiles across four
+meteorological seasons.
+}
+
+\keywords{smart home, symulacja, dynamiczne taryfy energii, REST API, mikrousługi}
+\keywordsEN{smart home, simulation, dynamic energy tariffs, REST API, microservices}
+
+
+\begin{document}
+
+% strona tytulowa
+\maketitle
+
+\blankpage
+
+% spis tresci
+\tableofcontents
+
+\clearpage
+\blankpage
+
+
+\section*{Wykaz skrótów i akronimów}
+\addcontentsline{toc}{section}{Wykaz skrótów i akronimów}
+
+\begin{tabular}{ll}
+API      & Application Programming Interface \\
+AWS      & Amazon Web Services \\
+CVaR     & Conditional Value at Risk (warunkowa wartość zagrożona) \\
+G11      & Taryfa jednostrefowa (stały cennik) \\
+G12      & Taryfa dwustrefowa (dzień/noc) \\
+HTTP     & Hypertext Transfer Protocol \\
+JSON     & JavaScript Object Notation \\
+JWT      & JSON Web Token \\
+MQTT     & Message Queuing Telemetry Transport \\
+PSE      & Polskie Sieci Elektroenergetyczne \\
+RDN      & Rynek Dnia Następnego (dynamiczna taryfa energii) \\
+REST     & Representational State Transfer \\
+SSE      & Server-Sent Events \\
+URE      & Urząd Regulacji Energetyki \\
+VaR      & Value at Risk (wartość zagrożona) \\
+\end{tabular}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 1: WSTEP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Wstęp}
+
+TODO: 2 strony — zagajenie, cel pracy, zakres zadań, struktura pracy.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 2: PODSTAWY TEORETYCZNE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Podstawy teoretyczne}
+
+TODO: 5 stron — rynek energii w Polsce, technologie użyte, przegląd literatury.
+
+\subsection{Rynek energii elektrycznej w Polsce}
+\subsection{Wykorzystane technologie}
+\subsection{Przegląd literatury}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 3: METODOLOGIA OBLICZEN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Metodologia obliczeń}
+
+TODO: 5-7 stron ze wzorami — modele kosztów, VaR/CVaR, analiza sezonowa.
+
+\subsection{Model kosztu taryfy G11}
+\subsection{Model kosztu taryfy G12}
+\subsection{Model kosztu taryfy RDN}
+\subsection{Statystyki ryzyka}
+\subsection{Metodologia analizy sezonowej}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 4: ARCHITEKTURA SYSTEMU
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Architektura systemu SymulatorSH}
+\label{sec:architektura}
+
+TODO: 5-6 stron — diagram komponentów, model danych, API.
+
+\subsection{Diagram komponentów}
+\subsection{Stos technologiczny}
+\subsection{Model danych}
+\subsection{Publiczne REST API}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 5: IMPLEMENTACJA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Implementacja aplikacji}
+\label{sec:implementacja}
+
+Niniejszy rozdział prezentuje warstwę interakcji użytkownika z~systemem SymulatorSH. W~przeciwieństwie do rozdziału~\ref{sec:architektura}, który skupiał się na wewnętrznej strukturze komponentów, poniższe podsekcje opisują aplikację od strony osoby korzystającej z~interfejsu webowego. Każda podsekcja odpowiada jednemu ekranowi lub grupie ekranów aplikacji i~ilustruje realizację konkretnego elementu procesu badawczego: przeglądania wyników, definiowania konfiguracji testu, uruchamiania serii pomiarów oraz analizy kosztów w~trzech taryfach.
+
+\subsection{Widok listy testów}
+\label{sec:impl:lista}
+
+Ekran głównym aplikacji stanowi lista testów pogrupowana według partii oraz daty utworzenia (rysunek~\ref{fig:lista_testow}). Grupowanie zostało dodane w~odpowiedzi na obserwację, że po kilkudziesięciu uruchomieniach płaska lista traci czytelność. Nazwa grupy odzwierciedla źródło uruchomienia: prefiksy w~nawiasach kwadratowych (np.~\texttt{[Partia 2026-08-06T18:57]}) oznaczają testy uruchomione zbiorczo z~poziomu ekranu partii, prefiks \texttt{[example.py]} identyfikuje testy uruchomione za pomocą skryptu klienckiego korzystającego z~publicznego API, natomiast grupy datowe zawierają testy uruchomione pojedynczo z~poziomu kreatora lub trybu JSON.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/lista_testow.png}
+    \caption{Lista testów pogrupowana według partii i~daty utworzenia.}
+    \label{fig:lista_testow}
+\end{figure}
+
+Każdy wiersz w~rozwiniętej grupie zawiera nazwę testu, jego status, liczbę dni symulowanych, współczynnik przyspieszenia oraz znaczniki czasu utworzenia i~zakończenia. Kolorowe etykiety statusu (Zakończony, Błąd) przyspieszają lokalizację nieudanych uruchomień. Odświeżanie listy realizowane jest co pięć sekund, co pozwala obserwować postęp równolegle wykonywanych testów bez konieczności ręcznego przeładowania strony. Kliknięcie w~identyfikator testu otwiera ekran szczegółów opisany w~sekcji~\ref{sec:impl:szczegoly}.
+
+\subsection{Kreator konfiguracji i tryb JSON}
+\label{sec:impl:kreator}
+
+Zdefiniowanie konfiguracji testu wymaga wskazania listy urządzeń wraz z~ich parametrami oraz harmonogramem pracy. Aplikacja udostępnia dwie równolegle dostępne ścieżki: kreator formularzowy oraz tryb edycji surowego dokumentu JSON.
+
+Kreator (rysunek~\ref{fig:kreator}) prowadzi użytkownika przez wypełnienie kolejnych sekcji: parametry ogólne (nazwa testu, opis, długość symulacji, współczynnik przyspieszenia, poziomy jittera czasowego i~mocowego) oraz listę urządzeń. Każde urządzenie posiada określony typ (oświetlenie, chłodziarka, czajnik i~inne), przypisane pomieszczenie oraz identyfikator. Rozwijane pola parametrów zawierają wartości domyślne zaczerpnięte z~profilowych ustawień, a~edytor harmonogramu pozwala definiować dowolną liczbę przedziałów aktywności w~formacie \texttt{od-do}. Górny pasek udostępnia mechanizm szablonów, umożliwiający zapisanie wypełnionego formularza jako gotowej konfiguracji do wielokrotnego użycia oraz późniejsze wczytanie jej jednym kliknięciem.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/kreator_testu.png}
+    \caption{Kreator testu z~zaznaczonym szablonem profilu B (Pracownik zdalny) w~sezonie zimowym.}
+    \label{fig:kreator}
+\end{figure}
+
+Dla zaawansowanych użytkowników oraz na potrzeby integracji zewnętrznej udostępniono tryb surowy (rysunek~\ref{fig:json}). Prezentuje on identyczną strukturę danych, jaką backend akceptuje w~zapytaniach do publicznego API, dzięki czemu ta sama konfiguracja może zostać przygotowana w~przeglądarce, a~następnie skopiowana do skryptu klienckiego (lub odwrotnie). Rozwiązanie to okazało się przydatne podczas testów rekonstruowanych z~logów oraz przy przygotowywaniu przykładów kodu do dokumentacji.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/JSON.png}
+    \caption{Tryb JSON umożliwiający ręczną edycję konfiguracji zgodnej ze specyfikacją publicznego API.}
+    \label{fig:json}
+\end{figure}
+
+Oba tryby generują dokładnie tę samą strukturę wejściową, walidowaną po stronie backendu. W~razie błędu walidacji użytkownik otrzymuje komunikat wskazujący brakujące lub niepoprawne pola przed uruchomieniem testu.
+
+\subsection{Uruchamianie partii testów}
+\label{sec:impl:partia}
+
+Aby usprawnić generowanie danych do analizy porównawczej, wprowadzono ekran zbiorczego uruchamiania partii (rysunek~\ref{fig:partia}). Umożliwia on zaznaczenie dowolnego podzbioru z~macierzy sześciu profili gospodarstw domowych i~czterech sezonów, uzupełnionego o~zapisane szablony własne. Dla każdej pary profil--sezon backend tworzy niezależny test, przypisując mu wspólny identyfikator partii ułatwiający późniejsze zbiorcze pobranie wyników.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/partia_testow.png}
+    \caption{Ekran partii testów z~zaznaczonymi profilami B i~C we wszystkich sezonach oraz wybranymi szablonami własnymi.}
+    \label{fig:partia}
+\end{figure}
+
+Panel parametrów pozwala ustawić wspólną długość symulacji (od jednego dnia dla testu dymnego do trzydziestu dni dla pełnego badania), współczynnik przyspieszenia oraz interwał emisji pomiarów. Ostatnia z~wymienionych opcji ma bezpośredni wpływ na liczbę punktów zapisywanych do bazy szeregów czasowych, a~pośrednio~-- na obciążenie limitów planu bezpłatnego InfluxDB Cloud. Sekcja podsumowująca w~stopce prezentuje trzy informacje operacyjne: liczbę wybranych testów, szacowany czas rzeczywisty wykonania (uwzględniający wielkość puli wykonawców) oraz przewidywaną liczbę punktów pomiarowych. Wartości te wyliczane są w~przeglądarce na bieżąco, w~oparciu o~parametry konfiguracji, co pozwala świadomie skalować rozmiar partii przed zatwierdzeniem uruchomienia.
+
+Backend wykonuje testy równolegle w~puli czterech wątków. Pozostałe zadania oczekują w~kolejce i~są uruchamiane w~miarę zwalniania zasobów. Podejście to zostało dobrane empirycznie jako kompromis między czasem realizacji partii a~stabilnością zapisu do bazy szeregów czasowych na współdzielonej instancji chmurowej.
+
+\subsection{Ekran szczegółów testu}
+\label{sec:impl:szczegoly}
+
+Ekran szczegółów pojedynczego testu prezentuje pełny zestaw metadanych oraz interaktywne wizualizacje pomiarów zgromadzonych w~bazie szeregów czasowych. Nagłówek zawiera nazwę testu, opis pochodzący z~konfiguracji, cztery panele podsumowujące (status, liczba dni symulacji, współczynnik przyspieszenia, sumaryczne zużycie energii) oraz znaczniki czasu utworzenia i~zakończenia, a~także rzeczywisty czas wykonania w~sekundach.
+
+Pod nagłówkiem umieszczono komponent wizualizacji poboru mocy w~czasie. Domyślnie prezentuje on wykres zbiorczy wszystkich urządzeń (rysunek~\ref{fig:profil_razem}), pozwalający ocenić profil zużycia całego gospodarstwa i~zlokalizować dobowe szczyty. Kolory poszczególnych urządzeń są spójne z~legendą u~dołu wykresu, a~oś czasu może być prezentowana jako czas symulowany lub czas rzeczywisty.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/profil_F_wykres_1.png}
+    \caption{Zbiorczy wykres poboru mocy dla profilu F (Para bez dzieci) w~sezonie jesiennym --- 30~dni symulacji, 77~989 pomiarów.}
+    \label{fig:profil_razem}
+\end{figure}
+
+Przełącznik \emph{Osobno} rozdziela wykres na siatkę wykresów jednostkowych pogrupowanych według pomieszczeń (rysunek~\ref{fig:profil_osobno}). Widok ten umożliwia jakościową ocenę pracy pojedynczego urządzenia: widoczne są cykliczne włączenia zmywarki i~piekarnika, krótkie impulsy czajnika oraz stałe tło poboru mocy chłodziarki. Dodatkowy przełącznik skali (liniowa lub logarytmiczna) pomaga porównywać urządzenia o~znacząco różnym rzędzie wielkości poboru mocy w~jednym widoku.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/profil_F_wiele_wykresow.png}
+    \caption{Wykres poboru mocy w~trybie \emph{Osobno} --- pięć urządzeń przypisanych do pomieszczenia \emph{Kuchnia}.}
+    \label{fig:profil_osobno}
+\end{figure}
+
+Uzupełnieniem wykresu poboru mocy jest widok \emph{Wzorzec dnia} (rysunek~\ref{fig:wzorzec}), prezentujący uśredniony rozkład aktywności urządzeń w~ciągu doby. Każdy wiersz macierzy odpowiada jednemu urządzeniu, każda kolumna jednej godzinie doby, a~intensywność koloru komórki odzwierciedla średnią moc obserwowaną w~tej godzinie na przestrzeni całego testu (jasny odcień oznacza wyłączenie, pełne nasycenie -- pracę z~mocą znamionową). Widok ten szybko ujawnia charakter danego profilu: ciągłe działanie chłodziarki i~routera, poranno-wieczorną aktywność oświetlenia oraz koncentrację pracy zmywarki i~piekarnika w~godzinach wieczornych. Uśrednianie po wszystkich dobach testu redukuje szum wprowadzony jitterem, przez co wzorzec zachowania jest łatwiejszy do interpretacji niż z~wykresu chwilowego poboru mocy.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/wzorzec_dnia.png}
+    \caption{Wzorzec dobowy urządzeń dla profilu F (Para bez dzieci) --- macierz uśrednionej mocy pogrupowana według pomieszczeń.}
+    \label{fig:wzorzec}
+\end{figure}
+
+\subsection{Podgląd cen Rynku Dnia Następnego}
+\label{sec:impl:ceny}
+
+Odrębny ekran udostępnia interaktywny podgląd godzinowych cen Rynku Dnia Następnego (rysunek~\ref{fig:ceny_rdn}). Po wybraniu daty aplikacja pobiera dobowy komplet dwudziestu czterech notowań z~lokalnej bazy relacyjnej, do której backend cyklicznie replikuje dane z~publicznego API operatora sieci przesyłowej.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ceny_energi_rdn.png}
+    \caption{Ekran cen RDN dla dnia 16.08.2026 --- średnia dobowa 561~zł/MWh, minimum 91~zł/MWh o~13:00, maksimum 861~zł/MWh o~21:00.}
+    \label{fig:ceny_rdn}
+\end{figure}
+
+Cztery panele podsumowujące prezentują średnią, wartość minimalną (dolinę cenową), wartość maksymalną (szczyt) oraz stosunek maksimum do minimum. Ostatnia z~wymienionych statystyk jest szczególnie istotna z~perspektywy analizy zmienności: dla prezentowanego dnia stosunek wynosi $\times$9,4, co ilustruje skalę fluktuacji, jakim podlegają ceny w~ciągu doby. Histogram godzinowy pod panelami koduje kolorem trzy kategorie cen wyznaczone względem średniej dobowej: kolor zielony oznacza cenę o~co najmniej 25\% poniżej średniej (okres taniej energii), pomarańczowy~-- cenę zbliżoną do średniej, natomiast czerwony~-- cenę o~co najmniej 25\% powyżej średniej (okres drogiej energii). Uproszczona kategoryzacja pozwala szybko zidentyfikować przedziały czasowe atrakcyjne z~perspektywy odbiorcy na taryfie dynamicznej bez konieczności analizy dokładnych wartości liczbowych.
+
+\subsection{Kalkulator porównawczy taryf}
+\label{sec:impl:kalkulator}
+
+Ostatnim komponentem interfejsu jest kalkulator porównawczy, dostępny jako zakładka na ekranie szczegółów testu. Jego zadaniem jest przeliczenie zarejestrowanego przebiegu poboru mocy na koszt energii w~trzech taryfach: G11 (stały cennik), G12 (dwustrefowa dzień/noc) oraz RDN (dynamiczna taryfa godzinowa oparta o~ceny Rynku Dnia Następnego).
+
+Kalkulator udostępnia dwa tryby pracy. Tryb \emph{Test rzeczywisty} (rysunek~\ref{fig:kalkulator_test}) wykorzystuje ceny RDN z~okresu, w~którym test został uruchomiony, i~pełni funkcję porównania punktowego. Tryb \emph{Projekcja historyczna} (nie prezentowany na osobnym rysunku) umożliwia zastosowanie zarejestrowanego profilu poboru do dowolnego historycznego przedziału dat, co pozwala oszacować, jak zachowałby się koszt użytkowania tego samego gospodarstwa w~innym okresie roku lub w~innym roku kalendarzowym.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/porownanie_cen_profil_F.png}
+    \caption{Kalkulator porównawczy taryf w~trybie \emph{Test rzeczywisty} dla profilu F (Para bez dzieci) --- okres 30~dni, sezon jesienny 2025.}
+    \label{fig:kalkulator_test}
+\end{figure}
+
+Panele wynikowe prezentują sumaryczny koszt energii w~każdej z~trzech taryf, wyróżniając zieloną etykietą taryfę najtańszą dla analizowanego przypadku. Poniżej umieszczono sekcję statystyk dziennego kosztu w~taryfie dynamicznej, obejmującą wartość minimalną, medianę, wartość zagrożoną VaR na poziomie 5\% (próg 5\% najgorszych dób), warunkową wartość zagrożoną CVaR na poziomie 5\% (średnia z~ogona rozkładu) oraz wartość maksymalną (najgorszy scenariusz). Dobór tych statystyk został podyktowany specyfiką taryfy RDN: średnia arytmetyczna nie oddaje w~pełni ryzyka, ponieważ ukrywa incydenty o~ekstremalnie wysokim koszcie dobowym, które mogą w~sposób istotny wpływać na budżet gospodarstwa domowego. Zastosowanie VaR i~CVaR znanych z~analiz finansowych pozwala scharakteryzować zarówno typową ekspozycję, jak i~jej ogon rozkładu.
+
+Poniżej statystyk umieszczono krótki wniosek tekstowy porównujący sumaryczny koszt RDN z~kosztem G11, a~następnie dwa wykresy: słupkowy pokazujący łączny koszt w~trzech taryfach oraz liniowy prezentujący dobowe koszty w~całym analizowanym okresie. Ten ostatni ujawnia charakter różnicy między taryfą stałą a~dynamiczną: linie G11 i~G12 są niemal poziome, natomiast krzywa RDN wykazuje wyraźną zmienność z~pojedynczymi szczytami odpowiadającymi dniom o~podwyższonych cenach hurtowych. Wizualizacja ta stanowi punkt wyjścia do dyskusji nad opłacalnością taryfy dynamicznej prowadzonej w~rozdziale~\ref{sec:wyniki}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 6: METODYKA BADAN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Metodyka badań}
+
+TODO: 3-4 strony — profile, scenariusze, proces.
+
+\subsection{Definicja profili gospodarstw domowych}
+\subsection{Scenariusze sezonowe}
+\subsection{Proces uruchamiania testów}
+\subsection{Metodologia re-kalkulacji z cenami historycznymi}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 7: WYNIKI BADAN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Wyniki badań i analiza}
+\label{sec:wyniki}
+
+TODO: 6-7 stron — tabela zbiorcza, analiza per profil, per sezon, trade-off, hipotezy.
+
+\subsection{Tabela zbiorcza wyników}
+\subsection{Analiza per profil gospodarstwa}
+\subsection{Analiza per sezon}
+\subsection{Trade-off zysk vs ryzyko}
+\subsection{Analiza sensitivity}
+\subsection{Weryfikacja hipotez badawczych}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ROZDZIAL 8: PODSUMOWANIE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Podsumowanie i wnioski końcowe}
+
+TODO: 1.5 strony — cel zrealizowany, wnioski, kierunki rozwoju, wkład własny.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ZALACZNIKI
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Załączniki}
+\addcontentsline{toc}{section}{Załączniki}
+
+TODO: opcjonalnie — fragmenty kodu, konfiguracje, dodatkowe wykresy.
+
+
+\clearpage
+
+\addcontentsline{toc}{section}{Literatura}
+
+\begin{thebibliography}{99}
+\bibitem{TODO} TODO: pozycje literatury dodać w trakcie pisania rozdziałów.
+\end{thebibliography}
+
+\clearpage
+
+\makesummary
+
+\end{document}

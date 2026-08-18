@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2500,
         "duty_cycle": 0.25,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -363,6 +363,6 @@
       ]
     }
   ],
-  "name": "Archetyp C: Rodzina 2+2 - Lato",
+  "name": "Profil C: Rodzina 2+2 - Lato",
   "description": "[LATO] Rodzina 4-osobowa: dwoje rodzicow (35-50 lat) pracujacych, dwoje dzieci szkolnych (7-15 lat). M4/dom (70-120 m2). Dwa piki dziennie: rano i wieczor. ~22% polskich gospodarstw (GUS 2022). Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
 }

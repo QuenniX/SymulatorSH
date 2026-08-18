@@ -83,6 +83,11 @@ public class InfluxQueryService {
      * Blad rzedu 1-2% w krancowych godzinach testu (start/koniec ktore nie pokrywaja
      * pelnej godziny).</p>
      *
+     * <p><b>KRYTYCZNE - timeSrc="_start"</b>: bez tego Flux etykietuje kazde okno prawym
+     * konsem (_stop) -> energia z [20:00, 21:00) trafia do godziny 21:00 po truncated
+     * to HOURS -> caly profil dobowy przesuniety o +1h wzgledem cen RDN (szczyt
+     * cenowy 21:00 dostaje energie faktycznie zuzyta o 20:00). Musi byc _start.</p>
+     *
      * <p><b>Cache:</b> wynik jest cache'owany per testId (in-memory ConcurrentMap).
      * Dla testu COMPLETED profil sie nie zmienia, wiec cache eliminuje zbedne
      * query'ki do InfluxDB (rate limit darmowego planu ~300 req/min).</p>
@@ -95,7 +100,7 @@ public class InfluxQueryService {
                   |> filter(fn: (r) => r._measurement == "power")
                   |> filter(fn: (r) => r.test_id == "%s")
                   |> filter(fn: (r) => r._field == "power_w")
-                  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
+                  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false, timeSrc: "_start")
                   |> keep(columns: ["_time", "device_id", "_value"])
                 """, config.getBucket(), testId);
 

@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.27,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -316,6 +316,6 @@
       ]
     }
   ],
-  "name": "Archetyp E: Studenci - Zima",
+  "name": "Profil E: Studenci - Zima",
   "description": "[ZIMA] Dwoje studentow (19-25 lat) w M2/M3 (40-55 m2). Zajecia nieregularne, aktywni wieczorami/nocami. Gaming z burst-ami. Czajnik i mikrofalowka czesto, pralka rzadko. Brak ogrzewania elektrycznego typowo. Wyjatkowo elastyczne harmonogramy = potencjalnie dobry kandydat na RDN. Dodano: grzejnik elektryczny 2000W rano (6-8) i wieczorem (17-23), zwiekszony bojler, dluzsze oswietlenie o zmierzchu."
 }

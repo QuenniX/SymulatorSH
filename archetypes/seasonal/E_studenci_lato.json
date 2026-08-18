@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.12,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -312,6 +312,6 @@
       ]
     }
   ],
-  "name": "Archetyp E: Studenci - Lato",
+  "name": "Profil E: Studenci - Lato",
   "description": "[LATO] Dwoje studentow (19-25 lat) w M2/M3 (40-55 m2). Zajecia nieregularne, aktywni wieczorami/nocami. Gaming z burst-ami. Czajnik i mikrofalowka czesto, pralka rzadko. Brak ogrzewania elektrycznego typowo. Wyjatkowo elastyczne harmonogramy = potencjalnie dobry kandydat na RDN. Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
 }

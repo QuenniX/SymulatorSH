@@ -1,7 +1,7 @@
 {
-  "archetype_code": "A",
-  "archetype_name": "Singiel-biuro",
-  "archetype_description": "Osoba 28-40 lat, mieszka sama w M2 (35-45 m2), pracuje w biurze 8-17. W domu wieczorami 18-23:30 i weekendy nieregularnie. Reprezentuje ~28% polskich gospodarstw jednoosobowych (GUS).",
+  "profile_code": "A",
+  "profile_name": "Singiel-biuro",
+  "profile_description": "Osoba 28-40 lat, mieszka sama w M2 (35-45 m2), pracuje w biurze 8-17. W domu wieczorami 18-23:30 i weekendy nieregularnie. Reprezentuje ~28% polskich gospodarstw jednoosobowych (GUS).",
   "durationDays": 30,
   "speedFactor": 720,
   "retentionDays": 30,
@@ -17,7 +17,7 @@
      "params": {"power_w": 12}, "schedule": "always_on"},
 
     {"id": "boiler_1", "room": "BATHROOM", "type": "BOILER",
-     "params": {"power_w": 2000, "duty_cycle": 0.10, "cycle_length_minutes": 60},
+     "params": {"power_w": 2000, "duty_cycle": 0.10, "cycle_length_minutes": 37},
      "schedule": "always_on"},
 
     {"id": "light_kitchen", "room": "KITCHEN", "type": "LIGHT",

@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.22999999999999998,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -287,6 +287,6 @@
       ]
     }
   ],
-  "name": "Archetyp D: Senior samotny - Zima",
+  "name": "Profil D: Senior samotny - Zima",
   "description": "[ZIMA] Osoba 65+ na emeryturze, mieszka sama w kawalerce/M2. W domu caly dzien. TV dlugo (5-8h), czajnik czesto. Ograniczone AGD. ~24% polskich gospodarstw to gospodarstwa senioralne. Duzy udzial staly w godzinach szczytu = ryzyko dla RDN. Dodano: grzejnik elektryczny 2000W rano (6-8) i wieczorem (17-23), zwiekszony bojler, dluzsze oswietlenie o zmierzchu."
 }

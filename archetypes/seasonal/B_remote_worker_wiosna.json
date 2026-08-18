@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.12,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -295,6 +295,6 @@
       ]
     }
   ],
-  "name": "Archetyp B: Remote worker - Wiosna",
+  "name": "Profil B: Remote worker - Wiosna",
   "description": "[WIOSNA] Osoba 30-45 lat, pracuje z domu 8-17. Cały dzień w mieszkaniu M2/M3 (45-60 m2). Komputer, ekspres do kawy, więcej gotowania w ciągu dnia. Szybko rosnąca grupa po 2020. Bez ogrzewania i klimatyzacji - laczne zuzycie referencyjne."
 }

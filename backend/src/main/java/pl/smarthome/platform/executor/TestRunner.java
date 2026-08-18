@@ -18,6 +18,8 @@ import pl.smarthome.platform.repository.TestRepository;
 import pl.smarthome.platform.service.StreamEventPublisher;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -205,7 +207,23 @@ public class TestRunner {
         //     -> agregacja hourly zwracala 1-2 punkty zamiast 720 -> analiza kosztow ZUPELNIE bledna
         //   - PO FIX: pomiary rozciagniete 2026-07-07 21:00 -> 2026-08-06 21:00 (30 dni sim)
         //     -> agregacja hourly zwraca 720 unikatowych godzin -> pelny profil dobowy
-        final long simTimeStart = testStartMs - (long) totalMinutes * 60_000L;
+        //
+        // POPRAWKA #2 (znaleziona przy recenzji metodologicznej):
+        // simTimeStart MUSI byc uciety do POCZATKU DOBY w strefie Europe/Warsaw.
+        // W przeciwnym wypadku minuteOfDay=0 (pierwsza minuta harmonogramu urzadzen)
+        // trafia na godzine startu testu, a nie na polnoc. Efekt: urzadzenie
+        // skonfigurowane na 19:00 (wieczorny szczyt cen) laduje w Influx z timestampem
+        // (startTest_h + 19h) mod 24 -> np. test startowal 20:57, wieczor konfiguracji
+        // trafia na 15:57 nastepnej doby -> wycena idzie z dolka fotowoltaicznego
+        // zamiast z wieczornego szczytu. Przy roznych momentach uruchomienia partii
+        // KAZDY test dostawal inne, losowe przesuniecie.
+        // Fix: uciac (testStartMs - 30d) do polnocy w Europe/Warsaw.
+        final long simTimeStartRaw = testStartMs - (long) totalMinutes * 60_000L;
+        final long simTimeStart = Instant.ofEpochMilli(simTimeStartRaw)
+                .atZone(ZoneId.of("Europe/Warsaw"))
+                .truncatedTo(ChronoUnit.DAYS)
+                .toInstant()
+                .toEpochMilli();
 
         // SSE: postep wysylamy co 25% ukonczenia zeby nie zalac klienta setkami eventow.
         // progressCheckpoints = [totalMinutes*0.25, 0.50, 0.75, 1.0]

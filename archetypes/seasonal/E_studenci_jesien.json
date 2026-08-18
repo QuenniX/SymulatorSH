@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.16999999999999998,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -290,6 +290,6 @@
       ]
     }
   ],
-  "name": "Archetyp E: Studenci - Jesien",
+  "name": "Profil E: Studenci - Jesien",
   "description": "[JESIEN] Dwoje studentow (19-25 lat) w M2/M3 (40-55 m2). Zajecia nieregularne, aktywni wieczorami/nocami. Gaming z burst-ami. Czajnik i mikrofalowka czesto, pralka rzadko. Brak ogrzewania elektrycznego typowo. Wyjatkowo elastyczne harmonogramy = potencjalnie dobry kandydat na RDN. Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 }

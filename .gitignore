@@ -71,10 +71,12 @@ influx-data/
 *.swp
 
 # =========================
-# API keys wygenerowane przez example.py (nigdy nie commitowac)
+# API keys + artefakty wygenerowane przez example.py (nigdy nie commitowac)
 # =========================
 examples/api_key.txt
 api_key.txt
+examples/eksport_*.csv
+examples/eksport_*.xlsx
 
 # =========================
 # Pliki testowe eksportu (smieci z rozwoju)

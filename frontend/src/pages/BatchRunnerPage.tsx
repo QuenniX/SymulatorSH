@@ -8,18 +8,18 @@ import type { BatchCreateResponse, TemplateSummary } from '../types';
  *
  * Layout:
  *  1. Grid "Profile gospodarstw domowych" - szablony pasujace do wzorca
- *     "Archetyp X: NAZWA - SEZON" grupowane po NAZWIE, kolumny to 4 sezony.
- *     Slowo "Archetyp" jest ukryte w UI (na prosbe promotora), zamiast tego
+ *     "Profil X: NAZWA - SEZON" grupowane po NAZWIE, kolumny to 4 sezony.
+ *     Slowo "Profil" jest ukryte w UI (na prosbe promotora), zamiast tego
  *     nazwy typu "Profil A: Singiel-biuro".
  *  2. Sekcja "Wlasne szablony" - reszta szablonow (dodane przez uzytkownika
  *     w kreatorze). Wyswietlane jako lista z checkboxami.
  *
- * W bazie nazwy szablonow pozostaly bez zmian ("Archetyp X: ..."). Parsujemy
+ * W bazie nazwy szablonow pozostaly bez zmian ("Profil X: ..."). Parsujemy
  * je tylko przy wyswietlaniu - nie robimy migracji SQL.
  */
 
-/** Wzorzec ktory rozpoznaje standardowy szablon: "Archetyp A: Singiel-biuro - Zima". */
-const ARCH_PATTERN = /^Archetyp\s+([A-Z]):\s+(.+?)\s+-\s+(Zima|Wiosna|Lato|Jesien|Jesień)$/i;
+/** Wzorzec ktory rozpoznaje standardowy szablon: "Profil A: Singiel-biuro - Zima". */
+const ARCH_PATTERN = /^Profil\s+([A-Z]):\s+(.+?)\s+-\s+(Zima|Wiosna|Lato|Jesien|Jesień)$/i;
 
 const SEASONS = [
   { code: 'Zima',   label: 'Zima',   icon: '❄',  color: 'text-cyan-300',   bg: 'bg-cyan-950/40 border-cyan-700' },
@@ -54,7 +54,7 @@ export default function BatchRunnerPage() {
     listTemplates().then(setTemplates).catch((e) => setError(String(e)));
   }, []);
 
-  // Podzial szablonow: (1) grupy profili wg wzorca "Archetyp X: NAZWA - SEZON",
+  // Podzial szablonow: (1) grupy profili wg wzorca "Profil X: NAZWA - SEZON",
   // (2) wlasne szablony (wszystko co nie pasuje).
   const { archGroups, customTemplates } = useMemo(() => {
     const groupsByCode = new Map<string, ArchGroup>();

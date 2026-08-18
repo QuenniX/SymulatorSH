@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2500,
         "duty_cycle": 0.22,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -341,6 +341,6 @@
       ]
     }
   ],
-  "name": "Archetyp C: Rodzina 2+2 - Jesien",
+  "name": "Profil C: Rodzina 2+2 - Jesien",
   "description": "[JESIEN] Rodzina 4-osobowa: dwoje rodzicow (35-50 lat) pracujacych, dwoje dzieci szkolnych (7-15 lat). M4/dom (70-120 m2). Dwa piki dziennie: rano i wieczor. ~22% polskich gospodarstw (GUS 2022). Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 }

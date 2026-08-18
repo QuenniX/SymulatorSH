@@ -30,7 +30,7 @@ Rozszerzamy paletę z 4 do **12 urządzeń** (Tier A + Tier B).
 
 ### Tier A -- must-have (5 nowych)
 
-| Typ | Domyślna moc | Archetyp zachowania | Pokój |
+| Typ | Domyślna moc | Profil zachowania | Pokój |
 |-----|--------------|---------------------|-------|
 | `TV` | 120 W | Stała moc na ON/OFF (jak LIGHT) | Salon |
 | `OVEN` (piekarnik) | 2500 W | Cykl grzania z pulsem (grzałka on/off co kilka minut) | Kuchnia |
@@ -40,7 +40,7 @@ Rozszerzamy paletę z 4 do **12 urządzeń** (Tier A + Tier B).
 
 ### Tier B -- nice-to-have (3 nowe)
 
-| Typ | Domyślna moc | Archetyp zachowania | Pokój |
+| Typ | Domyślna moc | Profil zachowania | Pokój |
 |-----|--------------|---------------------|-------|
 | `KETTLE` (czajnik) | 2000 W | Krótki ostry pik (3 min) | Kuchnia |
 | `COMPUTER` (komputer) | 100-300 W | Baseload + skoki (zmienna moc) | Sypialnia |

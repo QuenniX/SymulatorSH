@@ -46,9 +46,9 @@ python example.py
 
 📚 Dostepnych szablonow: 24
    Wybrano 3 szablonow do partii:
-     - Archetyp A: Singiel-biuro - Zima
-     - Archetyp B: Remote worker - Zima
-     - Archetyp C: Rodzina 2+2 - Zima
+     - Profil A: Singiel-biuro - Zima
+     - Profil B: Remote worker - Zima
+     - Profil C: Rodzina 2+2 - Zima
 
 🚀 Uruchamianie partii testow (1 dni, x2160)...
    Batch ID: abc-...
@@ -67,14 +67,14 @@ python example.py
 💰 Koszty per test:
    Nazwa                                           G11      G12      RDN  Najtansza
    ---------------------------------------------  --------  --------  --------  ----------
-   Archetyp A: Singiel-biuro - Zima              10.23zl   6.87zl   9.45zl  G12
-   Archetyp B: Remote worker - Zima               8.11zl   6.02zl   7.34zl  G12
-   Archetyp C: Rodzina 2+2 - Zima                18.45zl  15.20zl  17.80zl  G12
+   Profil A: Singiel-biuro - Zima              10.23zl   6.87zl   9.45zl  G12
+   Profil B: Remote worker - Zima               8.11zl   6.02zl   7.34zl  G12
+   Profil C: Rodzina 2+2 - Zima                18.45zl  15.20zl  17.80zl  G12
 
 📊 Porownanie testow (compare endpoint):
-   Najlepszy dla RDN:  Archetyp B: Remote worker - Zima
+   Najlepszy dla RDN:  Profil B: Remote worker - Zima
                        oszczednosc RDN vs G11: 9.5%
-   Najgorszy dla RDN:  Archetyp C: Rodzina 2+2 - Zima
+   Najgorszy dla RDN:  Profil C: Rodzina 2+2 - Zima
                        oszczednosc RDN vs G11: 3.5%
    Srednia oszczednosc: 6.7%
 
@@ -103,7 +103,7 @@ BASE_URL = "http://3.77.28.199/api/v1"
 `example.py` jest podstawą pod bardziej rozbudowany skrypt:
 
 - **`analiza_wyniki.py`** (planowany) — bierze wyniki 24 testów baseline
-  (6 archetypów × 4 sezony), generuje 7 wykresów matplotlib
+  (6 profili × 4 sezony), generuje 7 wykresów matplotlib
   gotowych do wklejenia w pracę magisterską, tabelę wyników
   i weryfikuje hipotezy H1-H5 opłacalności RDN.
 

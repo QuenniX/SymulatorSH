@@ -1,4 +1,4 @@
-# BATCH RUN: uruchamia wszystkie 24 archetypy jako 30-dniowe testy.
+# BATCH RUN: uruchamia wszystkie 24 profile jako 30-dniowe testy.
 # Backend z pool-size 12 wykona je 12 rownolegle -> 2 batche -> ~2h realnie.
 #
 # UWAGA: to duzo pomiarow do InfluxDB. Uruchamiaj tylko jak smoke test przeszedl.
@@ -13,7 +13,7 @@ $seasonalDir = Join-Path $PSScriptRoot "seasonal"
 
 Write-Host ""
 Write-Host "==================================================" -ForegroundColor Cyan
-Write-Host " BATCH RUN - 24 archetypy x 30 dni" -ForegroundColor Cyan
+Write-Host " BATCH RUN - 24 profile x 30 dni" -ForegroundColor Cyan
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -32,7 +32,7 @@ if ($jsonFiles.Count -eq 0) {
     exit 1
 }
 
-Write-Host "Znaleziono $($jsonFiles.Count) archetypow." -ForegroundColor Cyan
+Write-Host "Znaleziono $($jsonFiles.Count) profilow." -ForegroundColor Cyan
 Write-Host ""
 Write-Host "UWAGA: ten skrypt zakolejkuje $($jsonFiles.Count) testow na 30 dni symulacji." -ForegroundColor Yellow
 Write-Host "  Szacowany czas: ~2 godziny (przy pool-size 12)." -ForegroundColor Yellow

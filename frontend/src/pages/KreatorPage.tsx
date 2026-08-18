@@ -14,14 +14,14 @@ import {
 import type { DeviceType, Room, TemplateSummary } from '../types';
 
 /**
- * Archetyp zachowania urządzenia - decyduje jaki edytor harmonogramu pokazać.
+ * Profil zachowania urządzenia - decyduje jaki edytor harmonogramu pokazać.
  *  - ALWAYS_ON: pracuje 24/7 (lodówka, router, bojler, klima)
  *  - RANGES: włączone w przedziałach OD-DO (światło, TV, grzejnik, komputer)
  *  - STARTS: uruchamiane w konkretnej godzinie, cykl kończy się sam (czajnik, pralka, zmywarka, piekarnik)
  */
-type Archetype = 'ALWAYS_ON' | 'RANGES' | 'STARTS';
+type Profile = 'ALWAYS_ON' | 'RANGES' | 'STARTS';
 
-const DEVICE_ARCHETYPE: Record<string, Archetype> = {
+const DEVICE_PROFILE: Record<string, Profile> = {
   REFRIGERATOR: 'ALWAYS_ON',
   ROUTER: 'ALWAYS_ON',
   BOILER: 'ALWAYS_ON',
@@ -38,8 +38,8 @@ const DEVICE_ARCHETYPE: Record<string, Archetype> = {
   OVEN: 'STARTS',
 };
 
-function archetypeOf(type: string): Archetype {
-  return DEVICE_ARCHETYPE[type] ?? 'RANGES';
+function profileOf(type: string): Profile {
+  return DEVICE_PROFILE[type] ?? 'RANGES';
 }
 
 /**
@@ -142,7 +142,7 @@ interface EditableDevice {
 
 /** Domyślny tryb harmonogramu dla nowo dodanego urządzenia. */
 function defaultScheduleMode(type: string): ScheduleMode {
-  const arch = archetypeOf(type);
+  const arch = profileOf(type);
   if (arch === 'ALWAYS_ON') return 'ALWAYS_ON';
   if (arch === 'STARTS') return 'STARTS';
   return 'RANGES';
@@ -367,7 +367,7 @@ export default function KreatorPage() {
       setGlobalPowerPercent(cfg.jitter?.globalPowerPercent ?? 5);
 
       const loadedDevices: EditableDevice[] = (cfg.devices ?? []).map((d) => {
-        const arch = archetypeOf(d.type);
+        const arch = profileOf(d.type);
         let scheduleMode: ScheduleMode = defaultScheduleMode(d.type);
         const ranges: ScheduleRange[] = [];
         const starts: string[] = [];
@@ -786,7 +786,7 @@ function DeviceCard({
   onUpdateStart,
   onRemoveStart,
 }: DeviceCardProps) {
-  const archetype = archetypeOf(device.type);
+  const profile = profileOf(device.type);
   const paramFields = paramsFor(device.type);
   const [paramsOpen, setParamsOpen] = useState(false);
 
@@ -794,15 +794,15 @@ function DeviceCard({
     onUpdate({ params: { ...device.params, [key]: value } });
   }
 
-  // Opcje trybu zależne od archetypu
+  // Opcje trybu zależne od profilu
   const modeOptions: { value: ScheduleMode; label: string }[] = useMemo(() => {
-    if (archetype === 'ALWAYS_ON') {
+    if (profile === 'ALWAYS_ON') {
       return [
         { value: 'ALWAYS_ON', label: 'Zawsze włączone (24/7)' },
         { value: 'ALWAYS_OFF', label: 'Wyłączone' },
       ];
     }
-    if (archetype === 'STARTS') {
+    if (profile === 'STARTS') {
       return [
         { value: 'STARTS', label: 'Uruchamiaj o godzinach (cykl sam się skończy)' },
         { value: 'ALWAYS_OFF', label: 'Wyłączone' },
@@ -813,7 +813,7 @@ function DeviceCard({
       { value: 'ALWAYS_ON', label: 'Zawsze włączone (24/7)' },
       { value: 'ALWAYS_OFF', label: 'Wyłączone' },
     ];
-  }, [archetype]);
+  }, [profile]);
 
   return (
     <div className="bg-slate-950 border border-slate-700 rounded p-3">

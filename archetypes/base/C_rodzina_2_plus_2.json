@@ -1,7 +1,7 @@
 {
-  "archetype_code": "C",
-  "archetype_name": "Rodzina 2+2",
-  "archetype_description": "Rodzina 4-osobowa: dwoje rodzicow (35-50 lat) pracujacych, dwoje dzieci szkolnych (7-15 lat). M4/dom (70-120 m2). Dwa piki dziennie: rano i wieczor. ~22% polskich gospodarstw (GUS 2022).",
+  "profile_code": "C",
+  "profile_name": "Rodzina 2+2",
+  "profile_description": "Rodzina 4-osobowa: dwoje rodzicow (35-50 lat) pracujacych, dwoje dzieci szkolnych (7-15 lat). M4/dom (70-120 m2). Dwa piki dziennie: rano i wieczor. ~22% polskich gospodarstw (GUS 2022).",
   "durationDays": 30,
   "speedFactor": 720,
   "retentionDays": 30,
@@ -17,7 +17,7 @@
      "params": {"power_w": 18}, "schedule": "always_on"},
 
     {"id": "boiler_1", "room": "BATHROOM", "type": "BOILER",
-     "params": {"power_w": 2500, "duty_cycle": 0.25, "cycle_length_minutes": 60},
+     "params": {"power_w": 2500, "duty_cycle": 0.25, "cycle_length_minutes": 37},
      "schedule": "always_on"},
 
     {"id": "light_kitchen", "room": "KITCHEN", "type": "LIGHT",

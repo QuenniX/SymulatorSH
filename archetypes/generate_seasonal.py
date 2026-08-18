@@ -1,8 +1,8 @@
 """
-Generator wariantow sezonowych archetypow.
+Generator wariantow sezonowych profilow.
 
-Wczytuje 6 baseline archetypow z base/ i tworzy 24 warianty w seasonal/
-(6 archetypow x 4 sezony).
+Wczytuje 6 baseline profilow z base/ i tworzy 24 warianty w seasonal/
+(6 profilow x 4 sezony).
 
 Modyfikacje per sezon:
   - Zima:   dodaje HEATER 1500-2500W (wieczorami + rano), zwieksza bojler duty,
@@ -28,8 +28,8 @@ OUT_DIR = SCRIPT_DIR / "seasonal"
 def apply_winter(config: dict) -> dict:
     """Zima: HEATER + wiecej bojler, dluzsze swiatlo."""
     config = copy.deepcopy(config)
-    config["archetype_name"] += " - Zima"
-    config["archetype_description"] = "[ZIMA] " + config["archetype_description"] + \
+    config["profile_name"] += " - Zima"
+    config["profile_description"] = "[ZIMA] " + config["profile_description"] + \
         " Dodano: grzejnik elektryczny 2000W rano (6-8) i wieczorem (17-23), zwiekszony bojler, dluzsze oswietlenie o zmierzchu."
 
     # Zwieksz bojler duty (zimna woda)
@@ -78,8 +78,8 @@ def apply_winter(config: dict) -> dict:
 def apply_spring(config: dict) -> dict:
     """Wiosna: baseline. Bez zmian klimatycznych."""
     config = copy.deepcopy(config)
-    config["archetype_name"] += " - Wiosna"
-    config["archetype_description"] = "[WIOSNA] " + config["archetype_description"] + \
+    config["profile_name"] += " - Wiosna"
+    config["profile_description"] = "[WIOSNA] " + config["profile_description"] + \
         " Bez ogrzewania i klimatyzacji - laczne zuzycie referencyjne."
     return config
 
@@ -87,8 +87,8 @@ def apply_spring(config: dict) -> dict:
 def apply_summer(config: dict) -> dict:
     """Lato: AC + wieksza lodowka, krotsze swiatlo."""
     config = copy.deepcopy(config)
-    config["archetype_name"] += " - Lato"
-    config["archetype_description"] = "[LATO] " + config["archetype_description"] + \
+    config["profile_name"] += " - Lato"
+    config["profile_description"] = "[LATO] " + config["profile_description"] + \
         " Dodano: klimatyzacja 1200W w godzinach 12-22, zwiekszony duty lodowki (upal), skrocone oswietlenie."
 
     # Zwieksz duty lodowki (upal - czesciej wlacza sie kompresor)
@@ -134,8 +134,8 @@ def apply_summer(config: dict) -> dict:
 def apply_autumn(config: dict) -> dict:
     """Jesien: lekki HEATER wieczorem, lekko wieksze swiatlo."""
     config = copy.deepcopy(config)
-    config["archetype_name"] += " - Jesien"
-    config["archetype_description"] = "[JESIEN] " + config["archetype_description"] + \
+    config["profile_name"] += " - Jesien"
+    config["profile_description"] = "[JESIEN] " + config["profile_description"] + \
         " Dodano: lekki grzejnik 1000W tylko wieczorem (18-22), lekko wieksze oswietlenie."
 
     # Lekko wiekszy bojler
@@ -173,7 +173,7 @@ def main():
 
     base_files = sorted(BASE_DIR.glob("*.json"))
     if not base_files:
-        print(f"[BLAD] Brak baseline archetypow w {BASE_DIR}")
+        print(f"[BLAD] Brak baseline profilow w {BASE_DIR}")
         return
 
     total_generated = 0
@@ -182,21 +182,21 @@ def main():
         with open(base_file, "r", encoding="utf-8") as f:
             base_config = json.load(f)
 
-        code = base_config.get("archetype_code", "?")
-        name = base_config.get("archetype_name", base_file.stem)
+        code = base_config.get("profile_code", "?")
+        name = base_config.get("profile_name", base_file.stem)
         print(f"[{code}] {name}")
 
         for season, modifier in SEASON_MODIFIERS.items():
             seasonal_config = modifier(base_config)
 
             # name pola TestConfig (backend wymaga)
-            seasonal_config["name"] = f"Archetyp {code}: {name} - {season.capitalize()}"
-            seasonal_config["description"] = seasonal_config["archetype_description"]
+            seasonal_config["name"] = f"Profil {code}: {name} - {season.capitalize()}"
+            seasonal_config["description"] = seasonal_config["profile_description"]
 
             # Usun pola pomocnicze (backend ich nie potrzebuje, TestConfig
             # ma @JsonIgnoreProperties(ignoreUnknown = true) wiec i tak przejdzie,
             # ale porzadkujemy).
-            for k in ("archetype_code", "archetype_name", "archetype_description"):
+            for k in ("profile_code", "profile_name", "profile_description"):
                 seasonal_config.pop(k, None)
 
             out_name = f"{code}_{base_file.stem[2:]}_{season}.json"

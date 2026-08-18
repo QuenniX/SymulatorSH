@@ -19,7 +19,7 @@ import java.util.UUID;
  * ale nadpisuje wybrane parametry (durationDays, speedFactor, emitEveryNMinutes)
  * wartosciami z tego requestu.</p>
  *
- * <p>Uzytkownik moze wybrac np. 6 archetypow letnich, jeden przycisk = 6 testow
+ * <p>Uzytkownik moze wybrac np. 6 profilow letnich, jeden przycisk = 6 testow
  * z tymi samymi parametrami czasowymi.</p>
  */
 @Data

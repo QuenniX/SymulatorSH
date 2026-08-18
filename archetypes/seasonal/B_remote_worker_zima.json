@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.27,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -339,6 +339,6 @@
       ]
     }
   ],
-  "name": "Archetyp B: Remote worker - Zima",
+  "name": "Profil B: Remote worker - Zima",
   "description": "[ZIMA] Osoba 30-45 lat, pracuje z domu 8-17. Cały dzień w mieszkaniu M2/M3 (45-60 m2). Komputer, ekspres do kawy, więcej gotowania w ciągu dnia. Szybko rosnąca grupa po 2020. Dodano: grzejnik elektryczny 2000W rano (6-8) i wieczorem (17-23), zwiekszony bojler, dluzsze oswietlenie o zmierzchu."
 }

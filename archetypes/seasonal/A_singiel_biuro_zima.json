@@ -33,7 +33,7 @@
       "params": {
         "power_w": 2000,
         "duty_cycle": 0.25,
-        "cycle_length_minutes": 60
+        "cycle_length_minutes": 37
       },
       "schedule": "always_on"
     },
@@ -280,6 +280,6 @@
       ]
     }
   ],
-  "name": "Archetyp A: Singiel-biuro - Zima",
+  "name": "Profil A: Singiel-biuro - Zima",
   "description": "[ZIMA] Osoba 28-40 lat, mieszka sama w M2 (35-45 m2), pracuje w biurze 8-17. W domu wieczorami 18-23:30 i weekendy nieregularnie. Reprezentuje ~28% polskich gospodarstw jednoosobowych (GUS). Dodano: grzejnik elektryczny 2000W rano (6-8) i wieczorem (17-23), zwiekszony bojler, dluzsze oswietlenie o zmierzchu."
 }

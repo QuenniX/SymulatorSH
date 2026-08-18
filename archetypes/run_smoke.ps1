@@ -1,4 +1,4 @@
-# SMOKE TEST: uruchamia JEDEN test 7-dniowy z archetypu A (Singiel wiosna).
+# SMOKE TEST: uruchamia JEDEN test 7-dniowy z profilu A (Singiel wiosna).
 # Cel: sprawdzic ze symulator + pipeline dziala zanim puscimy 24 testy na 30d.
 #
 # Czas realny: ~14 min (speedFactor 720, 7 dni sim).
@@ -11,7 +11,7 @@ $smokeFile  = Join-Path $PSScriptRoot "seasonal\A_singiel_biuro_wiosna.json"
 
 Write-Host ""
 Write-Host "==================================================" -ForegroundColor Cyan
-Write-Host " SMOKE TEST - Archetyp A (Singiel wiosna) - 7 dni" -ForegroundColor Cyan
+Write-Host " SMOKE TEST - Profil A (Singiel wiosna) - 7 dni" -ForegroundColor Cyan
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host ""
 

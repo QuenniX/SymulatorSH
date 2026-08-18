@@ -1,4 +1,4 @@
-# Skrypt do wsadowego uploadu archetypow jako szablonow do backendu.
+# Skrypt do wsadowego uploadu profilow jako szablonow do backendu.
 # Uruchom w PowerShell z folderu archetypes/:
 #     .\upload_templates.ps1
 #
@@ -6,11 +6,11 @@
 
 $backendUrl = "http://localhost:8080/api/v1/templates"
 # Bierzemy z folderu seasonal/ (24 wygenerowane warianty), nie z glowego folderu.
-$archetypesDir = Join-Path $PSScriptRoot "seasonal"
+$profilesDir = Join-Path $PSScriptRoot "seasonal"
 
 Write-Host ""
 Write-Host "==================================================" -ForegroundColor Cyan
-Write-Host " Upload archetypow do bazy szablonow" -ForegroundColor Cyan
+Write-Host " Upload profilow do bazy szablonow" -ForegroundColor Cyan
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -36,14 +36,14 @@ try {
 Write-Host ""
 
 # Znajdz wszystkie pliki .json (poza upload_templates.ps1)
-$jsonFiles = Get-ChildItem -Path $archetypesDir -Filter "*.json" | Sort-Object Name
+$jsonFiles = Get-ChildItem -Path $profilesDir -Filter "*.json" | Sort-Object Name
 
 if ($jsonFiles.Count -eq 0) {
-    Write-Host "[BLAD] Brak plikow .json w $archetypesDir" -ForegroundColor Red
+    Write-Host "[BLAD] Brak plikow .json w $profilesDir" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "Znaleziono $($jsonFiles.Count) archetypow do uploadu." -ForegroundColor Cyan
+Write-Host "Znaleziono $($jsonFiles.Count) profilow do uploadu." -ForegroundColor Cyan
 Write-Host ""
 
 $uploaded = 0

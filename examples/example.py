@@ -3,7 +3,7 @@ Przykladowy klient API SymulatorSH.
 
 Pokazuje pelen cykl zycia badania przez API - bez uzywania interfejsu graficznego:
 1. Rejestracja klucza API (raz - potem uzywasz zapisanego)
-2. Pobranie listy gotowych szablonow (archetypow gospodarstw)
+2. Pobranie listy gotowych szablonow (profilow gospodarstw)
 3. Uruchomienie partii testow z jednym wywolaniem
 4. Sledzenie postepu na zywo przez Server-Sent Events
 5. Pobranie kosztow dla kazdego testu w partii
@@ -68,7 +68,7 @@ def me(api_key: str) -> dict:
 
 
 def list_templates(api_key: str) -> list:
-    """GET /templates - lista wszystkich szablonow (archetypy + wlasne)."""
+    """GET /templates - lista wszystkich szablonow (profile + wlasne)."""
     r = requests.get(f"{BASE_URL}/templates",
                      headers={"X-API-Key": api_key},
                      timeout=10)

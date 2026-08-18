@@ -20,7 +20,7 @@ type Season = 'Zima' | 'Wiosna' | 'Lato' | 'Jesien';
 
 interface Props {
   testId: string;
-  /** Nazwa testu (np. "Archetyp F: DINK - Zima") - do wykrycia sezonu. */
+  /** Nazwa testu (np. "Profil F: DINK - Zima") - do wykrycia sezonu. */
   testName: string;
   /** Liczba dni testu - dla "Test rzeczywisty" liczymy okres tej dlugosci. */
   durationDays: number;
@@ -54,7 +54,7 @@ const SEASON_COLORS: Record<Season, string> = {
   Jesien: 'text-orange-300',
 };
 
-/** Rozpoznaj sezon z nazwy testu (np. "Archetyp F: DINK - Zima" -> Zima). */
+/** Rozpoznaj sezon z nazwy testu (np. "Profil F: DINK - Zima" -> Zima). */
 function extractSeason(testName: string): Season | null {
   const n = testName.toLowerCase();
   if (n.includes('zima')) return 'Zima';

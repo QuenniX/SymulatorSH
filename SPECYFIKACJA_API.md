@@ -67,7 +67,7 @@ Wszystkie endpointy pod prefiksem `/api/v1/`. Wersja **v1** — bez planu zmian 
 
 | Metoda | Ścieżka | Opis |
 |---|---|---|
-| GET | `/api/v1/templates` | Lista szablonów archetypów |
+| GET | `/api/v1/templates` | Lista szablonów profili |
 | POST | `/api/v1/templates` | Utwórz własny szablon |
 | DELETE | `/api/v1/templates/{id}` | Usuń szablon |
 | GET | `/api/v1/prices?date=YYYY-MM-DD` | Ceny RDN na dany dzień |
@@ -617,9 +617,9 @@ print(f"Zostało testów dzisiaj: {me['usage']['testsRemaining']}")
 
 # 2. Pobierz listę dostępnych szablonów
 templates = requests.get(f"{BASE_URL}/templates", headers=HEADERS).json()
-print(f"Dostępne archetypy: {len(templates)}")
+print(f"Dostępne profile: {len(templates)}")
 
-# 3. Uruchom partię 6 testów - wszystkie archetypy Zima
+# 3. Uruchom partię 6 testów - wszystkie profile Zima
 zima_templates = [t['id'] for t in templates if 'Zima' in t['name']]
 
 batch_response = requests.post(
