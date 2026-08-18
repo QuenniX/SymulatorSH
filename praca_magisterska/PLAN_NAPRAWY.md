@@ -79,7 +79,12 @@ Wszystko poniżej jest w working tree, niezacommitowane.
       usunąć oba `listenEvents` i `flush()`, reszta zmian jest od nich niezależna.
 - [ ] Commit + push (`feature/rdn-taryfy`)
 - [ ] Deploy na EC2
-- [ ] `upload_templates.ps1 -Url "http://3.77.28.199"` — JSON-y się zmieniły, upload konieczny
+- [ ] `upload_templates.ps1 -Url "http://3.77.28.199"` — **obowiązkowo przed partią**.
+      Stara wersja skryptu POMIJAŁA szablon, jeśli nazwa już była w bazie, więc baza trzymała
+      stare konfiguracje mimo wdrożonego backendu (wykryte 18.08: partia ruszyła na profilach
+      sprzed poprawek — nazwa testu „Para pracujaca bez dzieci (DINK)" zamiast „Para bez dzieci").
+      Skrypt przepisany na **synchronizację**: kasuje szablony „Profil *" i wgrywa od nowa,
+      na końcu weryfikuje liczbę i brak angielskich nazw. Podgląd bez zmian: `-DryRun`.
 - [ ] **Zmienić `BATCH_NAME_PREFIX` w `analiza_wyniki.py:67`** na prefiks nowej partii.
       Obecnie `[Partia 2026-08-06T18:57]` — bez zmiany skrypt znajdzie 0 testów.
 - [ ] Partia 24 testów z UI (30 dni, ×720, emit=5), ~5–6 h maszynowe
